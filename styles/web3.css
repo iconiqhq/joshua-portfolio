@@ -1,0 +1,1251 @@
+/* ═══════════════════════════════════════════════════════
+   WEB3.CSS — Section 06 (iconiq0x)
+   Matrix green · Holographic grid · Premium futuristic
+═══════════════════════════════════════════════════════ */
+
+/* ── Animatable ring property ───────────────────────── */
+@property --w3-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes w3-spin {
+  to { --w3-angle: 360deg; }
+}
+
+@keyframes w3-glow-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 0.85; transform: scale(1.1); }
+}
+
+@keyframes w3-bg-breathe {
+  0%, 100% {
+    background:
+      radial-gradient(ellipse 90% 50% at 50% 0%,   rgba(0,248,8,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 50% 100%, rgba(0,248,8,0.03) 0%, transparent 55%),
+      radial-gradient(ellipse 80% 80% at 50% 50%,  transparent 20%, rgba(0,0,0,0.75) 100%);
+  }
+  50% {
+    background:
+      radial-gradient(ellipse 90% 50% at 50% 0%,   rgba(0,248,8,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 50% 100%, rgba(0,248,8,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 80% 80% at 50% 50%,  transparent 20%, rgba(0,0,0,0.75) 100%);
+  }
+}
+
+@keyframes w3-scanlines-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 4px; }
+}
+
+@keyframes w3-boot-flash {
+  0%   { opacity: 0.6; }
+  20%  { opacity: 0.1; }
+  35%  { opacity: 0.5; }
+  50%  { opacity: 0.05; }
+  100% { opacity: 0; }
+}
+
+@keyframes w3-status-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── Section ────────────────────────────────────────── */
+.web3-section {
+  background: #000000;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(80px, 12vw, 140px) 0;
+}
+
+#web3-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.web3-section--booting #web3-canvas,
+.web3-section--booted  #web3-canvas {
+  opacity: 0.55;
+}
+
+.web3-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 0%,   rgba(0,248,8,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 50% 100%, rgba(0,248,8,0.03) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 80% at 50% 50%,  transparent 20%, rgba(0,0,0,0.75) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.web3-section--booted::before {
+  animation: w3-bg-breathe 9s ease-in-out infinite;
+}
+
+.web3-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.025) 2px,
+    rgba(0, 0, 0, 0.025) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: w3-scanlines-drift 0.14s steps(1) infinite;
+}
+
+/* Boot flash overlay */
+.web3-section--booting .web3-scanlines {
+  animation: w3-boot-flash 1.8s ease-out forwards, w3-scanlines-drift 0.14s steps(1) infinite 1.8s;
+  background-color: rgba(0, 248, 8, 0.04);
+}
+
+/* ── Inner ──────────────────────────────────────────── */
+.web3-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* ── Eyebrow ────────────────────────────────────────── */
+.web3-eyebrow {
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+.web3-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-green);
+}
+
+.web3-section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--color-green);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ── Identity ───────────────────────────────────────── */
+.web3-identity {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+  margin-bottom: clamp(56px, 8vw, 96px);
+}
+
+/* ── Profile ring ───────────────────────────────────── */
+.web3-ring-wrap {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.web3-glow-halo {
+  position: absolute;
+  inset: -32px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0,248,8,0.2) 0%,
+    rgba(0,248,8,0.07) 45%,
+    transparent 70%
+  );
+  animation: w3-glow-pulse 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.web3-ring {
+  width: clamp(190px, 19vw, 268px);
+  height: clamp(190px, 19vw, 268px);
+  border-radius: 50%;
+  background: conic-gradient(
+    from var(--w3-angle),
+    #00F808 0%,
+    #003d02 30%,
+    #00F808 50%,
+    #003d02 80%,
+    #00F808 100%
+  );
+  padding: 6px;
+  animation: w3-spin 3s linear infinite;
+  box-shadow:
+    0 0 28px rgba(0,248,8,0.3),
+    0 0 56px rgba(0,248,8,0.12),
+    0 0 96px rgba(0,248,8,0.05);
+}
+
+.web3-ring-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #050505;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 0 3px rgba(0,248,8,0.22),
+    inset 0 0 24px rgba(0,0,0,0.9);
+}
+
+.web3-ring-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 50%;
+  display: block;
+}
+
+.web3-ring-initial {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  color: var(--color-green);
+  text-transform: uppercase;
+  line-height: 1;
+  display: none;
+}
+
+
+/* ── Identity info ──────────────────────────────────── */
+.web3-identity-info {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.5vw, 16px);
+}
+
+.web3-logo-row {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 22px);
+}
+
+.web3-verified-badge {
+  width: clamp(36px, 5vw, 56px);
+  height: clamp(36px, 5vw, 56px);
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(29, 155, 240, 0.5));
+  transition: filter 0.35s ease;
+}
+
+.web3-logo-row:hover .web3-verified-badge {
+  filter: drop-shadow(0 0 14px rgba(29, 155, 240, 0.85));
+}
+
+.web3-logo {
+  max-height: clamp(52px, 9vw, 112px);
+  max-width: clamp(240px, 55vw, 520px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 12px rgba(0,248,8,0.35));
+  transition: filter 0.4s ease;
+}
+
+.web3-logo:hover {
+  filter: drop-shadow(0 0 28px rgba(0,248,8,0.65));
+}
+
+.web3-heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  letter-spacing: -0.03em;
+  text-transform: none;
+  line-height: 1.1;
+  color: var(--color-green);
+  margin: 0;
+}
+
+.web3-bio-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 28px);
+  margin: 6px 0 0;
+  flex-wrap: wrap;
+}
+
+.web3-tagline {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: clamp(0.72rem, 1.1vw, 0.85rem);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.web3-bio-sep {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: rgba(0, 248, 8, 0.25);
+  flex-shrink: 0;
+}
+
+.web3-ecosystem-stat {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.web3-ecosystem-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  color: rgba(0, 248, 8, 0.65);
+}
+
+.web3-ecosystem-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: rgba(0, 248, 8, 0.65);
+  white-space: nowrap;
+}
+
+
+/* ── Identity meta chips ────────────────────────────── */
+
+/* ── Role cards ─────────────────────────────────────── */
+.web3-roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 2vw, 24px);
+  margin-bottom: clamp(48px, 7vw, 80px);
+}
+
+.web3-role-card {
+  background: rgba(0,248,8,0.02);
+  border: 1px solid rgba(0,248,8,0.12);
+  border-radius: var(--radius-lg);
+  padding: clamp(24px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color var(--t-base),
+    background var(--t-base),
+    box-shadow var(--t-base);
+}
+
+.web3-role-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,248,8,0.55), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.web3-role-card:hover {
+  border-color: rgba(0,248,8,0.28);
+  background: rgba(0,248,8,0.045);
+  box-shadow: 0 8px 40px rgba(0,248,8,0.06), inset 0 0 40px rgba(0,248,8,0.015);
+}
+
+.web3-role-card:hover::before { opacity: 1; }
+
+.web3-role-header {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(14px, 2vw, 18px);
+}
+
+.web3-role-glyph {
+  font-size: 2rem;
+  color: var(--color-green);
+  opacity: 0.7;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.web3-role-brand-wrap {
+  width: 42px;
+  height: 42px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.web3-role-brand-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.web3-role-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  letter-spacing: -0.02em;
+  color: var(--color-white);
+  margin: 0 0 5px;
+  line-height: 1.2;
+}
+
+.web3-role-sub {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: rgba(0,248,8,0.45);
+  margin: 0;
+}
+
+.web3-role-desc {
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-xs), 1.1vw, var(--text-sm));
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin: 0;
+  flex: 1;
+}
+
+.web3-role-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.web3-role-tag {
+  padding: 4px 12px;
+  background: rgba(0,248,8,0.06);
+  border: 1px solid rgba(0,248,8,0.14);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.1em;
+  color: rgba(0,248,8,0.55);
+  white-space: nowrap;
+}
+
+.web3-role-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: auto;
+}
+
+.web3-role-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(0,248,8,0.06);
+  border: 1px solid rgba(0,248,8,0.2);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: rgba(0,248,8,0.75);
+  text-decoration: none;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.web3-role-link:hover {
+  background: rgba(0,248,8,0.12);
+  border-color: rgba(0,248,8,0.45);
+  color: var(--color-green);
+  box-shadow: 0 0 16px rgba(0,248,8,0.12);
+}
+
+.web3-role-link-arrow {
+  font-size: 0.75rem;
+  transition: transform var(--t-fast);
+}
+
+.web3-role-link:hover .web3-role-link-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Chain corner badges */
+.web3-chain-corner {
+  position: absolute;
+  bottom: clamp(16px, 2vw, 20px);
+  right: clamp(16px, 2vw, 20px);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  transition: opacity var(--t-base);
+  pointer-events: none;
+}
+
+.web3-role-card:hover .web3-chain-corner {
+  opacity: 0.85;
+}
+
+.web3-chain-logo {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.web3-chain-corner--ronin { color: #4A9EFF; }
+.web3-chain-corner--bnb   { color: #F3BA2F; }
+
+.web3-role-card--realgo {
+  border-color: rgba(0,248,8,0.18);
+}
+
+.web3-role-card--realgo::after {
+  content: '';
+  position: absolute;
+  bottom: -20px; right: -20px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(0,248,8,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* ── Pillars ────────────────────────────────────────── */
+.web3-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 2vw, 24px);
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+.web3-pillar {
+  background: rgba(0,248,8,0.025);
+  border: 1px solid rgba(0,248,8,0.1);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 2.5vw, 30px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color var(--t-base),
+    background var(--t-base),
+    box-shadow var(--t-base);
+}
+
+.web3-pillar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,248,8,0.6), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease-out-quart);
+}
+
+.web3-pillar:hover {
+  border-color: rgba(0,248,8,0.28);
+  background: rgba(0,248,8,0.05);
+  box-shadow: 0 0 40px rgba(0,248,8,0.05), inset 0 0 40px rgba(0,248,8,0.02);
+}
+
+.web3-pillar:hover::after {
+  transform: scaleX(1);
+}
+
+.web3-pillar-glyph {
+  font-size: 1.5rem;
+  color: var(--color-green);
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.web3-pillar-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  letter-spacing: -0.02em;
+  color: var(--color-white);
+  margin: 0 0 var(--sp-2);
+}
+
+.web3-pillar-desc {
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-xs), 1.1vw, var(--text-sm));
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Projects pillar ────────────────────────────────── */
+.web3-pillar--projects {
+  grid-column: span 2;
+}
+
+.web3-proj-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.web3-proj-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1px solid rgba(0, 248, 8, 0.10);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.web3-proj-item:hover {
+  border-color: rgba(0, 248, 8, 0.32);
+  background: rgba(0, 248, 8, 0.04);
+}
+
+.web3-proj-item a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.web3-proj-item--current {
+  border-color: rgba(0, 248, 8, 0.28);
+  background: rgba(0, 248, 8, 0.04);
+}
+
+.web3-proj-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-green);
+  opacity: 0.85;
+  vertical-align: middle;
+}
+
+.web3-proj-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-green);
+  flex-shrink: 0;
+  animation: proj-pulse 2s ease-in-out infinite;
+}
+
+@keyframes proj-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+.web3-proj-item--placeholder {
+  opacity: 0.35;
+  border-style: dashed;
+}
+
+.web3-proj-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(0.82rem, 1.2vw, 0.92rem);
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: -0.01em;
+}
+
+.web3-proj-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-green);
+  border: 1px solid rgba(0, 248, 8, 0.25);
+  border-radius: 100px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Stats row ──────────────────────────────────────── */
+
+/* ── Instagram feed ─────────────────────────────────── */
+.web3-ig {
+  margin-bottom: clamp(48px, 7vw, 80px);
+}
+
+.web3-ig-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: clamp(14px, 2vw, 20px);
+}
+
+.web3-ig-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+.web3-ig-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-green);
+  box-shadow: 0 0 8px rgba(0, 248, 8, 0.7);
+  flex-shrink: 0;
+}
+
+.web3-ig-cta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-green);
+  text-decoration: none;
+  border: 1px solid rgba(0,248,8,0.22);
+  padding: 7px 16px;
+  border-radius: 100px;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+
+.web3-ig-cta:hover {
+  background: rgba(0,248,8,0.08);
+  border-color: rgba(0,248,8,0.5);
+}
+
+.web3-ig-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(6px, 1vw, 10px);
+}
+
+.web3-ig-tile {
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition:
+    transform var(--t-base),
+    border-color var(--t-base),
+    box-shadow var(--t-base);
+}
+
+.web3-ig-tile:nth-child(1) {
+  background:
+    radial-gradient(circle at 25% 35%, rgba(0,248,8,0.14) 0%, transparent 55%),
+    radial-gradient(circle at 75% 75%, rgba(0,80,20,0.25) 0%, transparent 50%),
+    #040a04;
+}
+.web3-ig-tile:nth-child(2) {
+  background:
+    radial-gradient(circle at 70% 20%, rgba(0,248,8,0.10) 0%, transparent 50%),
+    radial-gradient(circle at 30% 80%, rgba(0,60,15,0.3) 0%, transparent 45%),
+    #040804;
+}
+.web3-ig-tile:nth-child(3) {
+  background:
+    radial-gradient(circle at 50% 55%, rgba(0,248,8,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 15%, rgba(0,70,18,0.2) 0%, transparent 40%),
+    #030903;
+}
+.web3-ig-tile:nth-child(4) {
+  background:
+    radial-gradient(circle at 20% 65%, rgba(0,248,8,0.11) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(0,65,16,0.22) 0%, transparent 45%),
+    #040804;
+}
+.web3-ig-tile:nth-child(5) {
+  background:
+    radial-gradient(circle at 75% 45%, rgba(0,248,8,0.13) 0%, transparent 50%),
+    radial-gradient(circle at 25% 70%, rgba(0,55,14,0.25) 0%, transparent 45%),
+    #030a03;
+}
+.web3-ig-tile:nth-child(6) {
+  background:
+    radial-gradient(circle at 45% 25%, rgba(0,248,8,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 60% 75%, rgba(0,75,19,0.2) 0%, transparent 45%),
+    #040904;
+}
+
+.web3-ig-tile-icon {
+  font-size: 1.1rem;
+  color: rgba(0,248,8,0.12);
+  transition: color var(--t-fast), transform var(--t-fast);
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.web3-ig-tile:hover {
+  transform: scale(1.04);
+  border-color: rgba(0,248,8,0.3);
+  box-shadow: 0 0 24px rgba(0,248,8,0.1);
+}
+
+.web3-ig-tile:hover .web3-ig-tile-icon {
+  color: rgba(0,248,8,0.75);
+  transform: translate(2px, -2px);
+}
+
+/* ── Loaded tiles (real Instagram photos) ───────── */
+.web3-ig-tile--loaded::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background var(--t-base);
+  z-index: 0;
+}
+
+.web3-ig-tile--loaded:hover::after {
+  background: rgba(0,0,0,0.45);
+}
+
+.web3-ig-tile--loaded .web3-ig-tile-icon {
+  color: rgba(255,255,255,0);
+}
+
+.web3-ig-tile--loaded:hover .web3-ig-tile-icon {
+  color: rgba(255,255,255,0.9);
+  transform: translate(2px, -2px);
+}
+
+/* ── NFT Collection ─────────────────────────────────── */
+
+.web3-nft-label-inline {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(0, 248, 8, 0.55);
+  margin-top: var(--sp-2);
+}
+
+/* ── scan line sweep on transition ─────────────────── */
+@keyframes nft-scan-sweep {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(110%);  opacity: 0; }
+}
+
+.web3-nft-carousel {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: var(--sp-2);
+}
+
+.web3-nft-carousel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 248, 8, 0.2) 48%,
+    rgba(0, 248, 8, 0.07) 52%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.web3-nft-carousel.nft-scanning::after {
+  animation: nft-scan-sweep 0.48s ease forwards;
+}
+
+.web3-nft-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  text-decoration: none;
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(0, 248, 8, 0.12);
+  transform: translateX(0) scale(1);
+}
+
+.web3-nft-slide-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* exit animations */
+.nft-exit-left {
+  opacity: 0 !important;
+  transform: translateX(-44px) scale(0.93) !important;
+  transition: opacity 0.26s ease, transform 0.26s ease !important;
+}
+
+.nft-exit-right {
+  opacity: 0 !important;
+  transform: translateX(44px) scale(0.93) !important;
+  transition: opacity 0.26s ease, transform 0.26s ease !important;
+}
+
+/* enter start positions */
+.nft-enter-right {
+  opacity: 0 !important;
+  transform: translateX(44px) scale(1.05) !important;
+  transition: none !important;
+}
+
+.nft-enter-left {
+  opacity: 0 !important;
+  transform: translateX(-44px) scale(1.05) !important;
+  transition: none !important;
+}
+
+/* slide into final position */
+.nft-entering {
+  opacity: 1 !important;
+  transform: translateX(0) scale(1) !important;
+  transition: opacity 0.4s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.web3-nft-slide:hover {
+  border-color: rgba(0, 248, 8, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(0, 248, 8, 0.1),
+    0 0 40px rgba(0, 248, 8, 0.14),
+    0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.web3-nft-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.web3-nft-slide:hover .web3-nft-img {
+  transform: scale(1.04);
+}
+
+.web3-nft-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.2) 45%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px;
+}
+
+.web3-nft-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.web3-nft-collection {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.1em;
+  color: var(--color-green);
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+.web3-nft-view {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 248, 8, 0.12);
+  border: 1px solid rgba(0, 248, 8, 0.3);
+  border-radius: 100px;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.1em;
+  color: var(--color-green);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.web3-nft-slide:hover .web3-nft-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── NFT Chain Badge ────────────────────────────────── */
+.web3-nft-chain {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px 3px 5px;
+  border-radius: 20px;
+  background: rgba(6, 6, 6, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #fff;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+/* ── NFT Dots ───────────────────────────────────────── */
+.web3-nft-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.web3-nft-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s ease, width 0.3s ease;
+  flex-shrink: 0;
+}
+
+.web3-nft-dot:hover {
+  background: rgba(0, 248, 8, 0.5);
+}
+
+.web3-nft-dot-active {
+  width: 28px;
+  background: var(--color-green);
+  box-shadow: 0 0 10px rgba(0, 248, 8, 0.5);
+}
+
+/* ── Footer CTA ─────────────────────────────────────── */
+.web3-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(28px, 4vw, 48px);
+  position: relative;
+  z-index: 1;
+}
+
+.web3-footer-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border: 1px solid rgba(0,248,8,0.28);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  color: var(--color-green);
+  text-decoration: none;
+  transition:
+    background var(--t-base),
+    border-color var(--t-base),
+    box-shadow var(--t-base),
+    transform var(--t-base);
+}
+
+.web3-footer-cta:hover {
+  background: rgba(0,248,8,0.07);
+  border-color: rgba(0,248,8,0.55);
+  box-shadow: 0 0 32px rgba(0,248,8,0.12);
+  transform: translateY(-2px);
+}
+
+/* ── Heading row with since badge ───────────────────── */
+.web3-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.web3-since-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: rgba(0,248,8,0.65);
+}
+
+.web3-since-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-green);
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* ── Social pills row ───────────────────────────────── */
+.web3-socials {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-top: clamp(14px, 2vw, 20px);
+}
+
+.web3-social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid rgba(0,248,8,0.22);
+  border-radius: 100px;
+  background: rgba(0,248,8,0.03);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: rgba(0,248,8,0.65);
+  text-decoration: none;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+a.web3-social-pill:hover {
+  background: rgba(0,248,8,0.07);
+  border-color: rgba(0,248,8,0.5);
+  color: var(--color-green);
+  box-shadow: 0 0 16px rgba(0,248,8,0.1);
+}
+
+button.web3-social-pill {
+  background: rgba(0,248,8,0.03);
+  border: 1px solid rgba(0,248,8,0.22);
+  cursor: pointer;
+}
+
+button.web3-social-pill:hover {
+  background: rgba(0,248,8,0.07);
+  border-color: rgba(0,248,8,0.5);
+  color: var(--color-green);
+  box-shadow: 0 0 16px rgba(0,248,8,0.1);
+}
+
+.web3-social-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .web3-pillars {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .web3-roles {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .web3-identity {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+    gap: clamp(28px, 5vw, 40px);
+  }
+
+  .web3-logo { margin: 0 auto; }
+  .web3-heading-row { justify-content: center; }
+  .web3-socials { justify-content: center; }
+
+  .web3-role-footer { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .web3-ig-grid { grid-template-columns: repeat(2, 1fr); }
+  .web3-ig-tile:last-child { display: none; }
+}
+
+/* ── Reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #web3-canvas { display: none; }
+  .web3-ring { animation: none; background: rgba(0,248,8,0.4); }
+  .web3-glow-halo { animation: none; }
+  .web3-ig-tile:hover { transform: none; }
+}

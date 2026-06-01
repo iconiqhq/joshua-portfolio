@@ -1,0 +1,48 @@
+{
+  "categories": [
+    {
+      "id": "design",
+      "label": "Design",
+      "color": "#41BDFE",
+      "tools": [
+        { "name": "Adobe Photoshop" },
+        { "name": "Adobe Lightroom" },
+        { "name": "Canva" }
+      ]
+    },
+    {
+      "id": "video",
+      "label": "Video",
+      "color": "#E111FB",
+      "tools": [
+        { "name": "Adobe Premiere Pro" },
+        { "name": "Adobe After Effects" },
+        { "name": "CapCut" },
+        { "name": "Filmora" },
+        { "name": "DaVinci Resolve" }
+      ]
+    },
+    {
+      "id": "social",
+      "label": "Social Media",
+      "color": "#41BDFE",
+      "tools": [
+        { "name": "Meta Business Suite" },
+        { "name": "YouTube Studio" }
+      ]
+    },
+    {
+      "id": "ai",
+      "label": "AI Tools",
+      "color": "#E111FB",
+      "tools": [
+        { "name": "ChatGPT" },
+        { "name": "Gemini" },
+        { "name": "Claude" },
+        { "name": "Grok" },
+        { "name": "Higgsfield" },
+        { "name": "ElevenLabs" }
+      ]
+    }
+  ]
+}

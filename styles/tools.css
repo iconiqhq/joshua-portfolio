@@ -1,0 +1,250 @@
+/* ═══════════════════════════════════════════════════════
+   TOOLS.CSS — Section 07: Tools & Stack
+   Category groups · Proficiency bars · Scroll reveal
+═══════════════════════════════════════════════════════ */
+
+/* ── Section ───────────────────────────────────────── */
+.tools-section {
+  background: #f7f7f7;
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0 clamp(60px, 8vw, 100px);
+  overflow: hidden;
+}
+
+.tools-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(65, 189, 254, 0.06) 0%,
+    rgba(225, 17, 251, 0.03) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tools-bg-num {
+  position: absolute;
+  bottom: clamp(16px, 3vw, 48px);
+  left: clamp(12px, 4vw, 64px);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(100px, 18vw, 220px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.04);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* ── Header ────────────────────────────────────────── */
+.tools-header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(48px, 7vw, 80px);
+  text-align: center;
+}
+
+.tools-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.4);
+  margin-bottom: var(--sp-4);
+  justify-content: center;
+}
+
+.tools-section-label::before,
+.tools-section-label::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.2);
+  display: block;
+  flex-shrink: 0;
+}
+
+.tools-heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #0a0a0a;
+  margin-bottom: var(--sp-4);
+}
+
+.tools-subheading {
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-sm), 1.5vw, var(--text-lg));
+  color: rgba(0, 0, 0, 0.55);
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── Marquee container ──────────────────────────────── */
+.tools-categories {
+  position: relative;
+  z-index: 1;
+}
+
+.tools-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+}
+
+.tools-track {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(20px, 3vw, 36px);
+  width: max-content;
+  will-change: transform;
+  padding: 12px 0 24px;
+}
+
+/* ── Tool item ──────────────────────────────────────── */
+.tool-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 108px;
+  cursor: default;
+  flex-shrink: 0;
+}
+
+.tool-item-icon {
+  width: 84px;
+  height: 84px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  transition:
+    box-shadow var(--t-base),
+    transform var(--t-base);
+  flex-shrink: 0;
+}
+
+.tool-item-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.tool-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tool-item:hover .tool-item-icon {
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.18);
+  transform: translateY(-5px);
+}
+
+.tool-item-name {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.04em;
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+  line-height: 1.35;
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  transition: color var(--t-fast);
+}
+
+.tool-item:hover .tool-item-name {
+  color: #0a0a0a;
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .tool-item { width: 88px; }
+  .tool-item-icon { width: 68px; height: 68px; }
+}
+
+/* ── Tool Tooltip ───────────────────────────────────── */
+.tool-hover-tip {
+  position: fixed;
+  z-index: 9999;
+  width: 210px;
+  background: rgba(8, 8, 8, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-top: 2px solid var(--tip-accent, rgba(255, 255, 255, 0.22));
+  border-radius: 10px;
+  padding: 11px 14px 13px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.tool-hover-tip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tool-hover-tip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(8, 8, 8, 0.96);
+  border-right: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.tool-hover-tip-name {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.tool-hover-tip-desc {
+  font-family: var(--font-body);
+  font-size: var(--text-2xs);
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.5;
+}
+
+/* ── Reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tools-track {
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+  }
+  .tool-item:hover .tool-item-icon { transform: none; }
+  .tool-hover-tip { transition: none; }
+}

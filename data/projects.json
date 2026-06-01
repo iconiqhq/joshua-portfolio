@@ -1,0 +1,314 @@
+{
+  "projects": [
+    {
+      "id": "radicalrevolution",
+      "brandName": "Radical Revolution",
+      "verified": true,
+      "industry": "Inspirational / Christian",
+      "bio": "A space where grace leads you closer to God. 🖤✝️",
+      "brandColor": "#41BDFE",
+      "status": "active",
+      "logo": "assets/images/brands/RR.png",
+      "lastUpdated": "2026-05",
+      "platforms": [
+        {
+          "name": "Instagram",
+          "icon": "instagram",
+          "url": "https://www.instagram.com/radicalrevolution.official",
+          "socialBlade": "https://socialblade.com/instagram/user/radicalrevolution.official",
+          "currentFollowers": 470000,
+          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
+          "chartData":   [390000, 410000, 430000, 455000, 470000]
+        },
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "https://www.facebook.com/radicalrevolution.official",
+          "socialBlade": null,
+          "currentFollowers": 234622,
+          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
+          "chartData":   [195000, 205000, 215000, 225000, 234622]
+        },
+        {
+          "name": "TikTok",
+          "icon": "tiktok",
+          "url": "https://www.tiktok.com/@radicalrevolution",
+          "socialBlade": null,
+          "currentFollowers": 297100,
+          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
+          "chartData":   [230000, 248000, 265000, 280000, 297100]
+        },
+        {
+          "name": "Threads",
+          "icon": "threads",
+          "url": "https://www.threads.com/@radicalrevolution.official",
+          "socialBlade": null,
+          "currentFollowers": 80500,
+          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
+          "chartData":   [58000, 64000, 70000, 75500, 80500]
+        },
+        {
+          "name": "YouTube",
+          "icon": "youtube",
+          "url": "https://www.youtube.com/@RadicalRevolutionOfficial",
+          "socialBlade": "https://socialblade.com/youtube/channel/UCMio9OW9_Yw7oc8v24kpBtg",
+          "currentFollowers": 157000,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    },
+    {
+      "id": "realgo",
+      "brandName": "RealGo",
+      "verified": true,
+      "industry": "Web3 Game",
+      "bio": "A Meme 3.0 ecosystem that bridges gaming and onchain utility for Meme IPs. Capture. Collect. Battle. Socialise. Earn. ",
+      "brandColor": "#41BDFE",
+      "status": "active",
+      "logo": "assets/images/brands/realgo.png",
+      "lastUpdated": "2026-05",
+      "platforms": [
+        {
+          "name": "Instagram",
+          "icon": "instagram",
+          "url": "https://www.instagram.com/realgoofficial?igsh=YzNxaTlkY2pkMnFn&utm_source=qr",
+          "socialBlade": null,
+          "currentFollowers": 27000,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "https://www.facebook.com/share/1at9Bh7jL4/?mibextid=wwXIfr",
+          "socialBlade": null,
+          "currentFollowers": 1200,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "TikTok",
+          "icon": "tiktok",
+          "url": "https://www.tiktok.com/@realgoofficial?_r=1&_t=ZS-96izboaZlFA",
+          "socialBlade": null,
+          "currentFollowers": 9720,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "YouTube",
+          "icon": "youtube",
+          "url": "https://www.youtube.com/@RealGoOfficial",
+          "socialBlade": null,
+          "currentFollowers": 378,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "LinkedIn",
+          "icon": "linkedin",
+          "url": "https://www.linkedin.com/company/realgoofficial/?viewAsMember=true",
+          "socialBlade": null,
+          "currentFollowers": 211,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    },
+    {
+      "id": "salmo",
+      "brandName": "Salmo Construction Services",
+      "industry": "Construction Company",
+      "bio": "Your Dreams, our Passion, Let’s build it together",
+      "brandColor": "#002140",
+      "status": "active",
+      "logo": "assets/images/brands/Salmo.png",
+      "platforms": [
+        {
+          "name": "Instagram",
+          "icon": "instagram",
+          "url": "https://www.instagram.com/salmo.construction?igsh=MzM0MXd6b2ExeDNx&utm_source=qr",
+          "socialBlade": null,
+          "currentFollowers": 7,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "https://www.facebook.com/share/1DBVcPUzW5/?mibextid=wwXIfr",
+          "socialBlade": null,
+          "currentFollowers": 76,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "TikTok",
+          "icon": "tiktok",
+          "url": "https://www.tiktok.com/@salmo.construction",
+          "socialBlade": null,
+          "currentFollowers": 0,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "YouTube",
+          "icon": "youtube",
+          "url": "https://www.youtube.com/@salmo.construction",
+          "socialBlade": null,
+          "currentFollowers": 4,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    },
+    {
+      "id": "spincredible",
+      "brandName": "Spincredible",
+      "industry": "Sports/Table Tennis",
+      "bio": "All about spincredible shots in Table Tennis",
+      "brandColor": "#ffb500",
+      "status": "inactive",
+      "managedFrom": "Aug 2023",
+      "managedTo": "Nov 2023",
+      "logo": "assets/images/brands/spincredible.png",
+      "lastUpdated": "2023-11",
+      "platforms": [
+        {
+          "name": "Instagram",
+          "icon": "instagram",
+          "url": "https://www.instagram.com/spincrediblett?igsh=NGQ3YnVudDBzcWJi&utm_source=qr",
+          "socialBlade": "https://socialblade.com/instagram/user/spincrediblett",
+          "currentFollowers": 4350,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "https://www.facebook.com/share/1C7cujVoQQ/?mibextid=wwXIfr",
+          "socialBlade": "https://socialblade.com/facebook/user/spincrediblett",
+          "currentFollowers": 20,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "TikTok",
+          "icon": "tiktok",
+          "url": "https://socialblade.com/tiktok/user/spincrediblett",
+          "socialBlade": "https://socialblade.com/tiktok/user/spincrediblett",
+          "currentFollowers": 51,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "YouTube",
+          "icon": "youtube",
+          "url": "https://www.youtube.com/@spincredible",
+          "socialBlade": "https://socialblade.com/youtube/channel/UClrHYEww9iRuf3e-kDaC8iw",
+          "currentFollowers": 133,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    },
+    {
+      "id": "political",
+      "brandName": "Political | Undisclosed",
+      "industry": "Political Content",
+      "bio": "secret",
+      "brandColor": "#df0000",
+      "status": "inactive",
+      "managedFrom": "Aug 2024",
+      "managedTo": "Oct 2024",
+      "logo": "assets/images/brands/political.png",
+      "lastUpdated": "2023-11",
+      "platforms": [
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "",
+          "currentFollowers": 28000,
+          "chartLabels": [],
+          "chartData":   []
+        },
+        {
+          "name": "YouTube",
+          "icon": "youtube",
+          "url": "",
+          "currentFollowers": 7000,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    },
+    {
+      "id": "jil",
+      "brandName": "Jesus is Lord Church San Jose City, Nueva Ecija",
+      "industry": "Christian Church",
+      "bio": "Declaring JESUS IS LORD all over the world!",
+      "brandColor": "#1f1b4d",
+      "status": "past",
+      "managedFrom": "Mar 2020",
+      "managedTo": "Jul 2025",
+      "logo": "assets/images/brands/JIL.png",
+      "lastUpdated": "Jul 2025",
+      "platforms": [
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "https://web.facebook.com/JILSanJoseCityNE",
+          "currentFollowers": 7600,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    },
+    {
+      "id": "zhara",
+      "brandName": "Zhara",
+      "verified": true,
+      "industry": "Web3 Content Creator",
+      "bio": "",
+      "brandColor": "#1f1b4d",
+      "status": "past",
+      "managedFrom": "Jan 2025",
+      "managedTo": "Jul 2025",
+      "logo": "assets/images/brands/zhara.png",
+      "lastUpdated": "Jul 2025",
+      "platforms": [
+        {
+          "name": "X",
+          "icon": "x",
+          "url": "https://x.com/zhara0x?s=21",
+          "currentFollowers": 2200,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    },
+    {
+      "id": "teamkulot",
+      "brandName": "Team Kulot",
+      "industry": "Political",
+      "bio": "",
+      "brandColor": "#1f1b4d",
+      "status": "past",
+      "managedFrom": "Sept 2023",
+      "managedTo": "Oct 2023",
+      "logo": "assets/images/brands/teamkulot.png",
+      "lastUpdated": "Oct 2025",
+      "platforms": [
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "https://www.facebook.com/share/1CaBu1WHUX/?mibextid=wwXIfr",
+          "currentFollowers": 598,
+          "chartLabels": [],
+          "chartData":   []
+        }
+      ]
+    }
+  ]
+}

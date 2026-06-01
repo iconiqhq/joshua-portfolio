@@ -1,0 +1,485 @@
+/* ═══════════════════════════════════════════════════════
+   GRAPHIC-DESIGN.CSS — Section 04 (Iconiq Creatives)
+   Portfolio grid · Hover overlays · Electric Blue
+═══════════════════════════════════════════════════════ */
+
+/* ── Section ───────────────────────────────────────── */
+.graphic-design-section {
+  background: #060606;
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0 clamp(60px, 8vw, 100px);
+  overflow: hidden;
+}
+
+.graphic-design-section::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  height: 55%;
+  background: radial-gradient(ellipse at center, rgba(65, 189, 254, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gd-bg-num {
+  position: absolute;
+  top: clamp(16px, 3vw, 48px);
+  left: clamp(12px, 4vw, 64px);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(100px, 18vw, 220px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* ── Eyebrow ────────────────────────────────────────── */
+.gd-eyebrow {
+  margin-bottom: clamp(40px, 6vw, 64px);
+  position: relative;
+  z-index: 1;
+}
+
+.gd-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+}
+
+.gd-section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--color-blue);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ── Brand hero ─────────────────────────────────────── */
+.gd-brand-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(14px, 2vw, 22px);
+  margin-bottom: clamp(48px, 7vw, 80px);
+  position: relative;
+  z-index: 1;
+}
+
+.gd-brand-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gd-brand-logo-img {
+  max-height: clamp(60px, 10vw, 120px);
+  max-width: clamp(240px, 50vw, 500px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 20px rgba(65,189,254,0.22));
+  transition: filter 0.4s ease;
+}
+
+.gd-brand-logo-img:hover {
+  filter: drop-shadow(0 0 38px rgba(65,189,254,0.5));
+}
+
+.gd-brand-name-fallback {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  color: var(--color-blue);
+  letter-spacing: -0.02em;
+}
+
+.gd-brand-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-sm), 1.4vw, var(--text-base));
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.gd-brand-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gd-ig-handle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: rgba(65,189,254,0.65);
+  text-decoration: none;
+  transition: color var(--t-fast);
+}
+
+.gd-ig-handle:hover { color: var(--color-blue); }
+
+.gd-see-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 22px;
+  border: 1px solid rgba(65,189,254,0.32);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-blue);
+  text-decoration: none;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.gd-see-more-btn:hover {
+  background: rgba(65,189,254,0.07);
+  border-color: rgba(65,189,254,0.6);
+  box-shadow: 0 0 20px rgba(65,189,254,0.1);
+}
+
+/* ── Footer CTA ─────────────────────────────────────── */
+.gd-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(28px, 4vw, 48px);
+  position: relative;
+  z-index: 1;
+}
+
+.gd-footer-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border: 1px solid rgba(65,189,254,0.28);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  color: var(--color-blue);
+  text-decoration: none;
+  transition:
+    background var(--t-base),
+    border-color var(--t-base),
+    box-shadow var(--t-base),
+    transform var(--t-base);
+}
+
+.gd-footer-cta:hover {
+  background: rgba(65,189,254,0.07);
+  border-color: rgba(65,189,254,0.55);
+  box-shadow: 0 0 32px rgba(65,189,254,0.12);
+  transform: translateY(-2px);
+}
+
+/* ── Grid — Instagram 3×3 ───────────────────────────── */
+.gd-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Card ───────────────────────────────────────────── */
+.gd-card {
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #111111;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.gd-card.featured {
+  grid-column: span 1;
+  aspect-ratio: 1 / 1;
+}
+
+/* Image */
+.gd-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s var(--ease-out-quart), filter 0.4s ease;
+  filter: brightness(0.9);
+}
+
+.gd-card:hover .gd-card-img {
+  transform: scale(1.04);
+  filter: brightness(0.55);
+}
+
+/* Placeholder (when no image) */
+.gd-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0d1a2a 0%, #0a0a0f 50%, #1a0d2a 100%);
+  transition: filter 0.4s ease;
+}
+
+.gd-card:hover .gd-card-placeholder {
+  filter: brightness(0.6);
+}
+
+.gd-placeholder-mark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: -0.04em;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
+}
+
+.gd-card:hover .gd-placeholder-mark {
+  opacity: 0.15;
+}
+
+/* Overlay — slides up from bottom */
+.gd-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(16px, 3vw, 24px);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    transparent 100%
+  );
+  transform: translateY(100%);
+  transition: transform 0.38s var(--ease-out-quart), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.gd-card:hover .gd-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Overlay content */
+.gd-overlay-category {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+  margin-bottom: var(--sp-2);
+}
+
+.gd-overlay-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  letter-spacing: -0.02em;
+  color: var(--color-white);
+  margin-bottom: var(--sp-2);
+  line-height: 1.15;
+}
+
+.gd-overlay-desc {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.5;
+  margin-bottom: var(--sp-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gd-overlay-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gd-overlay-tags {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.gd-tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.gd-overlay-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+  transition: gap 0.2s ease, opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.gd-overlay-link:hover {
+  gap: 10px;
+}
+
+.gd-overlay-link.no-url {
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
+/* Year badge */
+.gd-year-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  z-index: 2;
+  transition: opacity 0.2s ease;
+}
+
+.gd-card:hover .gd-year-badge {
+  opacity: 0;
+}
+
+/* ── Brand Info ─────────────────────────────────────── */
+.gd-brand-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.gd-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 28px;
+  border: 1px solid rgba(65, 189, 254, 0.2);
+  border-radius: var(--radius-lg);
+  background: rgba(65, 189, 254, 0.04);
+  position: relative;
+  transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.gd-brand-info:hover .gd-brand-logo {
+  border-color: rgba(65, 189, 254, 0.4);
+  background: rgba(65, 189, 254, 0.07);
+  box-shadow: 0 0 48px rgba(65, 189, 254, 0.12), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.gd-brand-logo-img {
+  max-height: 76px;
+  max-width: 240px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: filter var(--t-base);
+  filter: brightness(0.95);
+  display: block;
+}
+
+.gd-brand-info:hover .gd-brand-logo-img { filter: brightness(1.08); }
+
+.gd-brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--color-blue);
+}
+
+.gd-brand-tagline {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: right;
+}
+
+.gd-brand-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-blue);
+  text-decoration: none;
+  transition: opacity var(--t-fast), gap var(--t-fast);
+}
+
+.gd-brand-social:hover { opacity: 0.7; gap: 9px; }
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .gd-grid { gap: 3px; }
+}
+
+@media (max-width: 640px) {
+  .gd-grid { gap: 2px; }
+  .gd-brand-actions { flex-direction: column; align-items: center; gap: var(--sp-3); }
+}
+
+/* ── Reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .gd-card-img {
+    transition: none;
+  }
+
+  .gd-overlay {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}

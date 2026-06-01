@@ -1,0 +1,112 @@
+{
+  "pieces": [
+    {
+      "id": "piece-01",
+      "title": "Brand Identity System",
+      "client": "Client Name",
+      "category": "Brand Identity",
+      "description": "Full brand identity — logo, palette, typography, and usage guidelines.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Logo", "Branding"],
+      "year": "2024",
+      "featured": true
+    },
+    {
+      "id": "piece-02",
+      "title": "Social Media Kit",
+      "client": "Client Name",
+      "category": "Social Media",
+      "description": "Template system for Instagram, Facebook, and TikTok content.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Templates", "Social"],
+      "year": "2024",
+      "featured": false
+    },
+    {
+      "id": "piece-03",
+      "title": "Event Poster Series",
+      "client": "Client Name",
+      "category": "Print",
+      "description": "A series of promotional posters for a brand launch event.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Print", "Poster"],
+      "year": "2023",
+      "featured": false
+    },
+    {
+      "id": "piece-04",
+      "title": "Product Packaging",
+      "client": "Client Name",
+      "category": "Packaging",
+      "description": "Label and packaging design for a consumer product line.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Packaging", "Label"],
+      "year": "2024",
+      "featured": true
+    },
+    {
+      "id": "piece-05",
+      "title": "Editorial Layout",
+      "client": "Client Name",
+      "category": "Editorial",
+      "description": "Magazine-style editorial layout for a digital publication.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Editorial", "Layout"],
+      "year": "2023",
+      "featured": false
+    },
+    {
+      "id": "piece-06",
+      "title": "Icon & Illustration Set",
+      "client": "Client Name",
+      "category": "Illustration",
+      "description": "Custom icon set and spot illustrations for a mobile app.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Icons", "Illustration"],
+      "year": "2024",
+      "featured": false
+    },
+    {
+      "id": "piece-07",
+      "title": "Merch & Apparel Design",
+      "client": "Client Name",
+      "category": "Print",
+      "description": "Apparel graphics and merchandise design for a creator brand.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Print", "Merch"],
+      "year": "2024",
+      "featured": false
+    },
+    {
+      "id": "piece-08",
+      "title": "Content Template System",
+      "client": "Client Name",
+      "category": "Social Media",
+      "description": "Reels covers, story templates, and highlight icons for a lifestyle brand.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Templates", "Reels"],
+      "year": "2025",
+      "featured": false
+    },
+    {
+      "id": "piece-09",
+      "title": "Brand Launch Campaign",
+      "client": "Client Name",
+      "category": "Brand Identity",
+      "description": "Full visual identity suite for a new brand launch — logo to launch assets.",
+      "image": "assets/images/design-portfolio/piece-01.jpg",
+      "url": null,
+      "tags": ["Branding", "Campaign"],
+      "year": "2025",
+      "featured": false
+    }
+  ]
+}

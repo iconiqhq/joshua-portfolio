@@ -1,0 +1,30 @@
+{
+  "mentees": [
+    {
+      "id": "nick",
+      "name": "Kuya Nick Art",
+      "handle": "@nickdavidkhan09",
+      "niche": "Art | Drawing",
+      "photo": "assets/images/mentorship/Nick.png",
+      "status": "active",
+      "mentorshipFrom": "2024-07",
+      "mentorshipTo": null,
+      "platforms": [
+        {
+          "name": "Tiktok",
+          "icon": "tiktok",
+          "url": "https://www.tiktok.com/@nickdavidkhan09?_r=1&_t=ZS-96jM5rZTi9x",
+          "beforeFollowers": 500,
+          "currentFollowers": 21100
+        },
+        {
+          "name": "Facebook",
+          "icon": "facebook",
+          "url": "https://www.facebook.com/share/18FsD497Fn/?mibextid=wwXIfr",
+          "beforeFollowers": 100,
+          "currentFollowers": 11000
+        }
+      ]
+    }
+  ]
+}

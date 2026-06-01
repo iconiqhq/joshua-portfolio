@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Joshua Lescano — Creative Content Specialist. Social Media Manager, Graphic Designer, Video Editor.">
+  <title>Joshua Lescano — Creative Content Specialist</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/main.css?v=2">
+  <link rel="stylesheet" href="styles/hero.css?v=2">
+  <link rel="stylesheet" href="styles/social-media.css?v=2">
+  <link rel="stylesheet" href="styles/mentorship.css?v=2">
+  <link rel="stylesheet" href="styles/graphic-design.css?v=2">
+  <link rel="stylesheet" href="styles/video-editing.css?v=2">
+  <link rel="stylesheet" href="styles/web3.css?v=2">
+  <link rel="stylesheet" href="styles/tools.css?v=2">
+  <link rel="stylesheet" href="styles/contact.css?v=2">
+  <link rel="stylesheet" href="styles/footer.css?v=5">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 01 — HERO
+  ═══════════════════════════════════════ -->
+  <section id="hero" class="hero" aria-label="Hero introduction">
+
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+    <div class="hero-content">
+
+      <!-- Left: text column -->
+      <div class="hero-text">
+
+        <span class="hero-eyebrow" aria-hidden="true">Creative Portfolio</span>
+
+        <h1 class="hero-name">
+          <span class="hero-name-line">JOSHUA</span>
+          <span class="hero-name-line">LESCANO</span>
+        </h1>
+
+        <p class="hero-title">Creative Content Specialist</p>
+
+        <div class="hero-subtitle-wrap" aria-live="polite" aria-atomic="true">
+          <span class="hero-subtitle" id="hero-rotating-title">Social Media Manager</span>
+        </div>
+
+        <!-- TAGLINE PLACEHOLDER — remove display:none when ready -->
+        <p class="hero-tagline" id="hero-tagline" style="display:none">Your tagline here</p>
+
+        <div class="hero-meta">
+          <span class="hero-age" id="hero-age" aria-label="Age">Age: 28</span>
+          <span class="hero-meta-sep" aria-hidden="true">/</span>
+          <span class="hero-clock" id="clock" aria-label="Philippine Standard Time">--:-- -- PHT</span>
+        </div>
+
+        <nav class="hero-socials" aria-label="Personal social links">
+          <a
+            href="https://www.instagram.com/joshualescano"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-social-link"
+            aria-label="Instagram — opens in new tab"
+          >
+            <svg class="hero-social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+            </svg>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/joshualescano/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-social-link"
+            aria-label="LinkedIn — opens in new tab"
+          >
+            <svg class="hero-social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a
+            href="https://docs.google.com/document/d/1TTBeeorvgj1NdJG88g3IYz9CcK4qGXx6KdtR3_q1ZK8/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-resume-btn"
+            aria-label="View Resume — opens in new tab"
+          >
+            <svg class="hero-resume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Resume
+          </a>
+        </nav>
+
+      </div>
+
+      <!-- Right: profile ring -->
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-ring-glow"></div>
+        <div class="hero-ring">
+          <div class="hero-ring-inner">
+            <img
+              class="hero-profile-photo"
+              src="assets/images/profile/PFP.png"
+              alt="Joshua Lescano"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+            >
+            <span class="hero-profile-initial">JL</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-mouse">
+        <div class="scroll-mouse-wheel"></div>
+      </div>
+      <span class="scroll-label">SCROLL</span>
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 02 — SOCIAL MEDIA MANAGER
+  ═══════════════════════════════════════ -->
+  <section id="social-media" class="social-media-section" aria-label="Social Media Manager">
+
+    <span class="sm-bg-num" aria-hidden="true">02</span>
+
+    <div class="container">
+
+      <header class="sm-header" data-reveal>
+        <span class="sm-section-label">Social Media Manager</span>
+        <h2 class="sm-heading">Managing The Feed</h2>
+        <p class="sm-subheading">Strategy, content, and community — building brands from the ground up.</p>
+      </header>
+
+      <div class="sm-stats-bar" data-reveal data-delay="200">
+        <div class="sm-stat">
+          <span class="sm-stat-value" id="sm-total-followers">—</span>
+          <span class="sm-stat-label">Followers Managed</span>
+        </div>
+        <div class="sm-stat-divider" aria-hidden="true"></div>
+        <div class="sm-stat">
+          <span class="sm-stat-value" id="sm-active-brands">—</span>
+          <span class="sm-stat-label">Projects Handled</span>
+        </div>
+        <div class="sm-stat-divider" aria-hidden="true"></div>
+        <div class="sm-stat">
+          <span class="sm-stat-value" id="sm-platform-count">—</span>
+          <span class="sm-stat-label">Platforms Managed</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sm-row-wrap" data-reveal data-delay="300">
+      <div class="sm-cards-row cards-row" id="sm-cards-row"
+           role="list" aria-label="Brand portfolio">
+        <!-- JS rendered -->
+      </div>
+    </div>
+
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 03 — MENTORSHIP
+  ═══════════════════════════════════════ -->
+  <section id="mentorship" class="mentorship-section" aria-label="Mentorship">
+
+    <span class="ms-bg-num" aria-hidden="true">03</span>
+
+    <div class="container">
+
+      <header class="ms-header" data-reveal>
+        <span class="ms-section-label">Mentorship</span>
+        <h2 class="ms-heading">Creators I've Built</h2>
+        <p class="ms-subheading">Turning passion into platforms — guiding creators from scratch to scale.</p>
+      </header>
+
+      <div class="ms-stats-bar" data-reveal data-delay="200">
+        <div class="ms-stat">
+          <span class="ms-stat-value" id="ms-total-mentees">—</span>
+          <span class="ms-stat-label">Creators Mentored</span>
+        </div>
+        <div class="ms-stat-divider" aria-hidden="true"></div>
+        <div class="ms-stat">
+          <span class="ms-stat-value" id="ms-avg-growth">—</span>
+          <span class="ms-stat-label">Avg. Growth</span>
+        </div>
+        <div class="ms-stat-divider" aria-hidden="true"></div>
+        <div class="ms-stat">
+          <span class="ms-stat-value" id="ms-followers-gained">—</span>
+          <span class="ms-stat-label">Followers Gained</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ms-row-wrap" data-reveal data-delay="300">
+      <div class="ms-cards-row cards-row" id="ms-cards-row"
+           role="list" aria-label="Mentee portfolio">
+        <!-- JS rendered -->
+      </div>
+    </div>
+
+    <div class="carousel-dots" id="ms-dots" aria-hidden="true"></div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 04 — GRAPHIC DESIGN
+  ═══════════════════════════════════════ -->
+  <section id="graphic-design" class="graphic-design-section" aria-label="Graphic Design — Iconiq Creatives">
+
+    <span class="gd-bg-num" aria-hidden="true">04</span>
+
+    <div class="container">
+
+      <!-- Eyebrow -->
+      <div class="gd-eyebrow" data-reveal>
+        <span class="gd-section-label">Graphic Design</span>
+      </div>
+
+      <!-- Brand hero -->
+      <div class="gd-brand-hero" data-reveal data-delay="60">
+        <div class="gd-brand-logo-wrap">
+          <img
+            src="assets/images/brands/iconiq creatives.png"
+            alt="Iconiq Creatives"
+            class="gd-brand-logo-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+          >
+          <span class="gd-brand-name-fallback" style="display:none">Iconiq Creatives</span>
+        </div>
+        <p class="gd-brand-tagline">Design to make an impact</p>
+        <div class="gd-brand-actions">
+          <a
+            href="https://www.instagram.com/iconiqcreatives"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="gd-ig-handle"
+            aria-label="Iconiq Creatives on Instagram (opens in new tab)"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            @iconiqcreatives
+          </a>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="gd-grid" id="gd-grid" aria-label="Design portfolio">
+        <!-- JS rendered -->
+      </div>
+
+      <!-- Footer CTA -->
+      <div class="gd-footer" data-reveal data-delay="160">
+        <a
+          href="https://www.instagram.com/iconiqcreatives"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gd-footer-cta"
+        ><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>More on Instagram</a>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 05 — VIDEO EDITING
+  ═══════════════════════════════════════ -->
+  <section id="video-editing" class="video-editing-section" aria-label="Video Editing — Revybe Motion">
+
+    <span class="ve-bg-num" aria-hidden="true">05</span>
+
+    <div class="container">
+
+      <!-- Eyebrow -->
+      <div class="ve-eyebrow" data-reveal>
+        <span class="ve-section-label">Video Editing</span>
+      </div>
+
+      <!-- Brand hero -->
+      <div class="ve-brand-hero" data-reveal data-delay="60">
+        <div class="ve-brand-logo-wrap">
+          <img
+            src="assets/images/brands/revybe motion.png"
+            alt="Revybe Motion"
+            class="ve-brand-logo-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+          >
+          <span class="ve-brand-name-fallback" style="display:none">Revybe Motion</span>
+        </div>
+        <p class="ve-brand-tagline">Transforming Ideas into Seamless Motion</p>
+        <div class="ve-brand-actions">
+          <a
+            href="https://www.instagram.com/revybemotion"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ve-ig-handle"
+            aria-label="Revybe Motion on Instagram (opens in new tab)"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            @revybemotion
+          </a>
+          <a
+            href="https://www.youtube.com/@RevybeMotion"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ve-ig-handle"
+            aria-label="Revybe Motion on YouTube (opens in new tab)"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            @RevybeMotion
+          </a>
+        </div>
+      </div>
+
+      <!-- Featured Video -->
+      <div id="ve-featured-wrap" data-videos='["6p8lryIbvQE","TEBCascqbf4"]'>
+        <div class="ve-featured-frame" id="ve-featured-frame">
+          <iframe
+            id="ve-iframe"
+            src="https://www.youtube.com/embed/6p8lryIbvQE?rel=0&modestbranding=1&color=white&autoplay=1&mute=1&loop=1&playlist=6p8lryIbvQE&enablejsapi=1"
+            title="Featured Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="ve-carousel-nav">
+          <div class="ve-nav-dots" id="ve-nav-dots">
+            <button class="ve-dot ve-dot-active" aria-label="Video 1"></button>
+            <button class="ve-dot" aria-label="Video 2"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertical Videos Grid (sample layout) -->
+      <div class="ve-vertical-wrap">
+        <div class="ve-vertical-grid">
+          <div class="ve-vertical-card">
+            <iframe
+              src="https://www.youtube.com/embed/dggMXUjB_dI?rel=0&modestbranding=1&controls=0&loop=1&playlist=dggMXUjB_dI&enablejsapi=1"
+              title="Vertical Video 1"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+            <div class="ve-play-overlay">
+              <button class="ve-play-btn" aria-label="Play video">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4L16 10L6 16V4Z" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="ve-vertical-card">
+            <iframe
+              src="https://www.youtube.com/embed/O_ztn3RgIGU?rel=0&modestbranding=1&controls=0&loop=1&playlist=O_ztn3RgIGU&enablejsapi=1"
+              title="Vertical Video 2"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+            <div class="ve-play-overlay">
+              <button class="ve-play-btn" aria-label="Play video">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4L16 10L6 16V4Z" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="ve-vertical-card">
+            <iframe
+              src="https://www.youtube.com/embed/79od44LMhy0?rel=0&modestbranding=1&controls=0&loop=1&playlist=79od44LMhy0&enablejsapi=1"
+              title="Vertical Video 3"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+            <div class="ve-play-overlay">
+              <button class="ve-play-btn" aria-label="Play video">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4L16 10L6 16V4Z" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="ve-carousel-nav">
+          <div class="ve-nav-dots">
+            <span class="ve-dot ve-dot-active"></span>
+            <span class="ve-dot"></span>
+            <span class="ve-dot"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer CTAs -->
+      <div class="ve-footer" data-reveal data-delay="100">
+        <a
+          href="https://www.instagram.com/revybemotion"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ve-footer-cta"
+        ><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>More on Instagram</a>
+        <span class="ve-footer-or">or</span>
+        <a
+          href="https://www.youtube.com/@RevybeMotion"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ve-footer-cta"
+        ><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>More on YouTube</a>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 06 — WEB3
+  ═══════════════════════════════════════ -->
+  <section id="web3" class="web3-section" aria-label="Web3 — iconiq0x">
+
+    <canvas id="web3-canvas" aria-hidden="true"></canvas>
+    <div class="web3-scanlines" aria-hidden="true"></div>
+
+    <div class="web3-inner container">
+
+      <!-- Eyebrow -->
+      <div class="web3-eyebrow" data-reveal>
+        <span class="web3-section-label">Web3</span>
+      </div>
+
+      <!-- Identity: profile ring + info -->
+      <div class="web3-identity" data-reveal>
+
+        <div class="web3-ring-wrap">
+          <div class="web3-glow-halo" aria-hidden="true"></div>
+          <div class="web3-ring">
+            <div class="web3-ring-inner">
+              <img
+                src="assets/images/profile/iconiq pfp.png"
+                alt="iconiq0x"
+                class="web3-ring-photo"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+              >
+              <span class="web3-ring-initial">I</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="web3-identity-info">
+          <div class="web3-logo-row">
+            <img
+              src="assets/images/brands/iconiq web3.png"
+              alt="iconiq0x"
+              class="web3-logo"
+              onerror="this.parentElement.style.display='none'"
+            >
+            <svg class="web3-verified-badge" viewBox="0 0 22 22" fill="none" aria-label="Verified" role="img"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.275.213-1.815.568s-.972.854-1.247 1.44c-.606-.222-1.262-.268-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.749 1.054-.88 1.688-.13.633-.085 1.29.139 1.896-.587.274-1.087.705-1.441 1.246-.354.54-.551 1.17-.569 1.816.018.647.215 1.276.569 1.817.354.54.854.972 1.441 1.246-.224.606-.269 1.262-.14 1.896.131.634.436 1.218.881 1.688.469.443 1.053.748 1.687.879.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.606.22 1.262.267 1.897.137.634-.132 1.218-.437 1.687-.882.445-.469.749-1.053.881-1.687.13-.633.086-1.29-.136-1.897.587-.274 1.087-.706 1.441-1.246.354-.54.551-1.17.569-1.816z" fill="#1D9BF0"/><path d="M6.5 11.5l2.8 2.8 5.7-5.6" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="web3-heading-row">
+            <h2 class="web3-heading">On-chain Identity</h2>
+            <span class="web3-since-badge">Since 2021</span>
+          </div>
+          <div class="web3-bio-row">
+            <div class="web3-ecosystem-stat">
+              <span class="web3-ecosystem-value">1.5K</span>
+              <span class="web3-ecosystem-label">Ecosystem Reached</span>
+            </div>
+            <span class="web3-bio-sep" aria-hidden="true">|</span>
+            <p class="web3-tagline">Web3 opened my eyes 👁️‍🗨️🟢</p>
+          </div>
+          <div class="web3-socials">
+            <a href="https://twitter.com/iconiq0x" target="_blank" rel="noopener noreferrer" class="web3-social-pill" aria-label="Crypto Twitter @iconiq0x (opens in new tab)">
+              <svg class="web3-social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <span>@iconiq0x</span>
+            </a>
+            <a href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr" target="_blank" rel="noopener noreferrer" class="web3-social-pill" aria-label="Instagram @iconiq0x (opens in new tab)">
+              <svg class="web3-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+              <span>@iconiq0x</span>
+            </a>
+            <a href="https://www.facebook.com/share/1BJHpQJbbM/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="web3-social-pill" aria-label="Facebook @iconiq0x (opens in new tab)">
+              <svg class="web3-social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <span>@iconiq0x</span>
+            </a>
+            <button type="button" class="web3-social-pill" aria-label="Discord — click to copy username"
+              onclick="navigator.clipboard.writeText('0xiconiq').then(() => { const s = this.querySelector('span'); const o = s.textContent; s.textContent = 'Copied!'; setTimeout(() => s.textContent = o, 2000); })">
+              <svg class="web3-social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.033.05a19.912 19.912 0 0 0 5.993 3.03.077.077 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+              <span>@0xiconiq</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Role cards -->
+      <div class="web3-roles" data-reveal data-delay="80">
+
+        <div class="web3-role-card">
+          <div class="web3-role-header">
+            <span class="web3-role-glyph" aria-hidden="true">◎</span>
+            <div>
+              <h3 class="web3-role-title">Web3 Content Creator</h3>
+              <p class="web3-role-sub">Independent · Since 2021</p>
+            </div>
+          </div>
+          <p class="web3-role-desc">Creating content at the intersection of Web3 culture, gaming, and DeFi — sharing alpha, educating audiences, and building community across platforms.</p>
+          <div class="web3-role-tags"></div>
+          <span class="web3-chain-corner web3-chain-corner--ronin" aria-label="Ronin Network">
+            <img src="assets/images/tools/ronin.png" alt="Ronin Network" class="web3-chain-logo" aria-hidden="true">
+            Ronin
+          </span>
+        </div>
+
+        <div class="web3-role-card web3-role-card--realgo">
+          <div class="web3-role-header">
+            <div class="web3-role-brand-wrap">
+              <img src="assets/images/brands/realgo.png" alt="RealGo" class="web3-role-brand-logo" onerror="this.style.display='none'">
+            </div>
+            <div>
+              <h3 class="web3-role-title">RealGo Team Member</h3>
+              <p class="web3-role-sub">Web3 Gaming · realgo.game</p>
+            </div>
+          </div>
+          <p class="web3-role-desc">Part of the RealGo team — a Web3 gaming ecosystem built on-chain. Contributed as a content and community voice for the project's growth and presence.</p>
+          <div class="web3-role-footer">
+            <a href="https://realgo.game" target="_blank" rel="noopener noreferrer" class="web3-role-link">
+              <span>realgo.game</span>
+              <span class="web3-role-link-arrow">↗</span>
+            </a>
+            <a href="https://x.com/realgoofficial?s=21" target="_blank" rel="noopener noreferrer" class="web3-role-link">
+              <span>@realgoofficial</span>
+              <span class="web3-role-link-arrow">↗</span>
+            </a>
+          </div>
+          <span class="web3-chain-corner web3-chain-corner--bnb" aria-label="BNB Chain">
+            <img src="assets/images/tools/bnb-chain.png" alt="BNB Chain" class="web3-chain-logo" aria-hidden="true">
+            BNB Chain
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Three pillars -->
+      <div class="web3-pillars" data-reveal data-delay="100">
+        <div class="web3-pillar web3-pillar--nft">
+          <div>
+            <h3 class="web3-pillar-title">My NFTs</h3>
+            <p class="web3-pillar-desc">Collecting digital assets on-chain — from gaming NFTs to generative art across multiple chains.</p>
+          </div>
+          <div class="web3-nft-carousel" id="web3-nft-carousel">
+            <a href="https://opensea.io/item/ronin/0xf072ceee77ebf455c72d9aecf91fb23f3fb6cc52/2904" target="_blank" rel="noopener noreferrer" class="web3-nft-slide web3-nft-slide-active" aria-label="Cute Asian Girl #2904">
+              <img src="https://i2c.seadn.io/ronin/0xf072ceee77ebf455c72d9aecf91fb23f3fb6cc52/1f725b60a6670bc077330f9f399e67/691f725b60a6670bc077330f9f399e67.png" alt="Cute Asian Girl #2904" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#1273EA"/><path d="M4.5 9.5V4.5H8C9.8 4.5 9.8 7.5 8 7.5H4.5M7.5 7.5L9.8 9.5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>RON</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">Cute Asian Girl #2904</span><span class="web3-nft-collection">Cute Asian Girl</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ronin/0xf072ceee77ebf455c72d9aecf91fb23f3fb6cc52/3055" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="Cute Asian Girl #3055">
+              <img src="https://i2c.seadn.io/ronin/0xf072ceee77ebf455c72d9aecf91fb23f3fb6cc52/8fe5299fe9ac64d596a285e8d500b1/368fe5299fe9ac64d596a285e8d500b1.png" alt="Cute Asian Girl #3055" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#1273EA"/><path d="M4.5 9.5V4.5H8C9.8 4.5 9.8 7.5 8 7.5H4.5M7.5 7.5L9.8 9.5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>RON</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">Cute Asian Girl #3055</span><span class="web3-nft-collection">Cute Asian Girl</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ethereum/0xbc4e8115e17d96cfd8e3ecef2b0d6e19d00f70b2/6590" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="Ted #6590">
+              <img src="https://i2c.seadn.io/ethereum/0xbc4e8115e17d96cfd8e3ecef2b0d6e19d00f70b2/dda4d3bb758ec8b5049c8b2755f3e84d.png?w=1000" alt="Ted #6590" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 0L0 8.3L5 11.2L10 8.3Z" fill="#627EEA"/><path d="M5 0L0 8.3L5 11.2V0Z" fill="#8FA3F5"/><path d="M5 12.5L0 9.8L5 16L10 9.8Z" fill="#627EEA"/><path d="M5 12.5L10 9.8L5 16V12.5Z" fill="#8FA3F5"/></svg>ETH</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">Ted #6590</span><span class="web3-nft-collection">Bad Ted Yacht Club</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ethereum/0x2b9fd4d651414e51c9ba56ae1add36bb71cca24b/6483" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="Fat Rat #6483">
+              <img src="https://i2c.seadn.io/ethereum/0x2b9fd4d651414e51c9ba56ae1add36bb71cca24b/a74e98ba9ee4b9bf4932c90a9a35f4/21a74e98ba9ee4b9bf4932c90a9a35f4.png?w=1000" alt="Fat Rat #6483" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 0L0 8.3L5 11.2L10 8.3Z" fill="#627EEA"/><path d="M5 0L0 8.3L5 11.2V0Z" fill="#8FA3F5"/><path d="M5 12.5L0 9.8L5 16L10 9.8Z" fill="#627EEA"/><path d="M5 12.5L10 9.8L5 16V12.5Z" fill="#8FA3F5"/></svg>ETH</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">Fat Rat #6483</span><span class="web3-nft-collection">Fat Rat Mafia</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ronin/0xca0dc53b5c88c31cb12d8e238001ca5c129d2715/985" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="OG Bearz #985">
+              <img src="https://i2c.seadn.io/ronin/0xca0dc53b5c88c31cb12d8e238001ca5c129d2715/13dd9b9571c4a227bf0deb596a989c/7413dd9b9571c4a227bf0deb596a989c.png?w=1000" alt="OG Bearz #985" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#1273EA"/><path d="M4.5 9.5V4.5H8C9.8 4.5 9.8 7.5 8 7.5H4.5M7.5 7.5L9.8 9.5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>RON</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">OG Bearz #985</span><span class="web3-nft-collection">OG Bearz</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ronin/0xca0dc53b5c88c31cb12d8e238001ca5c129d2715/426" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="OG Bearz #426">
+              <img src="https://i2c.seadn.io/ronin/0xca0dc53b5c88c31cb12d8e238001ca5c129d2715/2e095fa142bc57e0c03cf327e7d988/6f2e095fa142bc57e0c03cf327e7d988.png?w=1000" alt="OG Bearz #426" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#1273EA"/><path d="M4.5 9.5V4.5H8C9.8 4.5 9.8 7.5 8 7.5H4.5M7.5 7.5L9.8 9.5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>RON</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">OG Bearz #426</span><span class="web3-nft-collection">OG Bearz</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ronin/0xd39c8d7e107db9a85896eb78e652496977b7f674/989" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="Chubby Fox #989">
+              <img src="https://i2c.seadn.io/ronin/0xd39c8d7e107db9a85896eb78e652496977b7f674/67e7d2e164164a74ca40435b5d19be/7467e7d2e164164a74ca40435b5d19be.png?w=1000" alt="Chubby Fox #989" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#1273EA"/><path d="M4.5 9.5V4.5H8C9.8 4.5 9.8 7.5 8 7.5H4.5M7.5 7.5L9.8 9.5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>RON</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">Chubby Fox #989</span><span class="web3-nft-collection">Chubby Foxes</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ethereum/0xe83dd605b70b47c8af86580bdd4fcb987ff36e60/776" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="BTFD Rabbits #776">
+              <img src="https://i2c.seadn.io/ethereum/0xe83dd605b70b47c8af86580bdd4fcb987ff36e60/94aa947a17afc2b3d863e39f2a34cf/0894aa947a17afc2b3d863e39f2a34cf.png?w=1000" alt="BTFD Rabbits #776" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 0L0 8.3L5 11.2L10 8.3Z" fill="#627EEA"/><path d="M5 0L0 8.3L5 11.2V0Z" fill="#8FA3F5"/><path d="M5 12.5L0 9.8L5 16L10 9.8Z" fill="#627EEA"/><path d="M5 12.5L10 9.8L5 16V12.5Z" fill="#8FA3F5"/></svg>ETH</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">BTFD Rabbits #776</span><span class="web3-nft-collection">BTFDRabbits</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ronin/0x32950db2a7164ae833121501c797d79e7b79d74c/345661" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="Axie #345661">
+              <img src="https://i2c.seadn.io/ronin/0x32950db2a7164ae833121501c797d79e7b79d74c/c7deb29b81437ce216bfc48fc558c8/6bc7deb29b81437ce216bfc48fc558c8.png?w=1000" alt="Axie #345661" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#1273EA"/><path d="M4.5 9.5V4.5H8C9.8 4.5 9.8 7.5 8 7.5H4.5M7.5 7.5L9.8 9.5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>RON</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">Axie #345661</span><span class="web3-nft-collection">Axie Infinity</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+            <a href="https://opensea.io/item/ronin/0xf31ab5a318f7f8662641dba73cb6145853dcd663/2192" target="_blank" rel="noopener noreferrer" class="web3-nft-slide" aria-label="Sultada Series #2192">
+              <img src="https://i2c.seadn.io/ronin/0xf31ab5a318f7f8662641dba73cb6145853dcd663/90daa324dcc55446796671b8c91d05/3990daa324dcc55446796671b8c91d05.png?w=1000" alt="Sultada Series #2192" class="web3-nft-img" loading="lazy"/>
+              <span class="web3-nft-chain"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#1273EA"/><path d="M4.5 9.5V4.5H8C9.8 4.5 9.8 7.5 8 7.5H4.5M7.5 7.5L9.8 9.5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>RON</span>
+              <div class="web3-nft-overlay"><span class="web3-nft-name">Sultada Series #2192</span><span class="web3-nft-collection">Boxing Cocks</span></div>
+              <span class="web3-nft-view">View ↗</span>
+            </a>
+          </div>
+          <div class="web3-nft-dots" id="web3-nft-dots">
+            <button class="web3-nft-dot web3-nft-dot-active" aria-label="NFT 1"></button>
+            <button class="web3-nft-dot" aria-label="NFT 2"></button>
+            <button class="web3-nft-dot" aria-label="NFT 3"></button>
+            <button class="web3-nft-dot" aria-label="NFT 4"></button>
+            <button class="web3-nft-dot" aria-label="NFT 5"></button>
+            <button class="web3-nft-dot" aria-label="NFT 6"></button>
+            <button class="web3-nft-dot" aria-label="NFT 7"></button>
+            <button class="web3-nft-dot" aria-label="NFT 8"></button>
+            <button class="web3-nft-dot" aria-label="NFT 9"></button>
+            <button class="web3-nft-dot" aria-label="NFT 10"></button>
+          </div>
+        </div>
+        <div class="web3-pillar web3-pillar--projects">
+          <div>
+            <h3 class="web3-pillar-title">On-Chain Work</h3>
+            <p class="web3-pillar-desc">Communities, collections, and campaigns I've contributed to across the Web3 ecosystem.</p>
+          </div>
+          <ul class="web3-proj-list">
+            <li class="web3-proj-item web3-proj-item--current">
+              <a href="https://x.com/realgoofficial" target="_blank" rel="noopener noreferrer">
+                <span class="web3-proj-name">RealGo<span class="web3-proj-live"><span class="web3-proj-live-dot"></span>Active</span></span>
+                <span class="web3-proj-tag">Team Member</span>
+              </a>
+            </li>
+            <li class="web3-proj-item">
+              <a href="https://x.com/zhara0x" target="_blank" rel="noopener noreferrer">
+                <span class="web3-proj-name">Zhara</span>
+                <span class="web3-proj-tag">Creative Assistant</span>
+              </a>
+            </li>
+            <li class="web3-proj-item">
+              <a href="https://x.com/kind_hq" target="_blank" rel="noopener noreferrer">
+                <span class="web3-proj-name">Kind HQ</span>
+                <span class="web3-proj-tag">Content Creator</span>
+              </a>
+            </li>
+            <li class="web3-proj-item">
+              <span class="web3-proj-name">Siegfried Yield Guild</span>
+              <span class="web3-proj-tag">Graphic Designer</span>
+            </li>
+            <li class="web3-proj-item">
+              <a href="https://x.com/firex_capital" target="_blank" rel="noopener noreferrer">
+                <span class="web3-proj-name">FireX Capital — Phoenix Agency</span>
+                <span class="web3-proj-tag">Intern</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Instagram feed showcase -->
+      <div class="web3-ig" data-reveal data-delay="200">
+        <div class="web3-ig-bar">
+          <div class="web3-ig-label">
+            <span class="web3-ig-dot" aria-hidden="true"></span>
+            <span>Instagram · @iconiq0x</span>
+          </div>
+        </div>
+        <div class="web3-ig-grid">
+          <a href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr" target="_blank" rel="noopener noreferrer" class="web3-ig-tile" aria-label="View on Instagram"><span class="web3-ig-tile-icon" aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr" target="_blank" rel="noopener noreferrer" class="web3-ig-tile" aria-label="View on Instagram"><span class="web3-ig-tile-icon" aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr" target="_blank" rel="noopener noreferrer" class="web3-ig-tile" aria-label="View on Instagram"><span class="web3-ig-tile-icon" aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr" target="_blank" rel="noopener noreferrer" class="web3-ig-tile" aria-label="View on Instagram"><span class="web3-ig-tile-icon" aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr" target="_blank" rel="noopener noreferrer" class="web3-ig-tile" aria-label="View on Instagram"><span class="web3-ig-tile-icon" aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr" target="_blank" rel="noopener noreferrer" class="web3-ig-tile" aria-label="View on Instagram"><span class="web3-ig-tile-icon" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+
+      <div class="web3-footer" data-reveal data-delay="260">
+        <a
+          href="https://www.instagram.com/iconiq0x?igsh=ZWVhaTk4aDF1MGZp&utm_source=qr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="web3-footer-cta"
+        ><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>View Profile on Instagram</a>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 07 — TOOLS & STACK
+  ═══════════════════════════════════════ -->
+  <section id="tools" class="tools-section" aria-label="Tools and Stack">
+
+    <span class="tools-bg-num" aria-hidden="true">07</span>
+
+    <div class="container">
+
+      <header class="tools-header" data-reveal>
+        <span class="tools-section-label">Tools &amp; Stack</span>
+        <h2 class="tools-heading">What I Work With</h2>
+        <p class="tools-subheading">The tools, apps, and platforms powering the work across every discipline.</p>
+      </header>
+
+      <div class="tools-categories" id="tools-categories">
+        <!-- JS rendered -->
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 08 — CONTACT
+  ═══════════════════════════════════════ -->
+  <section id="contact" class="contact-section" aria-label="Contact">
+
+    <span class="ct-bg-num" aria-hidden="true">08</span>
+
+    <div class="container">
+
+      <header class="ct-header" data-reveal>
+        <span class="ct-section-label">Contact</span>
+        <h2 class="ct-heading">Let's Connect</h2>
+        <p class="ct-subheading">Available for brand collaborations, content projects, and creative partnerships.</p>
+      </header>
+
+      <div class="ct-grid" data-reveal data-delay="200">
+
+        <a href="https://wa.me/639396199862" target="_blank" rel="noopener noreferrer"
+           class="ct-btn ct-whatsapp" aria-label="WhatsApp (opens in new tab)">
+          <div class="ct-btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          </div>
+          <div class="ct-btn-body">
+            <span class="ct-btn-label">WhatsApp</span>
+            <span class="ct-btn-value">+63 939 619 9862</span>
+          </div>
+          <span class="ct-btn-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a href="https://t.me/iconiq0x" target="_blank" rel="noopener noreferrer"
+           class="ct-btn ct-telegram" aria-label="Telegram (opens in new tab)">
+          <div class="ct-btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </div>
+          <div class="ct-btn-body">
+            <span class="ct-btn-label">Telegram</span>
+            <span class="ct-btn-value">@iconiq0x</span>
+          </div>
+          <span class="ct-btn-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <button type="button" class="ct-btn ct-wechat"
+                onclick="navigator.clipboard.writeText('+639396199862').then(() => { const v = this.querySelector('.ct-btn-value'); const o = v.textContent; v.textContent = 'Copied!'; setTimeout(() => v.textContent = o, 2000); })"
+                aria-label="WeChat — click to copy number">
+          <div class="ct-btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-7.062-6.122zm-3.569 3.905c.546 0 .989.441.989.983a.99.99 0 0 1-.989.982.99.99 0 0 1-.989-.982c0-.542.443-.983.989-.983zm3.687 0c.549 0 .994.441.994.983a.99.99 0 0 1-.994.982.99.99 0 0 1-.995-.982c0-.542.447-.983.995-.983z"/></svg>
+          </div>
+          <div class="ct-btn-body">
+            <span class="ct-btn-label">WeChat</span>
+            <span class="ct-btn-value">+63 939 619 9862</span>
+          </div>
+          <span class="ct-copy-hint" aria-hidden="true">Copy</span>
+        </button>
+
+        <a href="viber://chat?number=+639396199862" target="_blank" rel="noopener noreferrer"
+           class="ct-btn ct-viber" aria-label="Viber (opens in new tab)">
+          <div class="ct-btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.399.002C9.474.028 5.331.344 3.015 2.467 1.03 4.447.36 7.314.285 10.89c-.074 3.578-.15 10.283 6.298 12.094h.007l-.007 2.773s-.043.812.504.976c.63.194.988-.39 1.588-1.031.33-.346.773-.854 1.116-1.25 3.06.258 5.415-.332 5.682-.418.618-.2 4.116-.648 4.686-5.28.588-4.782-.29-7.803-1.877-9.162l-.004-.003C16.565 1.85 14.001.054 11.399.002zm.072 1.44c2.337.028 4.662 1.464 5.75 2.51 1.404 1.214 2.143 3.895 1.633 8.104-.454 3.687-3.079 4.08-3.608 4.247-.232.075-2.33.594-4.97.42l-.04.044s-2.05 2.47-2.69 3.115c-.1.104-.213.145-.29.126-.12-.031-.154-.167-.153-.369l.019-3.114C1.637 15.076 1.71 9.576 1.77 6.77c.063-2.81.613-5.1 2.27-6.51 1.835-1.754 5.16-.83 7.431-.818zM8.43 5.28a.664.664 0 0 0-.083.008c-.46.053-.701.321-.744.784-.047.514.103.95.357 1.363 1.068 1.745 2.39 3.152 4.005 4.274.673.464 1.393.842 2.171 1.075.462.14.936.17 1.373-.065.282-.153.5-.41.574-.726.047-.202-.02-.436-.158-.596l-.992-1.131c-.183-.21-.461-.278-.705-.145l-.587.318c-.212.114-.475.073-.643-.101a6.744 6.744 0 0 1-1.63-2.406c-.076-.21-.018-.445.148-.585l.534-.44c.205-.168.254-.46.117-.682L11.17 5.59c-.148-.24-.41-.332-.663-.313a2.1 2.1 0 0 0-.077.003z"/></svg>
+          </div>
+          <div class="ct-btn-body">
+            <span class="ct-btn-label">Viber</span>
+            <span class="ct-btn-value">+63 939 619 9862</span>
+          </div>
+          <span class="ct-btn-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a href="mailto:itsmelescanojoshua@gmail.com"
+           class="ct-btn ct-email" aria-label="Send email">
+          <div class="ct-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+          </div>
+          <div class="ct-btn-body">
+            <span class="ct-btn-label">Email</span>
+            <span class="ct-btn-value">itsmelescanojoshua@gmail.com</span>
+          </div>
+          <span class="ct-btn-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/joshualescano/" target="_blank" rel="noopener noreferrer"
+           class="ct-btn ct-linkedin" aria-label="LinkedIn (opens in new tab)">
+          <div class="ct-btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          <div class="ct-btn-body">
+            <span class="ct-btn-label">LinkedIn</span>
+            <span class="ct-btn-value">linkedin.com/in/joshualescano</span>
+          </div>
+          <span class="ct-btn-arrow" aria-hidden="true">↗</span>
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       SECTION 09 — FOOTER
+  ═══════════════════════════════════════ -->
+  <footer id="footer" class="footer-section" aria-label="Footer">
+
+    <div class="container">
+
+      <div class="footer-main" data-reveal>
+
+        <div class="footer-identity">
+          <p class="footer-name">Joshua Lescano</p>
+          <p class="footer-role">Creative Content Specialist</p>
+          <div class="footer-subtitle-wrap" aria-live="polite" aria-atomic="true">
+            <span class="footer-rotating-title" id="footer-rotating-title">Social Media Manager</span>
+          </div>
+          <p class="footer-tagline">Building brands, growing communities, and creating content that actually moves people.</p>
+        </div>
+
+        <div class="footer-contact">
+          <a href="mailto:itsmelescanojoshua@gmail.com"
+             class="footer-email-link"
+             aria-label="Send email to Joshua">
+            itsmelescanojoshua@gmail.com
+          </a>
+
+          <nav class="footer-socials" aria-label="Social links">
+            <a href="https://www.instagram.com/joshualescano"
+               target="_blank" rel="noopener noreferrer"
+               class="footer-social-link"
+               aria-label="Instagram (opens in new tab)">
+              <svg class="footer-social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/joshualescano/"
+               target="_blank" rel="noopener noreferrer"
+               class="footer-social-link"
+               aria-label="LinkedIn (opens in new tab)">
+              <svg class="footer-social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="https://docs.google.com/document/d/1TTBeeorvgj1NdJG88g3IYz9CcK4qGXx6KdtR3_q1ZK8/edit?usp=sharing"
+               target="_blank" rel="noopener noreferrer"
+               class="hero-resume-btn"
+               aria-label="View Resume (opens in new tab)">
+              <svg class="hero-resume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+              </svg>
+              Resume
+            </a>
+          </nav>
+        </div>
+
+      </div>
+
+      <div class="footer-divider" aria-hidden="true"></div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; <span id="footer-year"></span> <span>Joshua Lescano</span>. All rights reserved.
+        </p>
+        <p class="footer-made">Made with intention.</p>
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- Scripts — dependency order -->
+  <script src="scripts/age.js?v=2"></script>
+  <script src="scripts/clock.js?v=2"></script>
+  <script src="scripts/hero.js?v=2"></script>
+  <script src="scripts/data-loader.js?v=2"></script>
+  <script src="scripts/social-media.js?v=3"></script>
+  <script src="scripts/mentorship.js?v=2"></script>
+  <script src="scripts/graphic-design.js?v=2"></script>
+  <script src="scripts/video-editing.js?v=2"></script>
+  <script src="scripts/web3.js?v=2"></script>
+  <script src="scripts/tools.js?v=2"></script>
+  <script src="scripts/main.js?v=3"></script>
+
+</body>
+</html>

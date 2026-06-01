@@ -1,0 +1,510 @@
+/* ═══════════════════════════════════════════════════════
+   VIDEO-EDITING.CSS — Section 05 (Revybe Motion)
+   Video thumbnail grid · Play overlay · Electric Pink
+═══════════════════════════════════════════════════════ */
+
+/* ── Section ───────────────────────────────────────── */
+.video-editing-section {
+  background: #030303;
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0 clamp(60px, 8vw, 100px);
+  overflow: hidden;
+}
+
+.video-editing-section::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 60%;
+  height: 65%;
+  background: radial-gradient(ellipse at center, rgba(225, 17, 251, 0.065) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ve-bg-num {
+  position: absolute;
+  bottom: clamp(16px, 3vw, 48px);
+  right: clamp(12px, 4vw, 64px);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(100px, 18vw, 220px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.028);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* ── Eyebrow ────────────────────────────────────────── */
+.ve-eyebrow {
+  margin-bottom: clamp(40px, 6vw, 64px);
+  position: relative;
+  z-index: 1;
+}
+
+.ve-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-pink);
+}
+
+.ve-section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--color-pink);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ── Brand hero ─────────────────────────────────────── */
+.ve-brand-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(14px, 2vw, 22px);
+  margin-bottom: clamp(48px, 7vw, 80px);
+  position: relative;
+  z-index: 1;
+}
+
+.ve-brand-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ve-brand-logo-img {
+  max-height: clamp(44px, 7vw, 88px);
+  max-width: clamp(320px, 65vw, 640px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 20px rgba(225,17,251,0.22));
+  transition: filter 0.4s ease;
+}
+
+.ve-brand-logo-img:hover {
+  filter: drop-shadow(0 0 38px rgba(225,17,251,0.5));
+}
+
+.ve-brand-name-fallback {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  color: var(--color-pink);
+  letter-spacing: -0.02em;
+}
+
+.ve-brand-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-sm), 1.4vw, var(--text-base));
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.ve-brand-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ve-ig-handle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: rgba(225,17,251,0.65);
+  text-decoration: none;
+  transition: color var(--t-fast);
+}
+
+.ve-ig-handle:hover { color: var(--color-pink); }
+
+.ve-see-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 22px;
+  border: 1px solid rgba(225,17,251,0.32);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-pink);
+  text-decoration: none;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.ve-see-more-btn:hover {
+  background: rgba(225,17,251,0.07);
+  border-color: rgba(225,17,251,0.6);
+  box-shadow: 0 0 20px rgba(225,17,251,0.1);
+}
+
+/* ── Footer CTA ─────────────────────────────────────── */
+.ve-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(12px, 2vw, 20px);
+  flex-wrap: wrap;
+  margin-top: clamp(28px, 4vw, 48px);
+  position: relative;
+  z-index: 1;
+}
+
+.ve-footer-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border: 1px solid rgba(225,17,251,0.28);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  color: var(--color-pink);
+  text-decoration: none;
+  transition:
+    background var(--t-base),
+    border-color var(--t-base),
+    box-shadow var(--t-base),
+    transform var(--t-base);
+}
+
+.ve-footer-cta:hover {
+  background: rgba(225,17,251,0.07);
+  border-color: rgba(225,17,251,0.55);
+  box-shadow: 0 0 32px rgba(225,17,251,0.12);
+  transform: translateY(-2px);
+}
+
+.ve-footer-or {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.22);
+  text-transform: uppercase;
+}
+
+/* ── Featured Video ─────────────────────────────────── */
+#ve-featured-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Carousel Nav ───────────────────────────────────── */
+.ve-carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.ve-carousel-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(225, 17, 251, 0.07);
+  border: 1px solid rgba(225, 17, 251, 0.25);
+  color: var(--color-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.ve-carousel-btn:hover {
+  background: rgba(225, 17, 251, 0.18);
+  border-color: rgba(225, 17, 251, 0.6);
+  box-shadow: 0 0 22px rgba(225, 17, 251, 0.18);
+  transform: scale(1.1);
+}
+
+/* ── Dots ───────────────────────────────────────────── */
+.ve-nav-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ve-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.22);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+  flex-shrink: 0;
+  display: block;
+}
+
+.ve-dot:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.ve-dot-active {
+  width: 44px;
+  background: var(--color-pink);
+  box-shadow: 0 0 14px rgba(225, 17, 251, 0.5);
+}
+
+/* ── Slide Transitions ──────────────────────────────── */
+.ve-featured-frame {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ve-exit-left {
+  opacity: 0 !important;
+  transform: translateX(-52px) !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+.ve-exit-right {
+  opacity: 0 !important;
+  transform: translateX(52px) !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+.ve-enter-right {
+  opacity: 0 !important;
+  transform: translateX(52px) !important;
+  transition: none !important;
+}
+
+.ve-enter-left {
+  opacity: 0 !important;
+  transform: translateX(-52px) !important;
+  transition: none !important;
+}
+
+.ve-entering {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  transition: opacity 0.42s ease, transform 0.42s var(--ease-out-quart) !important;
+}
+
+.ve-featured-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(14px, 2vw, 20px);
+}
+
+.ve-featured-tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-pink);
+  padding: 4px 14px;
+  border: 1px solid rgba(225, 17, 251, 0.35);
+  border-radius: 100px;
+  background: rgba(225, 17, 251, 0.06);
+}
+
+.ve-featured-category {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.ve-featured-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(225, 17, 251, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(225, 17, 251, 0.08),
+    0 0 60px rgba(225, 17, 251, 0.12),
+    0 32px 80px rgba(0, 0, 0, 0.55);
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.ve-featured-frame:hover {
+  border-color: rgba(225, 17, 251, 0.38);
+  box-shadow:
+    0 0 0 1px rgba(225, 17, 251, 0.14),
+    0 0 80px rgba(225, 17, 251, 0.2),
+    0 32px 80px rgba(0, 0, 0, 0.55);
+}
+
+.ve-featured-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ── Vertical Videos Grid ───────────────────────────── */
+.ve-vertical-wrap {
+  margin-top: clamp(16px, 2.5vw, 28px);
+  position: relative;
+  z-index: 1;
+}
+
+.ve-vertical-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(12px, 2vw, 20px);
+  position: relative;
+  z-index: 1;
+}
+
+.ve-vertical-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 9 / 16;
+  background: #111;
+  border: 1px solid rgba(225, 17, 251, 0.14);
+  box-shadow: 0 0 32px rgba(225, 17, 251, 0.06);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.ve-vertical-card iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.ve-vertical-card:hover {
+  border-color: rgba(225, 17, 251, 0.35);
+  box-shadow: 0 0 48px rgba(225, 17, 251, 0.14);
+}
+
+.ve-play-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.ve-play-overlay.ve-playing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ve-play-overlay:hover {
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.ve-play-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(225, 17, 251, 0.18);
+  border: 1.5px solid rgba(225, 17, 251, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  padding: 0;
+}
+
+.ve-play-overlay:hover .ve-play-btn {
+  transform: scale(1.12);
+  background: rgba(225, 17, 251, 0.35);
+  box-shadow: 0 0 24px rgba(225, 17, 251, 0.4);
+}
+
+.ve-vertical-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #1a0d20 0%, #0a0a0a 50%, #200d1a 100%);
+}
+
+.ve-vertical-placeholder svg {
+  width: 36px;
+  height: 36px;
+  color: rgba(225, 17, 251, 0.25);
+}
+
+@media (max-width: 640px) {
+  .ve-vertical-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+.ve-featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(12px, 1.8vw, 18px);
+}
+
+.ve-featured-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ve-featured-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: var(--text-sm);
+}
+
+.ve-featured-client {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: rgba(225, 17, 251, 0.65);
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 640px) {
+  .ve-brand-actions { flex-direction: column; align-items: center; gap: var(--sp-3); }
+  .ve-featured-frame { border-radius: var(--radius-md); }
+}
+
+/* ── Reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ve-featured-frame,
+  .ve-featured-frame:hover { transition: none; }
+}
