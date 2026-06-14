@@ -242,18 +242,24 @@
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2vw, 22px);
+}
+
+/* Tight inline unit — logo + badge always together */
+.web3-logo-unit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .web3-verified-badge {
-  width: clamp(22px, 4vw, 56px);
-  height: clamp(22px, 4vw, 56px);
+  width: clamp(20px, 2.5vw, 32px);
+  height: clamp(20px, 2.5vw, 32px);
   flex-shrink: 0;
   filter: drop-shadow(0 0 6px rgba(29, 155, 240, 0.5));
   transition: filter 0.35s ease;
 }
 
-.web3-logo-row:hover .web3-verified-badge {
+.web3-logo-unit:hover .web3-verified-badge {
   filter: drop-shadow(0 0 14px rgba(29, 155, 240, 0.85));
 }
 
@@ -1231,11 +1237,8 @@ button.web3-social-pill:hover {
   }
 
   .web3-logo { margin: 0 auto; }
-  .web3-logo-row {
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
+  .web3-logo-row { justify-content: center; margin-bottom: 4px; }
+  .web3-logo-unit { justify-content: center; }
   .web3-heading-row { justify-content: center; }
   .web3-socials { justify-content: center; }
 
@@ -1243,10 +1246,6 @@ button.web3-social-pill:hover {
 }
 
 @media (max-width: 480px) {
-  .web3-verified-badge {
-    width: 20px;
-    height: 20px;
-  }
   .web3-ig-grid { grid-template-columns: repeat(2, 1fr); }
   .web3-ig-tile:last-child { display: none; }
 }
