@@ -55,6 +55,30 @@
     return platforms.reduce((s, p) => s + (p.currentFollowers || 0), 0);
   }
 
+  /* ── Silver Play Button achievement card ─────────── */
+  function buildAchievementCard() {
+    return `
+      <article class="sm-card sm-achievement-card" role="listitem" aria-label="YouTube Silver Play Button Achievement">
+        <div class="sm-achievement-photo" aria-hidden="true">
+          <img src="assets/images/profile/silver-play-button.jpg" alt="Joshua holding the YouTube Silver Play Button" loading="lazy">
+        </div>
+        <div class="sm-achievement-body">
+          <div class="sm-achievement-yt" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </div>
+          <span class="sm-achievement-label">Achievement Unlocked</span>
+          <h3 class="sm-achievement-title">YouTube Silver Play Button</h3>
+          <p class="sm-achievement-milestone">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            100,000 Subscribers
+          </p>
+          <span class="sm-achievement-hover-hint" aria-hidden="true">Hover to reveal</span>
+        </div>
+      </article>`;
+  }
+
   /* ── Card builder ───────────────────────────────── */
   function buildCard(project) {
     const st      = statusOf(project.status);
@@ -189,7 +213,10 @@
     if (!projects.length) return;
 
     const row = document.getElementById('sm-cards-row');
-    if (row) { row.innerHTML = projects.map(buildCard).join(''); initAutoScroll(row); }
+    if (row) {
+      row.innerHTML = buildAchievementCard() + projects.map(buildCard).join('');
+      initAutoScroll(row);
+    }
 
     const section = document.getElementById('social-media');
     if (!section) return;

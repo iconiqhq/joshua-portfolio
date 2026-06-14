@@ -583,3 +583,172 @@ a.sm-platform-btn:hover .sm-platform-icon {
   }
 
 }
+
+/* ═══════════════════════════════════════════════════════
+   Silver Play Button Achievement Card
+═══════════════════════════════════════════════════════ */
+
+.sm-achievement-card {
+  background: linear-gradient(145deg, #181818 0%, #0e0e0e 100%);
+  border: 1px solid rgba(192, 192, 192, 0.15);
+  min-height: 430px;
+  padding: 0;
+  cursor: default;
+}
+
+/* Gold–silver top accent */
+.sm-achievement-card::before {
+  background: linear-gradient(90deg, transparent 0%, #C0C0C0 40%, #FFD700 60%, transparent 100%);
+  opacity: 0.55;
+  transition: opacity var(--t-slow);
+}
+
+.sm-achievement-card:hover::before {
+  opacity: 1;
+}
+
+/* Card hover glow */
+.sm-achievement-card:hover {
+  border-color: rgba(192, 192, 192, 0.38);
+  box-shadow:
+    0 20px 56px rgba(0, 0, 0, 0.7),
+    0 0 48px rgba(255, 215, 0, 0.08);
+}
+
+/* Photo — hidden by default, revealed on hover */
+.sm-achievement-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 420ms ease, transform 420ms ease;
+  pointer-events: none;
+}
+
+.sm-achievement-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+/* Gradient overlay on photo so bottom content stays readable */
+.sm-achievement-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%);
+}
+
+.sm-achievement-card:hover .sm-achievement-photo {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Default body — fades out on hover */
+.sm-achievement-body {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 36px 28px 40px;
+  text-align: center;
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.sm-achievement-card:hover .sm-achievement-body {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+/* YouTube icon badge */
+.sm-achievement-yt {
+  width: 66px;
+  height: 66px;
+  background: #FF0000;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 8px 28px rgba(255, 0, 0, 0.38),
+    0 0 0 1px rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+}
+
+.sm-achievement-yt svg {
+  width: 34px;
+  height: 34px;
+  color: #ffffff;
+}
+
+/* Label pill */
+.sm-achievement-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 215, 0, 0.55);
+}
+
+/* Title — silver metallic */
+.sm-achievement-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #e8e8e8 0%, #C0C0C0 50%, #a8a8a8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  margin: 0;
+}
+
+/* Milestone count */
+.sm-achievement-milestone {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: #FFD700;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.sm-achievement-milestone svg {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* Hover hint */
+.sm-achievement-hover-hint {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.18);
+  margin-top: 6px;
+}
+
+@media (max-width: 768px) {
+  .sm-achievement-card {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sm-achievement-card {
+    min-height: 330px;
+  }
+}

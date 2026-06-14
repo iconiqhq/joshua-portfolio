@@ -6,7 +6,6 @@
       "color": "#41BDFE",
       "tools": [
         { "name": "Adobe Photoshop" },
-        { "name": "Adobe Lightroom" },
         { "name": "Canva" }
       ]
     },
@@ -39,9 +38,7 @@
         { "name": "ChatGPT" },
         { "name": "Gemini" },
         { "name": "Claude" },
-        { "name": "Grok" },
-        { "name": "Higgsfield" },
-        { "name": "ElevenLabs" }
+        { "name": "Higgsfield" }
       ]
     }
   ]

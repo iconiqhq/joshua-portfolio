@@ -263,6 +263,12 @@
   }
 }
 
+/* ── Resume button ──────────────────────────────────── */
+.ct-resume::before  { background: var(--gradient-brand-h); }
+.ct-resume .ct-btn-icon { background: rgba(65, 189, 254, 0.1); color: var(--color-blue); }
+.ct-resume:hover         { border-color: rgba(65, 189, 254, 0.28); background: rgba(65, 189, 254, 0.05); box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0 0 32px rgba(65,189,254,0.06); }
+.ct-resume:hover .ct-btn-icon { background: rgba(65, 189, 254, 0.18); }
+
 /* ── Reduced motion ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .ct-btn:hover { transform: none; }
