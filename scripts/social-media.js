@@ -261,7 +261,7 @@
 
     const row = document.getElementById('sm-cards-row');
     if (row) {
-      row.innerHTML = buildAchievementCard() + projects.map(buildCard).join('');
+      row.innerHTML = projects.map(buildCard).join('');
       initAutoScroll(row);
     }
 
