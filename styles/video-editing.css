@@ -368,6 +368,19 @@
   display: block;
 }
 
+.ve-swipe-catcher {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: grab;
+  touch-action: pan-y;
+  background: transparent;
+}
+
+.ve-swipe-catcher.ve-swiping {
+  cursor: grabbing;
+}
+
 /* ── Vertical Videos Grid ───────────────────────────── */
 .ve-vertical-wrap {
   margin-top: clamp(16px, 2.5vw, 28px);
