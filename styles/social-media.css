@@ -526,9 +526,16 @@ a.sm-platform-btn:hover .sm-platform-icon {
   overflow: hidden;
   overflow-x: hidden;
   scroll-snap-type: none;
-  cursor: default;
+  cursor: grab;
   gap: 0;
   padding: 0;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#sm-cards-row.sm-dragging {
+  cursor: grabbing;
 }
 
 .sm-cards-row {

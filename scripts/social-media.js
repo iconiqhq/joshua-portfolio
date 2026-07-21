@@ -184,24 +184,71 @@
 
     let x = 0;
     let paused = false;
+    let dragging = false;
 
     /* Pause on card hover — resume from exact position on leave */
     track.querySelectorAll('.sm-card').forEach(card => {
-      card.addEventListener('mouseenter', () => { paused = true; });
-      card.addEventListener('mouseleave', () => { paused = false; });
+      card.addEventListener('mouseenter', () => { if (!dragging) paused = true; });
+      card.addEventListener('mouseleave', () => { if (!dragging) paused = false; });
     });
+
+    function wrap(val) {
+      const half = track.scrollWidth / 2;
+      if (half <= 0) return val;
+      while (val <= -half) val += half;
+      while (val > 0) val -= half;
+      return val;
+    }
 
     function tick() {
       if (!paused) {
         x -= 0.6;
-        const half = track.scrollWidth / 2;
-        if (half > 0 && x <= -half) x = 0;
+        x = wrap(x);
         track.style.transform = `translateX(${x}px)`;
       }
       requestAnimationFrame(tick);
     }
 
     requestAnimationFrame(tick);
+
+    /* ── Manual drag / swipe scroll (mouse + touch) ── */
+    let dragStartX = 0;
+    let dragStartTranslate = 0;
+    let dragMoved = false;
+
+    row.addEventListener('pointerdown', e => {
+      dragging = true;
+      paused = true;
+      dragMoved = false;
+      dragStartX = e.clientX;
+      dragStartTranslate = x;
+      row.classList.add('sm-dragging');
+      if (row.setPointerCapture) row.setPointerCapture(e.pointerId);
+    });
+
+    row.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - dragStartX;
+      if (Math.abs(dx) > 5) dragMoved = true;
+      x = wrap(dragStartTranslate + dx);
+      track.style.transform = `translateX(${x}px)`;
+    });
+
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      paused = false;
+      row.classList.remove('sm-dragging');
+    }
+
+    row.addEventListener('pointerup', endDrag);
+    row.addEventListener('pointercancel', endDrag);
+    row.addEventListener('pointerleave', endDrag);
+
+    /* Swallow the click that follows a drag so links don't fire */
+    track.addEventListener('click', e => {
+      if (dragMoved) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
   }
 
   /* ── Main ───────────────────────────────────────── */
