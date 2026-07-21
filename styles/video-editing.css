@@ -247,20 +247,20 @@
 .ve-nav-dots {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .ve-dot {
-  width: 14px;
-  height: 14px;
+  width: 6px;
+  height: 6px;
   min-width: 0;
   min-height: 0;
   border-radius: 100px;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.28);
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: background 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+  transition: background 0.3s ease, width 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
   flex-shrink: 0;
   display: block;
 }
@@ -270,9 +270,9 @@
 }
 
 .ve-dot-active {
-  width: 44px;
+  width: 20px;
   background: var(--color-pink);
-  box-shadow: 0 0 14px rgba(225, 17, 251, 0.5);
+  box-shadow: 0 0 6px rgba(225, 17, 251, 0.6);
 }
 
 /* ── Slide Transitions ──────────────────────────────── */
@@ -381,44 +381,56 @@
   cursor: grabbing;
 }
 
-/* ── Vertical Videos Grid ───────────────────────────── */
+/* ── Short-form Video Carousel ──────────────────────── */
 .ve-vertical-wrap {
   margin-top: clamp(16px, 2.5vw, 28px);
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.ve-vertical-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(12px, 2vw, 20px);
+.ve-vertical-frame {
   position: relative;
-  z-index: 1;
-}
-
-.ve-vertical-card {
+  width: 100%;
+  max-width: clamp(220px, 42vw, 300px);
+  aspect-ratio: 9 / 16;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  aspect-ratio: 9 / 16;
   background: #111;
   border: 1px solid rgba(225, 17, 251, 0.14);
   box-shadow: 0 0 32px rgba(225, 17, 251, 0.06);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
 }
 
-.ve-vertical-card iframe {
+.ve-vertical-frame:hover {
+  border-color: rgba(225, 17, 251, 0.35);
+  box-shadow: 0 0 48px rgba(225, 17, 251, 0.14);
+}
+
+.ve-vertical-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0) scale(1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ve-vertical-slide-active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.ve-vertical-slide iframe {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: none;
   display: block;
-}
-
-.ve-vertical-card:hover {
-  border-color: rgba(225, 17, 251, 0.35);
-  box-shadow: 0 0 48px rgba(225, 17, 251, 0.14);
 }
 
 .ve-play-overlay {
@@ -429,7 +441,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.18);
-  cursor: pointer;
+  pointer-events: none;
   transition: opacity 0.3s ease, background 0.3s ease;
 }
 
@@ -438,7 +450,7 @@
   pointer-events: none;
 }
 
-.ve-play-overlay:hover {
+.ve-vertical-frame:hover .ve-play-overlay {
   background: rgba(0, 0, 0, 0.28);
 }
 
@@ -455,9 +467,10 @@
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   padding: 0;
+  pointer-events: none;
 }
 
-.ve-play-overlay:hover .ve-play-btn {
+.ve-vertical-frame:hover .ve-play-btn {
   transform: scale(1.12);
   background: rgba(225, 17, 251, 0.35);
   box-shadow: 0 0 24px rgba(225, 17, 251, 0.4);
@@ -476,13 +489,6 @@
   width: 36px;
   height: 36px;
   color: rgba(225, 17, 251, 0.25);
-}
-
-@media (max-width: 640px) {
-  .ve-vertical-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
 }
 
 .ve-featured-meta {

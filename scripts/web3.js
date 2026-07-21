@@ -299,18 +299,19 @@
         slides[current].classList.add('web3-nft-slide-active', enterFrom);
         dots[current]?.classList.add('web3-nft-dot-active');
 
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            slides[current].classList.remove(enterFrom);
-            slides[current].classList.add('nft-entering');
+        /* Force layout so the enter-state is applied before we transition
+           out of it — avoids relying on requestAnimationFrame, which can
+           stall and leave the slide stuck invisible at opacity:0. */
+        void slides[current].offsetWidth;
 
-            setTimeout(() => {
-              slides[current].classList.remove('nft-entering');
-              busy = false;
-              scheduleNext();
-            }, 400);
-          });
-        });
+        slides[current].classList.remove(enterFrom);
+        slides[current].classList.add('nft-entering');
+
+        setTimeout(() => {
+          slides[current].classList.remove('nft-entering');
+          busy = false;
+          scheduleNext();
+        }, 400);
       }, 260);
     }
 
@@ -327,6 +328,54 @@
         goTo(i);
       });
     });
+
+    /* ── Swipe / drag to change NFT (mouse + touch) ──── */
+    const SWIPE_THRESHOLD = 40;
+    let dragging  = false;
+    let dragStartX = 0;
+    let dragMoved  = false;
+
+    carousel.style.touchAction = 'pan-y';
+
+    carousel.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      dragMoved = false;
+      dragStartX = e.clientX;
+      paused = true;
+      clearTimeout(timer);
+      carousel.classList.add('nft-dragging');
+      if (carousel.setPointerCapture) carousel.setPointerCapture(e.pointerId);
+    });
+
+    carousel.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - dragStartX;
+      if (Math.abs(dx) > 8) dragMoved = true;
+    });
+
+    function endDrag(e) {
+      if (!dragging) return;
+      dragging = false;
+      carousel.classList.remove('nft-dragging');
+
+      const dx = e.clientX - dragStartX;
+      if (dx <= -SWIPE_THRESHOLD) {
+        goTo(current + 1);
+      } else if (dx >= SWIPE_THRESHOLD) {
+        goTo(current - 1);
+      } else {
+        paused = false;
+        scheduleNext();
+      }
+    }
+
+    carousel.addEventListener('pointerup', endDrag);
+    carousel.addEventListener('pointercancel', endDrag);
+
+    /* Swallow the click that follows a drag so the NFT link doesn't fire */
+    carousel.addEventListener('click', (e) => {
+      if (dragMoved) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
 
     scheduleNext();
   }

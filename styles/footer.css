@@ -117,6 +117,9 @@
   text-decoration: none;
   position: relative;
   transition: color var(--t-base);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .footer-email-link::after {

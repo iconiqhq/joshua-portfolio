@@ -128,15 +128,112 @@
     catcher.addEventListener('pointerleave', endSwipe);
   }
 
-  /* ── Vertical video play overlays ───────────────────── */
-  document.querySelectorAll('.ve-play-overlay').forEach(overlay => {
-    overlay.addEventListener('click', () => {
-      const iframe = overlay.previousElementSibling;
+  /* ── Short-form Video Carousel (same sliding as featured video) ── */
+  (function initVerticalCarousel() {
+    const vFrame   = document.getElementById('ve-vertical-frame');
+    const vCatcher = document.getElementById('ve-vertical-swipe-catcher');
+    const vDotsEl  = document.getElementById('ve-vertical-dots');
+    if (!vFrame) return;
+
+    const vSlides = Array.from(vFrame.querySelectorAll('.ve-vertical-slide'));
+    const vDots   = vDotsEl ? Array.from(vDotsEl.querySelectorAll('.ve-dot')) : [];
+    if (!vSlides.length) return;
+
+    let vCurrent = 0;
+    let vBusy    = false;
+
+    function vUpdateDots() {
+      vDots.forEach((d, i) => d.classList.toggle('ve-dot-active', i === vCurrent));
+    }
+
+    function playSlide(slide) {
+      const fr = slide.querySelector('iframe');
+      const overlay = slide.querySelector('.ve-play-overlay');
+      if (!fr || !overlay || overlay.classList.contains('ve-playing')) return;
       overlay.classList.add('ve-playing');
-      iframe.contentWindow.postMessage(
+      fr.contentWindow.postMessage(
         JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
         '*'
       );
+    }
+
+    function vGoTo(index) {
+      if (vBusy || index === vCurrent || !vSlides[index]) return;
+      vBusy = true;
+
+      const dir = index > vCurrent ? 'next' : 'prev';
+      const outgoing = vSlides[vCurrent];
+      const incoming = vSlides[index];
+
+      outgoing.classList.add(dir === 'next' ? 've-exit-left' : 've-exit-right');
+
+      setTimeout(() => {
+        outgoing.classList.remove('ve-vertical-slide-active', 've-exit-left', 've-exit-right');
+        vCurrent = index;
+        vUpdateDots();
+
+        incoming.classList.add('ve-vertical-slide-active', dir === 'next' ? 've-enter-right' : 've-enter-left');
+
+        /* Force layout so the enter-state is applied before we transition
+           out of it — avoids relying on requestAnimationFrame. */
+        void incoming.offsetWidth;
+
+        incoming.classList.remove('ve-enter-right', 've-enter-left');
+        incoming.classList.add('ve-entering');
+
+        setTimeout(() => {
+          incoming.classList.remove('ve-entering');
+          vBusy = false;
+        }, 420);
+      }, 300);
+    }
+
+    vDots.forEach((dot, i) => {
+      dot.addEventListener('click', () => vGoTo(i));
     });
-  });
+
+    /* swipe / drag to change slide (mouse + touch); a plain tap plays the video */
+    if (vCatcher) {
+      const SWIPE_THRESHOLD = 50;
+      let dragging = false;
+      let startX   = 0;
+      let dx       = 0;
+      let moved    = false;
+
+      vCatcher.addEventListener('pointerdown', e => {
+        if (vBusy) return;
+        dragging = true;
+        moved = false;
+        dx = 0;
+        startX = e.clientX;
+        if (vCatcher.setPointerCapture) vCatcher.setPointerCapture(e.pointerId);
+      });
+
+      vCatcher.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        dx = e.clientX - startX;
+        if (Math.abs(dx) > 8) moved = true;
+      });
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+
+        if (dx <= -SWIPE_THRESHOLD && vSlides[vCurrent + 1]) {
+          vGoTo(vCurrent + 1);
+        } else if (dx >= SWIPE_THRESHOLD && vSlides[vCurrent - 1]) {
+          vGoTo(vCurrent - 1);
+        } else if (!moved) {
+          playSlide(vSlides[vCurrent]);
+        }
+        dx = 0;
+      }
+
+      vCatcher.addEventListener('pointerup', endDrag);
+      vCatcher.addEventListener('pointercancel', endDrag);
+      vCatcher.addEventListener('pointerleave', endDrag);
+    }
+
+    vUpdateDots();
+  })();
 })();
