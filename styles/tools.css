@@ -104,6 +104,14 @@
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tools-marquee.tools-dragging {
+  cursor: grabbing;
 }
 
 .tools-track {

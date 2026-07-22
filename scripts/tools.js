@@ -120,6 +120,7 @@
 
   /* ── Tooltip ────────────────────────────────────────── */
   let tip = null;
+  let marqueeDragging = false;
 
   function ensureTip() {
     if (tip) return;
@@ -130,6 +131,7 @@
   }
 
   function showTip(el) {
+    if (marqueeDragging) return;
     ensureTip();
     tip.querySelector('.tool-hover-tip-name').textContent = el.dataset.tipName || '';
     tip.querySelector('.tool-hover-tip-desc').textContent = el.dataset.tipDesc || '';
@@ -167,23 +169,63 @@
 
   /* ── Scroll animation ───────────────────────────────── */
   function initMarquee(track) {
+    const wrapper = track.parentElement;
     let x = 0;
     let paused = false;
     const speed = 0.65;
 
-    track.addEventListener('mouseenter', () => { paused = true; });
-    track.addEventListener('mouseleave', () => { paused = false; });
+    wrapper.addEventListener('mouseenter', () => { if (!marqueeDragging) paused = true; });
+    wrapper.addEventListener('mouseleave', () => { if (!marqueeDragging) paused = false; });
+
+    function wrapX(val) {
+      const half = track.scrollWidth / 2;
+      if (half <= 0) return val;
+      while (val <= -half) val += half;
+      while (val > 0) val -= half;
+      return val;
+    }
 
     function tick() {
       if (!paused) {
         x -= speed;
-        const half = track.scrollWidth / 2;
-        if (Math.abs(x) >= half) x = 0;
+        x = wrapX(x);
         track.style.transform = `translateX(${x}px)`;
       }
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
+
+    /* ── Manual drag / swipe scroll (mouse + touch) ──── */
+    let dragStartX = 0;
+    let dragStartTranslate = 0;
+
+    wrapper.addEventListener('pointerdown', e => {
+      marqueeDragging = true;
+      paused = true;
+      hideTip();
+      dragStartX = e.clientX;
+      dragStartTranslate = x;
+      wrapper.classList.add('tools-dragging');
+      if (wrapper.setPointerCapture) wrapper.setPointerCapture(e.pointerId);
+    });
+
+    wrapper.addEventListener('pointermove', e => {
+      if (!marqueeDragging) return;
+      const dx = e.clientX - dragStartX;
+      x = wrapX(dragStartTranslate + dx);
+      track.style.transform = `translateX(${x}px)`;
+    });
+
+    function endDrag() {
+      if (!marqueeDragging) return;
+      marqueeDragging = false;
+      paused = false;
+      wrapper.classList.remove('tools-dragging');
+    }
+
+    wrapper.addEventListener('pointerup', endDrag);
+    wrapper.addEventListener('pointercancel', endDrag);
+    wrapper.addEventListener('pointerleave', endDrag);
   }
 
   /* ── Main ───────────────────────────────────────────── */
