@@ -65,7 +65,9 @@
       "industry": "Web3 Game",
       "bio": "A Meme 3.0 ecosystem that bridges gaming and onchain utility for Meme IPs. Capture. Collect. Battle. Socialise. Earn. ",
       "brandColor": "#41BDFE",
-      "status": "active",
+      "status": "past",
+      "managedFrom": "Jul 2025",
+      "managedTo": "Jul 2026",
       "logo": "assets/images/brands/realgo.png",
       "lastUpdated": "2026-05",
       "platforms": [
