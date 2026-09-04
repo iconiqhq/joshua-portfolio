@@ -15,14 +15,16 @@
     .map(i => document.getElementById(i.dataset.section))
     .filter(Boolean);
 
-  /* ── Sliding indicator — glides to sit behind the active item ── */
+  /* ── Sliding indicator — glides to sit behind the active item ──
+     Uses transform (translateX + scaleX) rather than animating left/width
+     directly, so the browser can composite the slide instead of running
+     layout on every frame. Base width is 1px, so scaleX(N) reads as Npx. */
   function moveIndicator(item) {
     if (!indicator || !pill || !item) return;
     const pillRect = pill.getBoundingClientRect();
     const itemRect = item.getBoundingClientRect();
     const left = itemRect.left - pillRect.left;
-    indicator.style.transform = `translateX(${left}px)`;
-    indicator.style.width = itemRect.width + 'px';
+    indicator.style.transform = `translateX(${left}px) scaleX(${itemRect.width})`;
     indicator.classList.add('nav-indicator--visible');
   }
 
