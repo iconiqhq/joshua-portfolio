@@ -134,12 +134,12 @@ body {
   width: 26px;
   height: 26px;
   flex-shrink: 0;
-  transition: width 300ms ease, height 300ms ease;
+  transform: scale(1);
+  transition: transform 300ms ease;
 }
 
 .site-nav.nav-compact .nav-icon {
-  width: 20px;
-  height: 20px;
+  transform: scale(0.769); /* 20/26 — same visual size as before, via transform */
 }
 
 /* ── Label ────────────────────────────────────────── */
