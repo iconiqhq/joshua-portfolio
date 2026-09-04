@@ -120,10 +120,7 @@
   font-weight: 800;
   font-size: clamp(2.4rem, 5vw, 4.2rem);
   line-height: 1;
-  background: var(--gradient-brand-h);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-blue);
   min-width: 3ch;
 }
 
@@ -232,10 +229,7 @@
   font-weight: 800;
   font-size: 2.4rem;
   line-height: 1;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-blue);
   text-transform: uppercase;
 }
 
@@ -364,10 +358,7 @@
   font-size: 2rem;
   letter-spacing: -0.03em;
   line-height: 1;
-  background: var(--gradient-brand-h);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-blue);
 }
 
 .sm-reach-label {

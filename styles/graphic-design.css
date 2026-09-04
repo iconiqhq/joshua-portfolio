@@ -256,10 +256,7 @@
   font-weight: 800;
   font-size: clamp(2rem, 5vw, 4rem);
   letter-spacing: -0.04em;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-blue);
   opacity: 0.35;
   transition: opacity 0.4s ease;
 }

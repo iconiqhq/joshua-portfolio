@@ -159,15 +159,60 @@ ul, ol {
 
 
 /* ── Utility: Scroll reveal ─────────────────────────── */
-[data-reveal] {
+/* Default (and data-reveal="up") — fade + rise */
+[data-reveal],
+[data-reveal="up"] {
   opacity: 0;
   transform: translateY(32px);
   transition: opacity 0.7s var(--ease-out-quart), transform 0.7s var(--ease-out-quart);
 }
 
-[data-reveal].in-view {
+/* Slide in from the left */
+[data-reveal="left"] {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s var(--ease-out-quart), transform 0.7s var(--ease-out-quart);
+}
+
+/* Slide in from the right */
+[data-reveal="right"] {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s var(--ease-out-quart), transform 0.7s var(--ease-out-quart);
+}
+
+/* Scale up from slightly smaller — good for cards, tiles, chips */
+[data-reveal="scale"] {
+  opacity: 0;
+  transform: scale(0.88);
+  transition: opacity 0.6s var(--ease-out-quart), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Soft focus-pull — good for imagery */
+[data-reveal="blur"] {
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.03);
+  transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s var(--ease-out-quart);
+}
+
+[data-reveal].in-view,
+[data-reveal="up"].in-view,
+[data-reveal="left"].in-view,
+[data-reveal="right"].in-view {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(0, 0);
+}
+
+[data-reveal="scale"].in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-reveal="blur"].in-view {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
 }
 
 [data-reveal][data-delay="100"] { transition-delay: 0.10s; }

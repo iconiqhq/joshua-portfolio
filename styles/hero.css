@@ -77,11 +77,7 @@
   font-size: clamp(2.4rem, 5.8vw, 5.2rem);
   letter-spacing: -0.04em;
   line-height: 0.88;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-white);
   margin-bottom: clamp(16px, 2.4vw, 28px);
   will-change: transform, opacity;
 
@@ -92,6 +88,34 @@
 
 .hero-name-line {
   display: block;
+  position: relative;
+}
+
+/* Second line carries a hand-drawn accent stroke instead of filling the
+   letters with a gradient — the brand colour reads as a mark someone made,
+   not a default text-fill effect. */
+.hero-name-line:last-child {
+  position: relative;
+  width: fit-content;
+}
+
+.hero-name-line:last-child::after {
+  content: '';
+  position: absolute;
+  left: -0.02em;
+  right: -0.04em;
+  bottom: 0.05em;
+  height: 0.16em;
+  background: var(--gradient-brand-h);
+  border-radius: 4px;
+  z-index: -1;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: heroStrokeIn 0.7s var(--ease-out-quart) 1.05s forwards;
+}
+
+@keyframes heroStrokeIn {
+  to { transform: scaleX(1); }
 }
 
 /* Title */
@@ -136,11 +160,7 @@
   font-weight: 600;
   font-size: clamp(1rem, 2.2vw, 1.75rem);
   letter-spacing: -0.01em;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-blue);
   white-space: nowrap;
   will-change: opacity, transform;
 }
@@ -342,11 +362,7 @@
   font-weight: 800;
   font-size: clamp(2.2rem, 4.5vw, 3.8rem);
   letter-spacing: -0.02em;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-white);
 }
 
 /* ── Scroll hint ────────────────────────────────────── */

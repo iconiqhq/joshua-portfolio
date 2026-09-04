@@ -47,6 +47,7 @@ body {
 ═══════════════════════════════════════════════════ */
 
 .nav-pill {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0;
@@ -158,24 +159,57 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════
-   ACTIVE STATE
-   Icon: electric blue (#41BDFE) via color inheritance
-   Label: blue→pink gradient text
+   SLIDING ACTIVE INDICATOR
+   A single pill glides beneath whichever tab is active,
+   instead of a text-colour swap alone.
 ═══════════════════════════════════════════════════ */
+
+.nav-indicator {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  height: calc(100% - 12px);
+  width: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(65, 189, 254, 0.16), rgba(225, 17, 251, 0.16));
+  border: 1px solid rgba(65, 189, 254, 0.28);
+  box-shadow: 0 0 18px rgba(65, 189, 254, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0);
+  transition:
+    transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 480ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 200ms ease;
+  will-change: transform, width;
+}
+
+.nav-indicator.nav-indicator--visible {
+  opacity: 1;
+}
+
+.site-nav.nav-compact .nav-indicator {
+  top: 4px;
+  height: calc(100% - 8px);
+}
+
+/* ═══════════════════════════════════════════════════
+   ACTIVE STATE
+   Icon + label: solid electric blue. The sliding pill
+   above already carries the "you are here" signal, so
+   the label stays a plain readable colour, not a gradient.
+═══════════════════════════════════════════════════ */
+
+.nav-item {
+  position: relative;
+  z-index: 1;
+}
 
 .nav-item.nav-active {
   color: #41BDFE;
 }
 
-.nav-item.nav-active .nav-label {
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .nav-item.nav-active:hover {
-  background: rgba(65, 189, 254, 0.09);
   transform: scale(1.06);
 }
 

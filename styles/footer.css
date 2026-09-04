@@ -43,11 +43,22 @@
   letter-spacing: -0.04em;
   line-height: 1;
   text-transform: uppercase;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-white);
   margin-bottom: var(--sp-3);
+  position: relative;
+  width: fit-content;
+}
+
+.footer-name::after {
+  content: '';
+  position: absolute;
+  left: -0.02em;
+  right: -0.04em;
+  bottom: 0.08em;
+  height: 0.14em;
+  background: var(--gradient-brand-h);
+  border-radius: 3px;
+  z-index: -1;
 }
 
 .footer-role {
@@ -83,11 +94,7 @@
   font-weight: 600;
   font-size: clamp(0.85rem, 1.6vw, 1.25rem);
   letter-spacing: -0.01em;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-blue);
   white-space: nowrap;
   will-change: opacity, transform;
 }
@@ -236,10 +243,7 @@
 }
 
 .footer-copy span {
-  background: var(--gradient-brand-h);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-blue);
 }
 
 .footer-made {

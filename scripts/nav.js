@@ -3,8 +3,10 @@
 (function () {
   'use strict';
 
-  const nav   = document.getElementById('site-nav');
-  const items = Array.from(document.querySelectorAll('.nav-item[data-section]'));
+  const nav      = document.getElementById('site-nav');
+  const pill     = document.getElementById('nav-pill');
+  const items    = Array.from(document.querySelectorAll('.nav-item[data-section]'));
+  const indicator = document.getElementById('nav-indicator');
 
   if (!nav || !items.length) return;
 
@@ -13,6 +15,17 @@
     .map(i => document.getElementById(i.dataset.section))
     .filter(Boolean);
 
+  /* ── Sliding indicator — glides to sit behind the active item ── */
+  function moveIndicator(item) {
+    if (!indicator || !pill || !item) return;
+    const pillRect = pill.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    const left = itemRect.left - pillRect.left;
+    indicator.style.transform = `translateX(${left}px)`;
+    indicator.style.width = itemRect.width + 'px';
+    indicator.classList.add('nav-indicator--visible');
+  }
+
   /* ── Active state ───────────────────────────────── */
   let activeId = '';
 
@@ -20,6 +33,8 @@
     if (id === activeId) return;
     activeId = id;
     items.forEach(i => i.classList.toggle('nav-active', i.dataset.section === id));
+    const activeItem = items.find(i => i.dataset.section === id);
+    moveIndicator(activeItem);
   }
 
   /* Which section the viewport is currently "in":
@@ -44,6 +59,7 @@
     requestAnimationFrame(() => {
       const y         = window.scrollY;
       const goingDown = y > lastY;
+      const wasCompact = nav.classList.contains('nav-compact');
 
       /* Compact when scrolling down past 60px */
       if (goingDown && y > 60) {
@@ -54,10 +70,21 @@
 
       updateActive();
 
+      /* Compact toggle resizes the items — re-track the indicator
+         once that size transition has settled. */
+      if (wasCompact !== nav.classList.contains('nav-compact')) {
+        setTimeout(() => moveIndicator(items.find(i => i.dataset.section === activeId)), 320);
+      }
+
       lastY   = y;
       ticking = false;
     });
   }, { passive: true });
+
+  /* Keep the indicator aligned across viewport/orientation changes */
+  window.addEventListener('resize', () => {
+    moveIndicator(items.find(i => i.dataset.section === activeId));
+  });
 
   /* Initial active state on load */
   updateActive();
