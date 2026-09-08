@@ -353,14 +353,15 @@
       const autoStep = () => {
         if (hovering || pointerActive || tweening || track.classList.contains('sm-dragging') || document.hidden) return;
         normalize();
-        let target = snapTarget() - step();       // left → right (content drifts rightward)
-        if (target < 1) {                          // near the left edge: pre-wrap into the clone buffer
-          setInstant(track.scrollLeft + realWidth());
-          target += realWidth();
+        let target = snapTarget() + step();        // right → left (content drifts leftward)
+        const maxScroll = track.scrollWidth - track.clientWidth;
+        if (target > maxScroll - 1) {              // near the right edge: pre-wrap into the clone buffer
+          setInstant(track.scrollLeft - realWidth());
+          target -= realWidth();
         }
-        tweenTo(target, 900);                      // smooth eased glide, no lurch
+        tweenTo(target, 1800);                     // slow, clearly-visible eased scroll (was too quick)
       };
-      setInterval(autoStep, 2000);
+      setInterval(autoStep, 2500);
       track.addEventListener('mouseenter', () => { hovering = true; });
       track.addEventListener('mouseleave', () => { hovering = false; });
       track.addEventListener('pointerdown', () => { pointerActive = true; cancelAnimationFrame(tweenRAF); tweening = false; });
