@@ -550,7 +550,7 @@ a.sm-platform-btn:hover .sm-platform-icon {
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 26px 4px 34px;
-  cursor: grab;
+  cursor: pointer;                    /* click cursor, not the grab hand */
   -webkit-overflow-scrolling: touch;
 }
 
@@ -560,7 +560,7 @@ a.sm-platform-btn:hover .sm-platform-icon {
 #sm-cards-row svg { -webkit-user-drag: none; }
 
 #sm-cards-row.sm-dragging {
-  cursor: grabbing;
+  cursor: pointer;                    /* keep the click cursor while dragging */
   scroll-behavior: auto;
   user-select: none;
   -webkit-user-select: none;
