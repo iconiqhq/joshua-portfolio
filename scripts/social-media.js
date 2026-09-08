@@ -337,7 +337,7 @@
       const end = () => {
         if (!down) return; down = false;
         track.classList.remove('sm-dragging');
-        // no snap — the continuous auto-scroll simply resumes from here
+        tweenTo(snapTarget(), 450);   // settle onto the nearest card (smooth)
       };
       window.addEventListener('mouseup', end);
       window.addEventListener('mouseleave', end);
@@ -345,30 +345,22 @@
       track.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
     }
 
-    /* Auto-scroll: a continuous, constant-speed drift right → left so the motion
-       is ALWAYS visibly moving — never a jump from one project to the next. The
-       coverflow keeps scaling as projects flow through the centre, and it loops
-       seamlessly via normalize(). Pauses on hover / drag / hidden tab. */
+    /* Auto-scroll: advance ONE project every 2s with a smooth ease-in-out glide
+       (cards drift left → right). Each project is showcased at the centre for a
+       beat, then glides to the next. Loops seamlessly; pauses on hover/drag/hidden. */
     if (!REDUCED) {
       let hovering = false, pointerActive = false;
-      const SPEED = 0.6;                 // px per frame — matches the original marquee speed (was `x -= 0.6`)
-      let pos = track.scrollLeft;
-      (function autoTick() {
-        const active = !hovering && !pointerActive && !tweening &&
-                       !track.classList.contains('sm-dragging') && !document.hidden;
-        if (active) {
-          pos += SPEED;
-          track.scrollLeft = pos;
-          const before = track.scrollLeft;
-          normalize();                              // seamless wrap at the loop point
-          const after = track.scrollLeft;
-          if (after !== before) pos += (after - before);   // keep the accumulator in sync after a wrap
-          coverflow();
-        } else {
-          pos = track.scrollLeft;                   // stay in sync while paused/dragging
+      const autoStep = () => {
+        if (hovering || pointerActive || tweening || track.classList.contains('sm-dragging') || document.hidden) return;
+        normalize();
+        let target = snapTarget() - step();       // left → right (content drifts rightward)
+        if (target < 1) {                          // near the left edge: pre-wrap into the clone buffer
+          setInstant(track.scrollLeft + realWidth());
+          target += realWidth();
         }
-        requestAnimationFrame(autoTick);
-      })();
+        tweenTo(target, 900);                      // smooth eased glide, no lurch
+      };
+      setInterval(autoStep, 2000);
       track.addEventListener('mouseenter', () => { hovering = true; });
       track.addEventListener('mouseleave', () => { hovering = false; });
       track.addEventListener('pointerdown', () => { pointerActive = true; cancelAnimationFrame(tweenRAF); tweening = false; });
