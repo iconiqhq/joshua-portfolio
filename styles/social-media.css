@@ -188,33 +188,18 @@
 .sm-card.status-inactive .sm-ring::after { background: #f59e0b; }
 .sm-card.status-past     .sm-ring::after { background: #ef4444; }
 
-.sm-card:hover .sm-ring::after { transform: scale(1.2); }
-
-/* Speed up ring spin on hover — per-status rules below handle the glow */
-.sm-card:hover .sm-ring {
-  animation: sm-ring-spin 2.5s linear infinite;
-}
-
-/* Cleaner per-status glow using the CSS var */
-.sm-card.status-active:hover   .sm-ring { box-shadow: 0 0 22px rgba(34,197,94,0.55),  0 0 44px rgba(34,197,94,0.22); }
-.sm-card.status-inactive:hover .sm-ring { box-shadow: 0 0 22px rgba(245,158,11,0.55), 0 0 44px rgba(245,158,11,0.22); }
-.sm-card.status-past:hover     .sm-ring { box-shadow: 0 0 22px rgba(239,68,68,0.55),  0 0 44px rgba(239,68,68,0.22); }
-
-/* Status-aware card hover border */
-.sm-card.status-active:hover   { border-color: rgba(34,197,94,0.35);  box-shadow: 0 20px 48px rgba(0,0,0,0.12), 0 0 32px rgba(34,197,94,0.06); }
-.sm-card.status-inactive:hover { border-color: rgba(245,158,11,0.35); box-shadow: 0 20px 48px rgba(0,0,0,0.12), 0 0 32px rgba(245,158,11,0.06); }
-.sm-card.status-past:hover     { border-color: rgba(239,68,68,0.35);  box-shadow: 0 20px 48px rgba(0,0,0,0.12), 0 0 32px rgba(239,68,68,0.06); }
+/* Hover effects intentionally disabled — cards stay fully static. */
 
 .sm-ring-inner {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: #f0f0f0;
+  background: #ffffff;          /* white gap between the story ring and the picture */
+  padding: 3px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 3px #ffffff;
 }
 
 .sm-ring-logo {
@@ -235,21 +220,88 @@
 
 /* ── Card ───────────────────────────────────────────── */
 .sm-card {
-  width: 400px;
+  /* Exactly --sm-per-view cards fill the track width (4 on desktop) */
+  width: calc((100% - (var(--sm-per-view, 4) - 1) * var(--sm-gap, 24px)) / var(--sm-per-view, 4));
+  min-width: 0;
+  min-height: 430px;
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(20, 22, 28, 0.09);
   border-radius: var(--radius-lg);
-  padding: 36px 28px 32px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 30px -14px rgba(20, 22, 28, 0.22);
+  transition:
+    border-color var(--t-fast),
+    box-shadow 0.16s linear;
+}
+
+/* Banner (profile cover) — placeholder brand-tinted gradient until a
+   per-brand banner image is supplied via the JSON `banner` field. */
+.sm-banner {
+  width: 100%;
+  height: 96px;
+  flex-shrink: 0;
+  background:
+    radial-gradient(130% 150% at 18% -20%, color-mix(in srgb, var(--brand, #41BDFE) 30%, #ffffff) 0%, transparent 60%),
+    linear-gradient(120deg, color-mix(in srgb, var(--brand, #41BDFE) 12%, #eef2f7) 0%, #e9edf2 100%);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Body — everything below the banner. Profile picture + name are centered;
+   the Total Reach number is pinned to the bottom (via its margin-top:auto). */
+.sm-body {
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-4);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
-  transition:
-    border-color var(--t-base),
-    box-shadow var(--t-base);
+  text-align: center;
+  padding: 0 24px 26px;
+  width: 100%;
+}
+
+/* Circular avatar overlaps the banner (rings preserved) */
+.sm-body .sm-ring {
+  width: 92px;
+  height: 92px;
+  padding: 4px;          /* colored story-ring thickness */
+  margin-top: -48px;
+}
+
+.sm-body .sm-ring::after {
+  bottom: 5px;
+  right: 5px;
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+
+.sm-body .sm-brand-name {
+  margin-top: 12px;
+}
+
+/* Bio — shows in full so @mention links stay visible */
+.sm-bio {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 10px;
+  max-width: 290px;
+}
+
+/* @mention links inside a bio → point to the X profile */
+.sm-bio-link {
+  color: var(--color-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sm-bio-link:hover {
+  text-decoration: underline;
 }
 
 /* Top edge accent line */
@@ -265,24 +317,9 @@
   transition: opacity var(--t-slow), background var(--t-slow);
 }
 
-.sm-card:hover {
-  border-color: rgba(65, 189, 254, 0.35);
-  box-shadow:
-    0 20px 48px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(65, 189, 254, 0.12),
-    0 0 32px rgba(65, 189, 254, 0.08);
-}
-
+/* Hover left intentionally static — no lift, glow, or border change. */
 .sm-card:hover::before {
-  opacity: 1;
-  background: linear-gradient(90deg, transparent, rgba(65, 189, 254, 0.7), transparent);
-}
-
-.sm-card:hover .sm-ring {
-  animation: sm-ring-spin 2.5s linear infinite;
-  box-shadow:
-    0 0 20px rgba(65, 189, 254, 0.45),
-    0 0 40px rgba(65, 189, 254, 0.18);
+  opacity: 0;
 }
 
 /* ── Card Brand Info ────────────────────────────────── */
@@ -299,19 +336,18 @@
   color: #0a0a0a;
   line-height: 1.15;
   margin-bottom: var(--sp-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  /* inline flow so the verified badge sits right after the name text and
+     never drops onto its own line */
+  display: block;
+  text-align: center;
 }
 
 .sm-verified-badge {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  position: relative;
-  top: 1px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: 5px;
+  vertical-align: middle;
 }
 
 .sm-brand-meta {
@@ -335,30 +371,23 @@
 /* ── Total Reach ────────────────────────────────────── */
 .sm-total-reach {
   width: 100%;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid rgba(20, 22, 28, 0.09);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  padding: 12px 14px;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: var(--radius-md);
-  transition: border-color var(--t-fast), background var(--t-fast);
-}
-
-.sm-card:hover .sm-total-reach {
-  background: rgba(65, 189, 254, 0.05);
-  border-color: rgba(65, 189, 254, 0.2);
 }
 
 .sm-reach-value {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 2rem;
+  font-size: 2.3rem;
   letter-spacing: -0.03em;
   line-height: 1;
-  color: var(--color-blue);
+  color: #0a0a0a;
 }
 
 .sm-reach-label {
@@ -493,13 +522,7 @@ a.sm-platform-btn:hover .sm-platform-icon {
 
 .sm-row-wrap::before,
 .sm-row-wrap::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: clamp(32px, 5vw, 88px);
-  pointer-events: none;
-  z-index: 2;
+  content: none;   /* edge fades removed — the carousel shows 4 full centered cards */
 }
 
 .sm-row-wrap::before {
@@ -512,53 +535,89 @@ a.sm-platform-btn:hover .sm-platform-icon {
   background: linear-gradient(to left, #ffffff 0%, transparent 100%);
 }
 
-/* ── Cards row ──────────────────────────────────────── */
+/* ── Swipe carousel (coverflow, ported from Artsons) ── */
 #sm-cards-row {
-  overflow: hidden;
-  overflow-x: hidden;
-  scroll-snap-type: none;
+  --sm-per-view: 4;                   /* desktop always shows 4 */
+  --sm-gap: 24px;
+  position: relative;                 /* offsetParent for coverflow math */
+  display: flex;
+  gap: var(--sm-gap);
+  max-width: 1320px;                  /* wider cards so names sit on one line beside the badge */
+  margin-inline: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 26px 4px 34px;
   cursor: grab;
-  gap: 0;
-  padding: 0;
-  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+#sm-cards-row::-webkit-scrollbar { display: none; }
+
+#sm-cards-row img,
+#sm-cards-row svg { -webkit-user-drag: none; }
+
+#sm-cards-row.sm-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
   user-select: none;
   -webkit-user-select: none;
 }
 
-#sm-cards-row.sm-dragging {
-  cursor: grabbing;
-}
+/* Card holds a fixed footprint; coverflow drives its transform inline */
+.sm-card { flex: 0 0 auto; backface-visibility: hidden; }
+.sm-card.sm-cf { will-change: transform, opacity; }
 
-.sm-cards-row {
-  padding-top: var(--sp-4);
-  padding-bottom: var(--sp-8);
-}
-
-/* ── Auto-scroll track ──────────────────────────────── */
-.sm-scroll-track {
+/* Navigation dots */
+.sm-dots {
   display: flex;
-  gap: clamp(16px, 2.5vw, 28px);
-  width: max-content;
-  will-change: transform;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.sm-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.sm-dots button[aria-current="true"] {
+  background: var(--color-blue);
+  transform: scale(1.35);
+}
+
+/* Phone (1-up): native scroll-snap centers the single card as you swipe */
+@media (max-width: 639px) {
+  #sm-cards-row { scroll-snap-type: x mandatory; }
+  .sm-card { scroll-snap-align: center; }
 }
 
 /* ── Responsive ─────────────────────────────────────── */
-@media (max-width: 768px) {
-  .sm-card {
-    width: 320px;
-    padding: 28px 22px 24px;
-  }
+/* Tablet shows 2 cards, phone shows 1 (per-view drives the card width) */
+@media (max-width: 1023px) {
+  #sm-cards-row { --sm-per-view: 2; }
+}
 
-  .sm-stats-bar {
-    gap: 18px;
-  }
+@media (max-width: 768px) {
+  .sm-stats-bar { gap: 18px; }
+}
+
+@media (max-width: 639px) {
+  #sm-cards-row { --sm-per-view: 1; }
 }
 
 @media (max-width: 480px) {
-  .sm-card {
-    width: 290px;
-  }
-
   .sm-stats-bar {
     flex-wrap: wrap;
     gap: 14px 20px;
@@ -578,6 +637,10 @@ a.sm-platform-btn:hover .sm-platform-icon {
   .sm-ring,
   .sm-card:hover .sm-ring {
     animation: none;
+  }
+
+  .sm-card:hover {
+    transform: none;
   }
 
 }

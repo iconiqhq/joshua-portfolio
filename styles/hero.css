@@ -72,7 +72,7 @@
 
 /* Name */
 .hero-name {
-  font-family: var(--font-display);
+  font-family: var(--font-brand);
   font-weight: 800;
   font-size: clamp(2.4rem, 5.8vw, 5.2rem);
   letter-spacing: -0.04em;

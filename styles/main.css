@@ -25,9 +25,10 @@
   --gradient-pink:    linear-gradient(135deg, #E111FB, #a00ab5);
 
   /* Typography */
-  --font-display: 'Syne', sans-serif;
-  --font-body:    'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Poppins', sans-serif;   /* modern social-media / creator style */
+  --font-body:    'Poppins', sans-serif;
   --font-mono:    'JetBrains Mono', monospace;
+  --font-brand:   'Syne', sans-serif;      /* Joshua Lescano wordmark — kept as-is */
 
   /* Type Scale */
   --text-2xs: 0.625rem;  /* 10px */
@@ -80,6 +81,26 @@
   --z-modal:   100;
   --z-nav:     200;
 }
+
+/* Web3 section keeps its original type system (excluded from the formal switch).
+   Re-anchoring font-family here (not just the vars) so inherited text in the
+   section resolves to Jakarta again, not the new global body font. */
+.web3-section {
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-body);
+}
+
+/* Drop the "—— LABEL" section eyebrow kickers site-wide — they read as a
+   generic AI-template tell; each section now leads with its real heading. */
+.hero-eyebrow,
+.sm-section-label,
+.ms-section-label,
+.gd-eyebrow,
+.ve-eyebrow,
+.web3-eyebrow,
+.tools-section-label,
+.ct-section-label { display: none !important; }
 
 
 /* ── Reset ─────────────────────────────────────────── */

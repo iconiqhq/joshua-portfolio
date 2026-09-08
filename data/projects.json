@@ -9,6 +9,7 @@
       "brandColor": "#41BDFE",
       "status": "active",
       "logo": "assets/images/brands/RR.png",
+      "banner": "assets/images/brands/banners/radical-revolution.png",
       "lastUpdated": "2026-05",
       "platforms": [
         {
@@ -67,6 +68,7 @@
       "brandColor": "#41BDFE",
       "status": "active",
       "logo": "assets/images/brands/realgo.png",
+      "banner": "assets/images/brands/banners/realgo.jpg",
       "lastUpdated": "2026-05",
       "platforms": [
         {
@@ -124,6 +126,7 @@
       "brandColor": "#002140",
       "status": "active",
       "logo": "assets/images/brands/Salmo.png",
+      "banner": "assets/images/brands/banners/salmo.png",
       "platforms": [
         {
           "name": "Instagram",
@@ -173,6 +176,7 @@
       "managedFrom": "Aug 2023",
       "managedTo": "Nov 2023",
       "logo": "assets/images/brands/spincredible.png",
+      "banner": "assets/images/brands/banners/spincredible.png",
       "lastUpdated": "2023-11",
       "platforms": [
         {
@@ -223,6 +227,7 @@
       "managedFrom": "Aug 2024",
       "managedTo": "Oct 2024",
       "logo": "assets/images/brands/political.png",
+      "banner": "#df0000",
       "lastUpdated": "2023-11",
       "platforms": [
         {
@@ -253,6 +258,7 @@
       "managedFrom": "Mar 2020",
       "managedTo": "Jul 2025",
       "logo": "assets/images/brands/JIL.png",
+      "banner": "#1f1b4d",
       "lastUpdated": "Jul 2025",
       "platforms": [
         {
@@ -270,12 +276,13 @@
       "brandName": "Zhara",
       "verified": true,
       "industry": "Web3 Content Creator",
-      "bio": "",
+      "bio": "My face isn't the content 🫶🏻 | Creator @ronin_network | Intern @BigYakAxieClub | Adopted Gamer by @la_manadateam | @axieselfie Fam",
       "brandColor": "#1f1b4d",
       "status": "past",
       "managedFrom": "Jan 2025",
       "managedTo": "Jul 2025",
       "logo": "assets/images/brands/zhara.png",
+      "banner": "assets/images/brands/banners/zhara.jpeg",
       "lastUpdated": "Jul 2025",
       "platforms": [
         {
@@ -292,12 +299,13 @@
       "id": "teamkulot",
       "brandName": "Team Kulot",
       "industry": "Political",
-      "bio": "",
+      "bio": "Para sa mas progresibong Poblacion East!",
       "brandColor": "#1f1b4d",
       "status": "past",
       "managedFrom": "Sept 2023",
       "managedTo": "Oct 2023",
       "logo": "assets/images/brands/teamkulot.png",
+      "banner": "assets/images/brands/banners/team-kulot.jpg",
       "lastUpdated": "Oct 2025",
       "platforms": [
         {

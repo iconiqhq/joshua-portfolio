@@ -55,6 +55,21 @@
     return platforms.reduce((s, p) => s + (p.currentFollowers || 0), 0);
   }
 
+  /* Escape HTML, then turn @handles into links to the matching X profile.
+     Opens in a new tab per the project's external-link rule. */
+  function escHTML(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+  function linkifyBio(text) {
+    return escHTML(text).replace(
+      /@([A-Za-z0-9_]{1,15})/g,
+      '<a class="sm-bio-link" href="https://x.com/$1" target="_blank" rel="noopener noreferrer">@$1</a>'
+    );
+  }
+
   /* ── Silver Play Button achievement card ─────────── */
   function buildAchievementCard() {
     return `
@@ -93,50 +108,43 @@
 
     const reach = totalReach(project.platforms);
 
-    const platformsHTML = project.platforms.map(p => {
-      const key = (p.icon || p.name || '').toLowerCase();
-      const Tag = p.url ? 'a' : 'div';
-      const linkAttrs = p.url
-        ? `href="${p.url}" target="_blank" rel="noopener noreferrer" aria-label="${p.name}: ${fmt(p.currentFollowers)} followers"`
-        : '';
-      const iconSVG = platformIcon(key);
-      return `
-        <${Tag} class="sm-platform-btn${p.url ? '' : ' no-link'}" ${linkAttrs}>
-          <span class="sm-platform-icon" aria-hidden="true">${iconSVG}</span>
-          <span class="sm-platform-count">${fmt(p.currentFollowers)}</span>
-        </${Tag}>`;
-    }).join('');
+    /* Per-profile banner: an image path, or a solid "#hex" colour.
+       Falls back to the brand-tinted gradient placeholder when absent. */
+    const bannerStyle = project.banner
+      ? (project.banner.charAt(0) === '#'
+          ? ` style="background:${project.banner}"`
+          : ` style="background-image:url('${project.banner}')"`)
+      : '';
+    const bioHTML = project.bio
+      ? `<p class="sm-bio">${linkifyBio(project.bio)}</p>`
+      : '';
 
     return `
       <article class="sm-card status-${project.status || 'active'}" data-id="${project.id}"
-               style="--ring-from:${st.from};--ring-to:${st.to}"
+               style="--ring-from:${st.from};--ring-to:${st.to};--brand:${project.brandColor || '#41BDFE'}"
                role="listitem">
 
-        <div class="sm-ring">
-          <div class="sm-ring-inner">
-            ${logoHTML}
-            <span class="sm-ring-initial" ${initStyle}>${initial}</span>
-          </div>
-        </div>
+        <div class="sm-banner"${bannerStyle}></div>
 
-        <div class="sm-card-info">
+        <div class="sm-body">
+          <div class="sm-ring">
+            <div class="sm-ring-inner">
+              ${logoHTML}
+              <span class="sm-ring-initial" ${initStyle}>${initial}</span>
+            </div>
+          </div>
+
           <h3 class="sm-brand-name">
             ${project.brandName}${project.verified ? '<svg class="sm-verified-badge" viewBox="0 0 22 22" fill="none" aria-label="Verified" role="img"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.275.213-1.815.568s-.972.854-1.247 1.44c-.606-.222-1.262-.268-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.749 1.054-.88 1.688-.13.633-.085 1.29.139 1.896-.587.274-1.087.705-1.441 1.246-.354.54-.551 1.17-.569 1.816.018.647.215 1.276.569 1.817.354.54.854.972 1.441 1.246-.224.606-.269 1.262-.14 1.896.131.634.436 1.218.881 1.688.469.443 1.053.748 1.687.879.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.606.22 1.262.267 1.897.137.634-.132 1.218-.437 1.687-.882.445-.469.749-1.053.881-1.687.13-.633.086-1.29-.136-1.897.587-.274 1.087-.706 1.441-1.246.354-.54.551-1.17.569-1.816z" fill="#1D9BF0"/><path d="M6.5 11.5l2.8 2.8 5.7-5.6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
           </h3>
           <span class="sm-brand-industry">${project.industry}</span>
-        </div>
 
-        <div class="sm-total-reach">
-          <span class="sm-reach-value">${fmtFull(reach)}</span>
-          <span class="sm-reach-label">Total Reach</span>
-        </div>
+          ${bioHTML}
 
-        <div class="sm-platforms">${platformsHTML}</div>
-
-        <div class="sm-status-bar">
-          <span class="sm-status-dot"></span>
-          <span class="sm-status-text">${st.label}</span>
-          ${fmtPeriod(project) ? `<span class="sm-status-sep" aria-hidden="true">·</span><span class="sm-status-period">${fmtPeriod(project)}</span>` : ''}
+          <div class="sm-total-reach">
+            <span class="sm-reach-value">${fmtFull(reach)}</span>
+            <span class="sm-reach-label">Total Reach</span>
+          </div>
         </div>
 
       </article>`;
@@ -165,90 +173,218 @@
   }
 
   /* ── Drag scroll ────────────────────────────────── */
-  /* ── Auto scroll ────────────────────────────────── */
-  function initAutoScroll(row) {
-    const originalHTML = row.innerHTML;
+  /* ── Swipe carousel with coverflow (ported from Artsons projects) ──
+     Cards spin + scale + fade in from the right and out to the left as you
+     swipe/drag. Native horizontal scroll + an infinite clone loop + snap. */
+  function initCarousel(track, dots) {
+    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const real = Array.from(track.children);
+    const n = real.length;
+    if (!n) return;
+    const CLONES = Math.min(n, 4);
 
-    /* Clone with neutralised data-project so initCharts ignores them */
-    const cloneWrap = document.createElement('div');
-    cloneWrap.innerHTML = originalHTML;
-    cloneWrap.querySelectorAll('[data-project]').forEach(el => {
-      el.dataset.project = el.dataset.project + '-clone';
-    });
-
-    const track = document.createElement('div');
-    track.className = 'sm-scroll-track';
-    track.innerHTML = originalHTML + cloneWrap.innerHTML;
-    row.innerHTML = '';
-    row.appendChild(track);
-
-    let x = 0;
-    let paused = false;
-    let dragging = false;
-
-    /* Pause on card hover — resume from exact position on leave */
-    track.querySelectorAll('.sm-card').forEach(card => {
-      card.addEventListener('mouseenter', () => { if (!dragging) paused = true; });
-      card.addEventListener('mouseleave', () => { if (!dragging) paused = false; });
-    });
-
-    function wrap(val) {
-      const half = track.scrollWidth / 2;
-      if (half <= 0) return val;
-      while (val <= -half) val += half;
-      while (val > 0) val -= half;
-      return val;
+    function prepClone(node) {
+      node.classList.add('sm-clone');
+      node.setAttribute('aria-hidden', 'true');
+      node.querySelectorAll('a').forEach(a => { a.tabIndex = -1; });
+    }
+    /* [ last CLONES ] + [ real cards ] + [ first CLONES ] → seamless loop */
+    const head = document.createDocumentFragment();
+    for (let a = 0; a < CLONES; a++) {
+      const c = real[(n - CLONES + a) % n].cloneNode(true); prepClone(c); head.appendChild(c);
+    }
+    track.insertBefore(head, track.firstChild);
+    for (let b = 0; b < CLONES; b++) {
+      const c = real[b].cloneNode(true); prepClone(c); track.appendChild(c);
     }
 
-    function tick() {
-      if (!paused) {
-        x -= 0.6;
-        x = wrap(x);
-        track.style.transform = `translateX(${x}px)`;
+    const kids = () => Array.from(track.children);
+
+    /* Geometry measured straight from the DOM so the loop wrap is pixel-exact.
+       (Deriving it as n*(offsetWidth+gap) rounds off and makes the wrap jerk.) */
+    let geoBase = 0, geoStep = 360, geoLoop = 2880, centerOffset = 0;
+    function measure() {
+      const items = kids();
+      const first = items[CLONES], nextSet = items[CLONES + n];
+      if (first && nextSet) {
+        geoBase = first.offsetLeft;                       // raw offset of the first real card
+        geoLoop = nextSet.offsetLeft - first.offsetLeft;  // exact pixel period of one full set
+        geoStep = geoLoop / n;                            // exact per-card distance
       }
-      requestAnimationFrame(tick);
+    }
+    function step() { return geoStep; }
+    /* The cards fill the track's content box exactly and the track's own
+       symmetric padding provides equal left/right margins, so a rest on the
+       first real card is already centred — no extra offset (that double-shifted it). */
+    function restBase() { return geoBase; }
+    function realStart() { return restBase(); }
+    function realWidth() { return geoLoop; }
+    function setInstant(x) {
+      const sb = track.style.scrollBehavior; track.style.scrollBehavior = 'auto';
+      track.scrollLeft = x; track.style.scrollBehavior = sb;
+    }
+    function realIndex() { return ((Math.round((track.scrollLeft - restBase()) / geoStep) % n) + n) % n; }
+    function snapTarget() { return restBase() + Math.round((track.scrollLeft - restBase()) / geoStep) * geoStep; }
+
+    /* Dots — one per real card */
+    const dotBtns = [];
+    if (dots) {
+      dots.innerHTML = '';
+      for (let j = 0; j < n; j++) {
+        const d = document.createElement('button');
+        d.type = 'button';
+        d.setAttribute('role', 'tab');
+        d.setAttribute('aria-label', 'Go to brand ' + (j + 1));
+        d.addEventListener('click', () => { track.scrollLeft = realStart() + j * step(); });
+        dots.appendChild(d);
+        dotBtns.push(d);
+      }
+    }
+    function syncDots() {
+      const active = realIndex();
+      dotBtns.forEach((d, k) => d.setAttribute('aria-current', k === active ? 'true' : 'false'));
     }
 
-    requestAnimationFrame(tick);
-
-    /* ── Manual drag / swipe scroll (mouse + touch) ── */
-    let dragStartX = 0;
-    let dragStartTranslate = 0;
-    let dragMoved = false;
-
-    row.addEventListener('pointerdown', e => {
-      dragging = true;
-      paused = true;
-      dragMoved = false;
-      dragStartX = e.clientX;
-      dragStartTranslate = x;
-      row.classList.add('sm-dragging');
-      if (row.setPointerCapture) row.setPointerCapture(e.pointerId);
-    });
-
-    row.addEventListener('pointermove', e => {
-      if (!dragging) return;
-      const dx = e.clientX - dragStartX;
-      if (Math.abs(dx) > 5) dragMoved = true;
-      x = wrap(dragStartTranslate + dx);
-      track.style.transform = `translateX(${x}px)`;
-    });
-
-    function endDrag() {
-      if (!dragging) return;
-      dragging = false;
-      paused = false;
-      row.classList.remove('sm-dragging');
+    /* Coverflow: scroll-driven spin + scale + fade (geometry cached, so the
+       inline transforms we apply never feed back into the measurement). */
+    let cfMeta = [];
+    function cfMeasure() { measure(); cfMeta = kids().map(c => ({ el: c, left: c.offsetLeft, w: c.offsetWidth })); }
+    function coverflow() {
+      if (REDUCED) return;
+      const sl = track.scrollLeft, vw = track.clientWidth;
+      for (const m of cfMeta) {
+        /* Scale each card by how far its centre is from the viewport centre:
+           middle = big, sides = small. As the row swipes, every card grows
+           toward the centre and shrinks toward the edges (small → big → small). */
+        const cardCentre = (m.left + m.w / 2) - sl;
+        const off = (cardCentre - vw / 2) / vw;      // 0 at centre; ± toward the sides
+        const d = Math.min(1, Math.abs(off) * 2);    // 0 centre → 1 near the edges
+        const scale = (1 - 0.17 * d).toFixed(3);     // pure scale: big in the middle, small at the sides
+        const op    = (1 - 0.45 * d).toFixed(3);     // sides fade back
+        m.el.style.transform = 'scale(' + scale + ')';   // no rotateY → symmetric edges, no directional bleed
+        m.el.style.opacity = op;
+        m.el.classList.add('sm-cf');
+      }
     }
 
-    row.addEventListener('pointerup', endDrag);
-    row.addEventListener('pointercancel', endDrag);
-    row.addEventListener('pointerleave', endDrag);
+    /* Infinite-loop wrap */
+    function normalize() {
+      const s = step(), rs = realStart(), sl = track.scrollLeft;
+      const k = Math.round((sl - rs) / s);
+      if (k < 0) setInstant(sl + realWidth());
+      else if (k >= n) setInstant(sl - realWidth());
+    }
 
-    /* Swallow the click that follows a drag so links don't fire */
-    track.addEventListener('click', e => {
-      if (dragMoved) { e.preventDefault(); e.stopPropagation(); }
-    }, true);
+    /* Smooth eased auto-advance (easeInOutCubic — softer than native smooth-scroll).
+       normalize() is suppressed mid-tween so it never jumps, then re-run at the end. */
+    let tweening = false, tweenRAF = null;
+    function tweenTo(target, dur) {
+      cancelAnimationFrame(tweenRAF);
+      const start = track.scrollLeft, dist = target - start, t0 = performance.now();
+      const prevBehav = track.style.scrollBehavior;
+      track.style.scrollBehavior = 'auto';
+      tweening = true;
+      function frame(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;   // easeInOutCubic — eases in AND out, no lurch/jump
+        track.scrollLeft = Math.round(start + dist * e);   // integer → no sub-pixel jitter
+        coverflow();                                        // drive the spin in-sync each frame
+        if (p < 1) { tweenRAF = requestAnimationFrame(frame); }
+        else { tweening = false; track.style.scrollBehavior = prevBehav; normalize(); coverflow(); syncDots(); }
+      }
+      tweenRAF = requestAnimationFrame(frame);
+    }
+
+    /* Desktop snap once a scroll settles (mobile uses native CSS scroll-snap) */
+    let dotTick = false, cfTick = false, settleTimer;
+    function settle() {
+      if (tweening || track.classList.contains('sm-dragging') || window.innerWidth < 640) return;
+      const t = snapTarget();
+      if (Math.abs(t - track.scrollLeft) > 2) track.scrollLeft = t;
+    }
+    track.addEventListener('scroll', () => {
+      if (tweening) return;
+      normalize();
+      if (!cfTick) { cfTick = true; requestAnimationFrame(() => { cfTick = false; coverflow(); }); }
+      if (!dotTick) { dotTick = true; requestAnimationFrame(() => { dotTick = false; syncDots(); }); }
+    }, { passive: true });
+
+    /* Edge arrows (optional, if present in the markup) */
+    function nudge(dir) { track.scrollLeft = snapTarget() + dir * step(); }
+    const prev = document.getElementById('sm-prev'), next = document.getElementById('sm-next');
+    if (prev) prev.addEventListener('click', () => nudge(-1));
+    if (next) next.addEventListener('click', () => nudge(1));
+
+    /* Desktop click-drag — moves 1:1 with the cursor and snaps on release,
+       exactly like Artsons (no momentum fling). Incremental deltas keep the
+       infinite loop seamless in both directions. */
+    if (window.matchMedia('(pointer: fine)').matches) {
+      let down = false, startX = 0, lastX = 0, moved = false;
+      track.addEventListener('mousedown', e => {
+        if (e.target.closest('a')) return;      // let bio @mention links click through
+        cancelAnimationFrame(tweenRAF); tweening = false;   // take over from any in-flight auto-glide
+        down = true; moved = false; startX = lastX = e.clientX;
+        track.classList.add('sm-dragging'); e.preventDefault();
+      });
+      window.addEventListener('mousemove', e => {
+        if (!down) return;
+        const dx = e.clientX - lastX;
+        if (Math.abs(e.clientX - startX) > 4) moved = true;
+        track.scrollLeft -= dx;                 // follow the cursor
+        normalize();                            // wrap right away so a long drag never hits an edge
+        lastX = e.clientX;
+      });
+      const end = () => {
+        if (!down) return; down = false;
+        track.classList.remove('sm-dragging');
+        // no snap — the continuous auto-scroll simply resumes from here
+      };
+      window.addEventListener('mouseup', end);
+      window.addEventListener('mouseleave', end);
+      /* Swallow the click that follows a drag so bio links don't fire mid-swipe */
+      track.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+    }
+
+    /* Auto-scroll: a continuous, constant-speed drift right → left so the motion
+       is ALWAYS visibly moving — never a jump from one project to the next. The
+       coverflow keeps scaling as projects flow through the centre, and it loops
+       seamlessly via normalize(). Pauses on hover / drag / hidden tab. */
+    if (!REDUCED) {
+      let hovering = false, pointerActive = false;
+      const SPEED = 0.6;                 // px per frame — matches the original marquee speed (was `x -= 0.6`)
+      let pos = track.scrollLeft;
+      (function autoTick() {
+        const active = !hovering && !pointerActive && !tweening &&
+                       !track.classList.contains('sm-dragging') && !document.hidden;
+        if (active) {
+          pos += SPEED;
+          track.scrollLeft = pos;
+          const before = track.scrollLeft;
+          normalize();                              // seamless wrap at the loop point
+          const after = track.scrollLeft;
+          if (after !== before) pos += (after - before);   // keep the accumulator in sync after a wrap
+          coverflow();
+        } else {
+          pos = track.scrollLeft;                   // stay in sync while paused/dragging
+        }
+        requestAnimationFrame(autoTick);
+      })();
+      track.addEventListener('mouseenter', () => { hovering = true; });
+      track.addEventListener('mouseleave', () => { hovering = false; });
+      track.addEventListener('pointerdown', () => { pointerActive = true; cancelAnimationFrame(tweenRAF); tweening = false; });
+      window.addEventListener('pointerup', () => { pointerActive = false; });
+      window.addEventListener('pointercancel', () => { pointerActive = false; });
+    }
+
+    /* Start on the first real card */
+    cfMeasure();
+    setInstant(realStart());
+    requestAnimationFrame(() => { cfMeasure(); setInstant(realStart()); coverflow(); syncDots(); });
+    window.addEventListener('load', () => { cfMeasure(); coverflow(); });
+    window.addEventListener('resize', () => {
+      const i = realIndex();
+      cfMeasure(); setInstant(realStart() + i * step()); coverflow(); syncDots();
+    });
   }
 
   /* ── Main ───────────────────────────────────────── */
@@ -262,7 +398,7 @@
     const row = document.getElementById('sm-cards-row');
     if (row) {
       row.innerHTML = projects.map(buildCard).join('');
-      initAutoScroll(row);
+      initCarousel(row, document.getElementById('sm-dots'));
     }
 
     const section = document.getElementById('social-media');
