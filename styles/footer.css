@@ -36,28 +36,34 @@
 /* ── Left: identity ─────────────────────────────────── */
 .footer-identity {}
 
+/* Matches the hero wordmark: Syne brand face, stacked on two lines,
+   gradient underline only beneath the second line (LESCANO). */
 .footer-name {
-  font-family: var(--font-display);
+  font-family: var(--font-brand);
   font-weight: 800;
   font-size: clamp(1.8rem, 4vw, 3.2rem);
   letter-spacing: -0.04em;
-  line-height: 1;
+  line-height: 0.88;
   text-transform: uppercase;
   color: var(--color-white);
   margin-bottom: var(--sp-3);
+}
+
+.footer-name-line {
+  display: block;
   position: relative;
   width: fit-content;
 }
 
-.footer-name::after {
+.footer-name-line:last-child::after {
   content: '';
   position: absolute;
   left: -0.02em;
   right: -0.04em;
-  bottom: 0.08em;
-  height: 0.14em;
+  bottom: 0.05em;
+  height: 0.16em;
   background: var(--gradient-brand-h);
-  border-radius: 3px;
+  border-radius: 4px;
   z-index: -1;
 }
 
