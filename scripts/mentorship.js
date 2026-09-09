@@ -310,7 +310,8 @@
       if (!sm || !cards.length) return false;
       const h = sm.offsetHeight;
       if (!h) return false;
-      cards.forEach(c => { c.style.height = h + 'px'; });
+      const target = Math.round(h * 0.94);   // a touch smaller than the social cards
+      cards.forEach(c => { c.style.height = target + 'px'; });
       return true;
     }
     // Retry for a short while in case the social row hasn't rendered yet.
