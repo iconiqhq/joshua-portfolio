@@ -172,20 +172,33 @@
     })(start);
   }
 
-  /* ── Drag scroll ────────────────────────────────── */
-  /* ── Swipe carousel with coverflow (ported from Artsons projects) ──
-     Cards spin + scale + fade in from the right and out to the left as you
-     swipe/drag. Native horizontal scroll + an infinite clone loop + snap. */
+  /* ── Featured wheel — ported 1:1 from Artsons' buildWheel ──────────────
+     Motion is copied exactly from the Artsons featured wheel: native smooth
+     horizontal scroll, click-drag with absolute start-position mapping, snap to
+     the nearest card on release / after a scroll settles, a seamless infinite
+     clone loop, and the 3D coverflow (cards spin + scale + fade in from the
+     right and out to the left). No auto-scroll — the wheel moves only when the
+     user drags, scrolls, or taps a dot. Only the card UI + data are ours. */
+  function throttle(fn, wait) {
+    let last = 0, t = null;
+    return function () {
+      const now = Date.now(), rem = wait - (now - last);
+      if (rem <= 0) { clearTimeout(t); t = null; last = now; fn(); }
+      else if (!t) { t = setTimeout(() => { last = Date.now(); t = null; fn(); }, rem); }
+    };
+  }
+
   function initCarousel(track, dots) {
     const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const real = Array.from(track.children);
     const n = real.length;
     if (!n) return;
-    const CLONES = Math.min(n, 8);   // big buffer so the loop reset happens deep in clones, never at the edge
+    const CLONES = Math.min(n, 4);   // cloned cards each side → the scroll never hits an edge (seamless loop)
 
     function prepClone(node) {
       node.classList.add('sm-clone');
       node.setAttribute('aria-hidden', 'true');
+      node.tabIndex = -1;
       node.querySelectorAll('a').forEach(a => { a.tabIndex = -1; });
     }
     /* [ last CLONES ] + [ real cards ] + [ first CLONES ] → seamless loop */
@@ -200,33 +213,28 @@
 
     const kids = () => Array.from(track.children);
 
-    /* Geometry measured straight from the DOM so the loop wrap is pixel-exact.
-       (Deriving it as n*(offsetWidth+gap) rounds off and makes the wrap jerk.) */
-    let geoBase = 0, geoStep = 360, geoLoop = 2880, centerOffset = 0;
+    /* Geometry from the DOM (base = first real card's offset; step = per-card
+       advance = card width + gap) so snapping is pixel-exact for our layout. */
+    let base = 0, stepPx = 360;
     function measure() {
       const items = kids();
-      const first = items[CLONES], nextSet = items[CLONES + n];
-      if (first && nextSet) {
-        geoBase = first.offsetLeft;                       // raw offset of the first real card
-        geoLoop = nextSet.offsetLeft - first.offsetLeft;  // exact pixel period of one full set
-        geoStep = geoLoop / n;                            // exact per-card distance
-      }
+      const first = items[CLONES], second = items[CLONES + 1];
+      base = first ? first.offsetLeft : 0;
+      stepPx = (first && second) ? (second.offsetLeft - first.offsetLeft)
+                                 : (first ? first.offsetWidth + 16 : 360);
+      if (!stepPx) stepPx = first ? first.offsetWidth + 16 : 360;
     }
-    function step() { return geoStep; }
-    /* The cards fill the track's content box exactly and the track's own
-       symmetric padding provides equal left/right margins, so a rest on the
-       first real card is already centred — no extra offset (that double-shifted it). */
-    function restBase() { return geoBase; }
-    function realStart() { return restBase(); }
-    function realWidth() { return geoLoop; }
+    function step() { return stepPx; }
+    function realStart() { return base; }                                         // rest scrollLeft for the first real card
+    function realWidth() { return n * stepPx; }
+    function snapTarget() { return base + Math.round((track.scrollLeft - base) / stepPx) * stepPx; } // nearest clean rest
     function setInstant(x) {
       const sb = track.style.scrollBehavior; track.style.scrollBehavior = 'auto';
       track.scrollLeft = x; track.style.scrollBehavior = sb;
     }
-    function realIndex() { return ((Math.round((track.scrollLeft - restBase()) / geoStep) % n) + n) % n; }
-    function snapTarget() { return restBase() + Math.round((track.scrollLeft - restBase()) / geoStep) * geoStep; }
+    function realIndex() { return ((Math.round((track.scrollLeft - base) / stepPx) % n) + n) % n; }
 
-    /* Dots — one per real card */
+    /* Dots — one per real card. Click glides (CSS scroll-behavior:smooth). */
     const dotBtns = [];
     if (dots) {
       dots.innerHTML = '';
@@ -235,6 +243,7 @@
         d.type = 'button';
         d.setAttribute('role', 'tab');
         d.setAttribute('aria-label', 'Go to brand ' + (j + 1));
+        d.setAttribute('aria-current', j === 0 ? 'true' : 'false');
         d.addEventListener('click', () => { track.scrollLeft = realStart() + j * step(); });
         dots.appendChild(d);
         dotBtns.push(d);
@@ -245,156 +254,102 @@
       dotBtns.forEach((d, k) => d.setAttribute('aria-current', k === active ? 'true' : 'false'));
     }
 
-    /* Coverflow: scroll-driven spin + scale + fade (geometry cached, so the
-       inline transforms we apply never feed back into the measurement). */
-    let cfMeta = [];
+    /* Seamless wrap: jump by one real set only when the rounded index lands on a
+       clone (outside 0..n-1). Rounded-index compare (not raw pixels) is immune to
+       sub-pixel drift, so the first/last card never oscillates at the boundary. */
+    function normalize() {
+      const k = Math.round((track.scrollLeft - base) / stepPx);
+      if (k < 0) setInstant(track.scrollLeft + realWidth());
+      else if (k >= n) setInstant(track.scrollLeft - realWidth());
+    }
+
+    /* Coverflow (exact Artsons formula): a card spins + scales + fades in from
+       the right and out to the left, driven by how much of it is off-screen.
+       A deadzone keeps the fully-shown cards perfectly flat. */
+    let cfMeta = [], cfTick = false;
     function cfMeasure() { measure(); cfMeta = kids().map(c => ({ el: c, left: c.offsetLeft, w: c.offsetWidth })); }
     function coverflow() {
+      cfTick = false;
       if (REDUCED) return;
       const sl = track.scrollLeft, vw = track.clientWidth;
-      for (const m of cfMeta) {
-        /* Wheel coverflow (same model as the Artsons featured wheel): a card is
-           flat + full size while fully in view, then as it slides toward either
-           edge and starts leaving the viewport it spins in 3D, scales down and
-           fades — like cards turning on a wheel. Driven by how much of the card
-           is OFF-screen (p), so it's symmetric and plays on any scroll input. */
-        const left  = m.left - sl;
-        const right = left + m.w;
-        const vis   = Math.max(0, Math.min(1, (Math.min(right, vw) - Math.max(left, 0)) / m.w));
-        const p     = 1 - vis;                       // 0 = fully shown, 1 = fully off-screen
-        if (p < 0.06) {                              // deadzone: keep centred cards perfectly flat
-          m.el.style.transform = '';
-          m.el.style.opacity = '';
-          m.el.classList.remove('sm-cf');
-          continue;
-        }
-        const sign = (left + right) / 2 > vw / 2 ? -1 : 1;   // entering from right (−) vs leaving left (+)
-        m.el.style.transform =
-          'perspective(1100px) rotateY(' + (sign * 42 * p).toFixed(2) + 'deg) scale(' + (1 - 0.34 * p).toFixed(3) + ')';
+      for (let k = 0; k < cfMeta.length; k++) {
+        const m = cfMeta[k], left = m.left - sl, right = left + m.w;
+        const vis = Math.max(0, Math.min(1, (Math.min(right, vw) - Math.max(left, 0)) / m.w));
+        const p = 1 - vis;                                    // 0 = fully shown, 1 = fully off-screen
+        if (p < 0.06) { m.el.style.transform = ''; m.el.style.opacity = ''; m.el.classList.remove('sm-cf'); continue; }
+        const sign = (left + right) / 2 > vw / 2 ? -1 : 1;    // entering (right) vs leaving (left)
+        m.el.style.transform = 'perspective(1100px) rotateY(' + (sign * 42 * p).toFixed(2) + 'deg) scale(' + (1 - 0.34 * p).toFixed(3) + ')';
         m.el.style.opacity = (1 - 0.85 * p).toFixed(3);
-        m.el.classList.add('sm-cf');
+        m.el.classList.add('sm-cf');                          // drop backdrop-filter while rotated
       }
     }
 
-    /* Infinite-loop wrap */
-    function normalize() {
-      const s = step(), rs = realStart(), sl = track.scrollLeft;
-      const k = Math.round((sl - rs) / s);
-      if (k < 0) setInstant(sl + realWidth());
-      else if (k >= n) setInstant(sl - realWidth());
+    /* Snap after a scroll settles → glide to the nearest clean rest so a card
+       always fits (CSS scroll-behavior:smooth animates the small correction). */
+    let dotTick = false, settleTimer;
+    function settle() {
+      if (track.classList.contains('sm-dragging')) return;
+      const t = snapTarget();
+      if (Math.abs(t - track.scrollLeft) > 2) track.scrollLeft = t;
     }
-
-    /* Smooth eased auto-advance (easeInOutCubic — softer than native smooth-scroll).
-       normalize() is suppressed mid-tween so it never jumps, then re-run at the end. */
-    let tweening = false, tweenRAF = null;
-    function tweenTo(target, dur) {
-      cancelAnimationFrame(tweenRAF);
-      const start = track.scrollLeft, dist = target - start, t0 = performance.now();
-      const prevBehav = track.style.scrollBehavior;
-      track.style.scrollBehavior = 'auto';
-      tweening = true;
-      function frame(now) {
-        const p = Math.min((now - t0) / dur, 1);
-        const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;   // easeInOutCubic — eases in AND out, no lurch/jump
-        track.scrollLeft = Math.round(start + dist * e);   // integer → no sub-pixel jitter
-        coverflow();                                        // drive the spin in-sync each frame
-        if (p < 1) { tweenRAF = requestAnimationFrame(frame); }
-        else { tweening = false; track.style.scrollBehavior = prevBehav; normalize(); coverflow(); syncDots(); }
-      }
-      tweenRAF = requestAnimationFrame(frame);
-    }
-
-    /* ONE handler drives everything. Auto-scroll, drag, and wheel/trackpad all do
-       nothing but change scrollLeft; this single listener runs the coverflow and
-       the seamless loop for all of them — so all three look and behave identically,
-       exactly like the native trackpad scroll (the one that already feels right). */
-    let dotTick = false, cfTick = false;
     track.addEventListener('scroll', () => {
       normalize();
-      if (!cfTick) { cfTick = true; requestAnimationFrame(() => { cfTick = false; coverflow(); }); }
+      if (!cfTick) { cfTick = true; requestAnimationFrame(coverflow); }
       if (!dotTick) { dotTick = true; requestAnimationFrame(() => { dotTick = false; syncDots(); }); }
+      clearTimeout(settleTimer); settleTimer = setTimeout(settle, 90);
     }, { passive: true });
+    /* Re-center once scrolling FULLY stops (after momentum). */
+    if ('onscrollend' in window) {
+      track.addEventListener('scrollend', () => {
+        if (track.classList.contains('sm-dragging')) return;
+        const t = snapTarget();
+        if (Math.abs(t - track.scrollLeft) > 0.5) setInstant(t);
+      });
+    }
 
-    /* Edge arrows (optional, if present in the markup) */
+    /* Edge arrows (optional, if present in the markup) — glide one card. */
     function nudge(dir) { track.scrollLeft = snapTarget() + dir * step(); }
     const prev = document.getElementById('sm-prev'), next = document.getElementById('sm-next');
     if (prev) prev.addEventListener('click', () => nudge(-1));
     if (next) next.addEventListener('click', () => nudge(1));
 
-    /* Desktop click-drag — copied from Artsons' featured wheel (bindWheelDrag):
-       absolute start-position mapping, snap to nearest card on release, and
+    /* Click-drag (desktop / mouse) — verbatim from Artsons' bindWheelDrag:
+       absolute start-position mapping, snap to the nearest card on release, and
        swallow the click that follows a drag. */
     if (window.matchMedia('(pointer: fine)').matches) {
-      let down = false, startX = 0, lastX = 0, moved = false;
+      let down = false, startX = 0, startScroll = 0, moved = false;
       track.addEventListener('mousedown', e => {
         if (e.target.closest('a')) return;      // let bio @mention links click through
-        down = true; moved = false;
-        startX = lastX = e.clientX;
-        track.classList.add('sm-dragging'); e.preventDefault();
+        down = true; moved = false; startX = e.clientX; startScroll = track.scrollLeft;
+        track.classList.add('sm-dragging');
+        e.preventDefault();                     // block native image/text drag
       });
       window.addEventListener('mousemove', e => {
         if (!down) return;
-        const dx = e.clientX - lastX;
-        if (Math.abs(e.clientX - startX) > 4) moved = true;
-        track.scrollLeft -= dx;                 // just change scrollLeft; the scroll listener does
-        lastX = e.clientX;                       // the coverflow + loop (same path as the trackpad)
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        track.scrollLeft = startScroll - dx;    // follow the cursor 1:1
       });
       const end = () => {
         if (!down) return; down = false;
         track.classList.remove('sm-dragging');
+        const t = snapTarget();                 // snap to nearest card (CSS smooth glides it)
+        if (Math.abs(t - track.scrollLeft) > 1) track.scrollLeft = t;
       };
       window.addEventListener('mouseup', end);
       window.addEventListener('mouseleave', end);
-      /* Swallow the click that follows a drag so bio links don't fire mid-swipe */
       track.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
     }
 
-    /* Auto-scroll: one continuous, constant-speed slide right → left — the same
-       fluid motion as dragging. Every card completes a full glide from its slot
-       to the previous one (never a discrete "change"). Loops seamlessly inside
-       the big clone buffer; pauses on hover / drag / hidden tab. */
-    if (!REDUCED) {
-      let hovering = false, pointerActive = false;
-      const SPEED = 0.6;                 // px per frame — slow, continuous slide
-      /* Float accumulator: scrollLeft rounds to whole px, so `scrollLeft += 0.6`
-         would round straight back and never advance (the stall). We keep the
-         real position as a float in `pos` and write it each frame — the fraction
-         accumulates and crosses integers. Auto-scroll still only writes
-         scrollLeft; the single 'scroll' listener runs normalize + coverflow +
-         dots for every input, so all three still share one path. */
-      let pos = track.scrollLeft;
-      (function autoTick() {
-        const active = !hovering && !pointerActive &&
-                       !track.classList.contains('sm-dragging') && !document.hidden;
-        if (active) {
-          track.style.scrollBehavior = 'auto';
-          /* Resync if anything else moved the scroll — a drag, the trackpad, or
-             a normalize() loop-wrap (which jumps by ±one loop). Then advance. */
-          if (Math.abs(pos - track.scrollLeft) > 1.5) pos = track.scrollLeft;
-          pos += SPEED;
-          track.scrollLeft = pos;
-        } else {
-          track.style.scrollBehavior = '';          // restore CSS smooth (dot-click glide) while paused
-          pos = track.scrollLeft;                   // stay synced while paused / dragging
-        }
-        requestAnimationFrame(autoTick);
-      })();
-      track.addEventListener('mouseenter', () => { hovering = true; });
-      track.addEventListener('mouseleave', () => { hovering = false; });
-      track.addEventListener('pointerdown', () => { pointerActive = true; cancelAnimationFrame(tweenRAF); tweening = false; });
-      window.addEventListener('pointerup', () => { pointerActive = false; });
-      window.addEventListener('pointercancel', () => { pointerActive = false; });
-    }
-
-    /* Start on the first real card */
+    /* Start on the first real card. */
     cfMeasure();
     setInstant(realStart());
     requestAnimationFrame(() => { cfMeasure(); setInstant(realStart()); coverflow(); syncDots(); });
     window.addEventListener('load', () => { cfMeasure(); coverflow(); });
-    window.addEventListener('resize', () => {
-      const i = realIndex();
+    window.addEventListener('resize', throttle(() => {
+      const i = realIndex();                    // keep the CURRENT card, not reset to the first
       cfMeasure(); setInstant(realStart() + i * step()); coverflow(); syncDots();
-    });
+    }, 150));
   }
 
   /* ── Main ───────────────────────────────────────── */
