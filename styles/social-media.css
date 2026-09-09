@@ -223,7 +223,7 @@
   /* Exactly --sm-per-view cards fill the track width (4 on desktop) */
   width: calc((100% - (var(--sm-per-view, 4) - 1) * var(--sm-gap, 24px)) / var(--sm-per-view, 4));
   min-width: 0;
-  min-height: 472px;          /* match the creators (mentorship) card height */
+  min-height: 508px;          /* a bit bigger per-project card */
   background: #ffffff;
   border: 1px solid rgba(20, 22, 28, 0.09);
   border-radius: var(--radius-lg);
@@ -578,7 +578,7 @@ a.sm-platform-btn:hover .sm-platform-icon {
   position: relative;                 /* offsetParent for coverflow math */
   display: flex;
   gap: var(--sm-gap);
-  max-width: 1320px;                  /* wider cards so names sit on one line beside the badge */
+  max-width: 1440px;                  /* wider row → a bit bigger cards per project */
   margin-inline: auto;
   overflow-x: auto;
   overflow-y: hidden;
