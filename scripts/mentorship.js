@@ -82,64 +82,17 @@
       ? '<svg class="ms-verified-badge" viewBox="0 0 22 22" fill="none" aria-label="Verified" role="img"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.275.213-1.815.568s-.972.854-1.247 1.44c-.606-.222-1.262-.268-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.749 1.054-.88 1.688-.13.633-.085 1.29.139 1.896-.587.274-1.087.705-1.441 1.246-.354.54-.551 1.17-.569 1.816.018.647.215 1.276.569 1.817.354.54.854.972 1.441 1.246-.224.606-.269 1.262-.14 1.896.131.634.436 1.218.881 1.688.469.443 1.053.748 1.687.879.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.606.22 1.262.267 1.897.137.634-.132 1.218-.437 1.687-.882.445-.469.749-1.053.881-1.687.13-.633.086-1.29-.136-1.897.587-.274 1.087-.706 1.441-1.246.354-.54.551-1.17.569-1.816z" fill="#1D9BF0"/><path d="M6.5 11.5l2.8 2.8 5.7-5.6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
       : '';
 
-    /* Cover: a solid brand-colour panel (mentee.coverColor) or the photo. */
-    const coverInner = mentee.coverColor
-      ? `<span class="ms-cover-fill"></span><span class="ms-cover-mark">${initial}</span>`
-      : (hasPhoto
-          ? `<img class="ms-cover-photo" src="${mentee.photo}" alt="" loading="lazy">`
-          : `<span class="ms-cover-initial">${initial}</span>`);
+    /* Banner (cover image): a per-mentee image, or a "#hex" solid colour. */
+    const bannerStyle = mentee.banner
+      ? (mentee.banner.charAt(0) === '#'
+          ? ` style="background:${mentee.banner}"`
+          : ` style="background-image:url('${mentee.banner}')"`)
+      : '';
 
-    return `
-      <article class="ms-card status-${mentee.status === 'on-hold' ? 'on-hold' : mentee.mentorshipTo ? 'completed' : 'active'}"
-               data-id="${mentee.id}" role="listitem"
-               style="--ring-from:${st.from};--ring-to:${st.to};--ring-glow:${st.glow}">
-
-        <!-- Default state: full-bleed cover (photo or brand colour) -->
-        <div class="ms-cover${mentee.coverColor ? ' ms-cover--color' : ''}" aria-hidden="true">
-          ${coverInner}
-          <span class="ms-cover-shade"></span>
-          <div class="ms-cover-meta">
-            <h3 class="ms-cover-name">${mentee.name}${verifiedBadge}</h3>
-            <span class="ms-cover-niche">${mentee.niche}</span>
-          </div>
-        </div>
-
-        <!-- Hover state: the existing detailed style -->
-        <div class="ms-detail">
-        <div class="ms-ring">
-          <div class="ms-ring-inner">
-            ${photoHTML}
-            <span class="ms-ring-initial" ${initStyle}>${initial}</span>
-          </div>
-        </div>
-
-        <div class="ms-card-info">
-          <h3 class="ms-mentee-name">${mentee.name}${verifiedBadge}</h3>
-          <div class="ms-mentee-meta">
-            <span class="ms-mentee-niche">${mentee.niche}</span>
-          </div>
-        </div>
-
-        <div class="ms-platforms">
-          ${mentee.platforms.map(p => {
-            const key  = (p.icon || p.name || '').toLowerCase();
-            const Tag  = p.url ? 'a' : 'div';
-            const linkAttrs = p.url
-              ? `href="${p.url}" target="_blank" rel="noopener noreferrer" aria-label="${p.name}: ${fmt(p.currentFollowers)} followers"`
-              : '';
-            const iconSVG = icon(p.icon || p.name);
-            return `
-              <${Tag} class="ms-platform-btn${p.url ? '' : ' no-link'}" ${linkAttrs}>
-                <span class="ms-platform-icon" aria-hidden="true">${iconSVG}</span>
-                <span class="ms-platform-count">${fmt(p.currentFollowers)}</span>
-              </${Tag}>`;
-          }).join('')}
-        </div>
-
-        <div class="ms-growth-block">
-          ${mentee.platforms.map(p => {
-            const g = pct(p.beforeFollowers, p.currentFollowers);
-            return `
+    /* Content below the niche: before → after growth per platform. */
+    const growthHTML = mentee.platforms.map(p => {
+      const g = pct(p.beforeFollowers, p.currentFollowers);
+      return `
               <div class="ms-platform-growth">
                 <div class="ms-pg-header">
                   <span class="ms-pg-icon">${icon(p.icon || p.name)}</span>
@@ -160,10 +113,39 @@
                   </div>
                 </div>
               </div>`;
-          }).join('')}
-        </div>
+    }).join('');
 
-        ${durHTML}
+    /* Same profile-card UI as the social cards (banner → story-ring avatar →
+       name + verified → niche). The only difference is the content below the
+       niche: the creator's before → after growth instead of a bio + reach. */
+    return `
+      <article class="ms-card status-${mentee.status === 'on-hold' ? 'on-hold' : mentee.mentorshipTo ? 'completed' : 'active'}"
+               data-id="${mentee.id}" role="listitem"
+               style="--ring-from:${st.from};--ring-to:${st.to};--ring-glow:${st.glow};--brand:${st.from}">
+
+        <div class="ms-banner"${bannerStyle}></div>
+
+        <div class="ms-body">
+          <div class="ms-ring">
+            <div class="ms-ring-inner">
+              ${photoHTML}
+              <span class="ms-ring-initial" ${initStyle}>${initial}</span>
+            </div>
+          </div>
+
+          <h3 class="ms-brand-name">${mentee.name}${verifiedBadge}</h3>
+          <span class="ms-brand-industry">${mentee.niche}</span>
+
+          <div class="ms-growth-block">
+            ${growthHTML}
+          </div>
+
+          ${durHTML}
+
+          <div class="ms-status-tag" aria-hidden="true">
+            <span class="ms-status-dot"></span>
+            <span class="ms-status-text">${st.label}</span>
+          </div>
         </div>
       </article>`;
   }
