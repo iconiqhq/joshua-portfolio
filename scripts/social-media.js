@@ -344,6 +344,20 @@
       track.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
     }
 
+    /* Auto-advance: glide to the next card every 2s (the arrow nudge on a timer,
+       so it reuses the same smooth glide + snap + seamless loop). Right → left
+       (scrollLeft grows, content drifts left). Pauses on hover, drag, or a hidden
+       tab; resumes on its own. Skipped entirely under reduced-motion. */
+    if (!REDUCED) {
+      let hovering = false;
+      track.addEventListener('mouseenter', () => { hovering = true; });
+      track.addEventListener('mouseleave', () => { hovering = false; });
+      setInterval(() => {
+        if (hovering || track.classList.contains('sm-dragging') || document.hidden) return;
+        nudge(1);
+      }, 2000);
+    }
+
     /* Start on the first real card. */
     cfMeasure();
     setInstant(realStart());
