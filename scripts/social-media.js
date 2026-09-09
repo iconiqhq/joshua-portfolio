@@ -273,14 +273,17 @@
       if (REDUCED) return;
       const sl = track.scrollLeft, vw = track.clientWidth;
       for (let k = 0; k < cfMeta.length; k++) {
-        const m = cfMeta[k], left = m.left - sl, right = left + m.w;
-        const vis = Math.max(0, Math.min(1, (Math.min(right, vw) - Math.max(left, 0)) / m.w));
-        const p = 1 - vis;                                    // 0 = fully shown, 1 = fully off-screen
-        if (p < 0.06) { m.el.style.transform = ''; m.el.style.opacity = ''; m.el.classList.remove('sm-cf'); continue; }
-        const sign = (left + right) / 2 > vw / 2 ? -1 : 1;    // entering (right) vs leaving (left)
-        m.el.style.transform = 'perspective(1100px) rotateY(' + (sign * 42 * p).toFixed(2) + 'deg) scale(' + (1 - 0.34 * p).toFixed(3) + ')';
-        m.el.style.opacity = (1 - 0.85 * p).toFixed(3);
-        m.el.classList.add('sm-cf');                          // drop backdrop-filter while rotated
+        /* Previous style: scale each card by how far its centre is from the
+           viewport centre — the middle cards are full size, the ones toward the
+           sides are a bit smaller (and slightly faded). A continuous scale, so
+           it plays smoothly as the wheel drags/scrolls. */
+        const m = cfMeta[k];
+        const cardCentre = (m.left + m.w / 2) - sl;
+        const off = (cardCentre - vw / 2) / vw;      // 0 at centre; ± toward the sides
+        const d = Math.min(1, Math.abs(off) * 2);    // 0 centre → 1 near the edges
+        m.el.style.transform = 'scale(' + (1 - 0.17 * d).toFixed(3) + ')';
+        m.el.style.opacity = (1 - 0.45 * d).toFixed(3);
+        m.el.classList.add('sm-cf');
       }
     }
 

@@ -518,46 +518,12 @@ a.sm-platform-btn:hover .sm-platform-icon {
 .sm-row-wrap {
   position: relative;
   z-index: 1;
-  max-width: 1320px;       /* match the card row so the edge arrows hug the outer cards */
-  margin-inline: auto;
 }
 
 .sm-row-wrap::before,
 .sm-row-wrap::after {
   content: none;   /* edge fades removed — the carousel shows 4 full centered cards */
 }
-
-/* Edge arrows — copied 1:1 from the Artsons featured wheel (.wheel__arrow--edge):
-   frosted-white glass circle with a white chevron, floated over the outer cards
-   at each end. The wrapper (not the cards) holds them, so they stay put while the
-   cards spin in the coverflow. Advance one card via nudge() in social-media.js. */
-.sm-arrow {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  top: calc(50% - 14px);
-  transform: translateY(-50%);
-  z-index: 5;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  background: rgba(255, 255, 255, 0.15);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.38);
-  transition: background 0.2s, transform 0.15s;
-}
-.sm-arrow--prev { left: 16px; }
-.sm-arrow--next { right: 16px; }
-.sm-arrow svg { width: 22px; height: 22px; }
-.sm-arrow:hover { color: #fff; background: rgba(255, 255, 255, 0.26); }
-.sm-arrow:active { transform: translateY(-50%) scale(0.93); }
-.sm-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-/* Mobile is swipe-only — hide the edge arrows (matches Artsons) */
-@media (max-width: 759px) { .sm-arrow { display: none; } }
 
 .sm-row-wrap::before {
   left: 0;
