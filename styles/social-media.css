@@ -398,6 +398,42 @@
   color: rgba(0, 0, 0, 0.38);
 }
 
+/* Status pill — hidden until the card is hovered/focused, then fades up below
+   the Total Reach block. Dot is tinted with the card's status colour
+   (--ring-from): green = Active, amber = On Hold, red = Completed. */
+.sm-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 5px 12px 5px 10px;
+  border-radius: 999px;
+  background: rgba(20, 22, 28, 0.06);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #14161c;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.sm-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ring-from, #22c55e);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring-from, #22c55e) 24%, transparent);
+  flex-shrink: 0;
+}
+
+.sm-card:hover .sm-status-tag,
+.sm-card:focus-within .sm-status-tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* ── Platform Buttons (2 columns) ───────────────────── */
 .sm-platforms {
   width: 100%;

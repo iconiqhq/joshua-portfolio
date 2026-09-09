@@ -145,6 +145,11 @@
             <span class="sm-reach-value">${fmtFull(reach)}</span>
             <span class="sm-reach-label">Total Reach</span>
           </div>
+
+          <div class="sm-status-tag" aria-hidden="true">
+            <span class="sm-status-dot"></span>
+            <span class="sm-status-text">${st.label}</span>
+          </div>
         </div>
 
       </article>`;
