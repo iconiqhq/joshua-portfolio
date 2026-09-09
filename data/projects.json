@@ -272,30 +272,6 @@
       ]
     },
     {
-      "id": "zhara",
-      "brandName": "Zhara",
-      "verified": true,
-      "industry": "Web3 Content Creator",
-      "bio": "My face isn't the content 🫶🏻 | Creator @ronin_network | Intern @BigYakAxieClub | Adopted Gamer by @la_manadateam | @axieselfie Fam",
-      "brandColor": "#1f1b4d",
-      "status": "past",
-      "managedFrom": "Jan 2025",
-      "managedTo": "Jul 2025",
-      "logo": "assets/images/brands/zhara.png",
-      "banner": "assets/images/brands/banners/zhara.jpeg",
-      "lastUpdated": "Jul 2025",
-      "platforms": [
-        {
-          "name": "X",
-          "icon": "x",
-          "url": "https://x.com/zhara0x?s=21",
-          "currentFollowers": 2200,
-          "chartLabels": [],
-          "chartData":   []
-        }
-      ]
-    },
-    {
       "id": "teamkulot",
       "brandName": "Team Kulot",
       "industry": "Political",

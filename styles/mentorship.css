@@ -259,6 +259,27 @@
   background: linear-gradient(135deg, var(--ring-from), var(--ring-to));
 }
 
+/* Solid brand-colour cover (uses the card's status colours) */
+.ms-cover-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, var(--ring-from), var(--ring-to));
+}
+
+.ms-cover-mark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 8rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.18);
+  text-transform: uppercase;
+}
+
 .ms-cover-shade {
   position: absolute;
   inset: 0;
@@ -266,6 +287,23 @@
     rgba(0, 0, 0, 0.88) 0%,
     rgba(0, 0, 0, 0.35) 34%,
     transparent 62%);
+}
+
+/* On a colour cover the shade is lighter so the brand colour reads through */
+.ms-cover--color .ms-cover-shade {
+  background: linear-gradient(to top,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.12) 40%,
+    transparent 68%);
+}
+
+/* Verified blue badge beside the mentee name */
+.ms-verified-badge {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  vertical-align: middle;
 }
 
 .ms-cover-meta {
