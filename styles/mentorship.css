@@ -643,6 +643,7 @@ a.ms-platform-btn:hover .ms-platform-icon {
 .ms-cards-row {
   padding-top: var(--sp-4);
   padding-bottom: var(--sp-8);
+  justify-content: center;   /* only a couple of creators — keep them centered */
 }
 
 /* ── Carousel dots ──────────────────────────────────── */

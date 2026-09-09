@@ -223,7 +223,7 @@
   /* Exactly --sm-per-view cards fill the track width (4 on desktop) */
   width: calc((100% - (var(--sm-per-view, 4) - 1) * var(--sm-gap, 24px)) / var(--sm-per-view, 4));
   min-width: 0;
-  min-height: 430px;
+  min-height: 472px;          /* match the creators (mentorship) card height */
   background: #ffffff;
   border: 1px solid rgba(20, 22, 28, 0.09);
   border-radius: var(--radius-lg);

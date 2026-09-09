@@ -25,6 +25,25 @@
           "currentFollowers": 11000
         }
       ]
+    },
+    {
+      "id": "zhara",
+      "name": "Zhara",
+      "handle": "@zhara0x",
+      "niche": "Web3 Content Creator",
+      "photo": "assets/images/brands/zhara.png",
+      "status": "completed",
+      "mentorshipFrom": "2025-01",
+      "mentorshipTo": "2025-07",
+      "platforms": [
+        {
+          "name": "X",
+          "icon": "x",
+          "url": "https://x.com/zhara0x?s=21",
+          "beforeFollowers": null,
+          "currentFollowers": 2200
+        }
+      ]
     }
   ]
 }

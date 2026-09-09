@@ -4,7 +4,8 @@
   'use strict';
 
   async function loadJSON(path) {
-    const res = await fetch(path);
+    /* Revalidate so edits to the /data JSON show up without a stale cache. */
+    const res = await fetch(path, { cache: 'no-cache' });
     if (!res.ok) throw new Error('Failed to load: ' + path);
     return res.json();
   }
