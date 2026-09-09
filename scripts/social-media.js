@@ -295,12 +295,12 @@
       tweenRAF = requestAnimationFrame(frame);
     }
 
-    /* Scroll listener handles ONLY manual wheel/trackpad scrolling. The auto-scroll,
-       the tween and the drag each drive coverflow themselves, so bail for those —
-       otherwise coverflow runs twice per frame and the cards flicker (the shake). */
-    let dotTick = false, cfTick = false, autoDriving = false;
+    /* ONE handler drives everything. Auto-scroll, drag, and wheel/trackpad all do
+       nothing but change scrollLeft; this single listener runs the coverflow and
+       the seamless loop for all of them — so all three look and behave identically,
+       exactly like the native trackpad scroll (the one that already feels right). */
+    let dotTick = false, cfTick = false;
     track.addEventListener('scroll', () => {
-      if (tweening || autoDriving || track.classList.contains('sm-dragging')) return;
       normalize();
       if (!cfTick) { cfTick = true; requestAnimationFrame(() => { cfTick = false; coverflow(); }); }
       if (!dotTick) { dotTick = true; requestAnimationFrame(() => { dotTick = false; syncDots(); }); }
@@ -316,27 +316,23 @@
        absolute start-position mapping, snap to nearest card on release, and
        swallow the click that follows a drag. */
     if (window.matchMedia('(pointer: fine)').matches) {
-      let down = false, startX = 0, startScroll = 0, moved = false;
+      let down = false, startX = 0, lastX = 0, moved = false;
       track.addEventListener('mousedown', e => {
         if (e.target.closest('a')) return;      // let bio @mention links click through
-        cancelAnimationFrame(tweenRAF); tweening = false;   // stop any auto-glide immediately
         down = true; moved = false;
-        startX = e.clientX; startScroll = track.scrollLeft;
+        startX = lastX = e.clientX;
         track.classList.add('sm-dragging'); e.preventDefault();
       });
       window.addEventListener('mousemove', e => {
         if (!down) return;
-        const dx = e.clientX - startX;
-        if (Math.abs(dx) > 4) moved = true;
-        track.scrollLeft = startScroll - dx;    // follow the cursor 1:1 (exactly like Artsons)
-        coverflow();                            // animate cards live as you drag — same look as auto-scroll
-        syncDots();
+        const dx = e.clientX - lastX;
+        if (Math.abs(e.clientX - startX) > 4) moved = true;
+        track.scrollLeft -= dx;                 // just change scrollLeft; the scroll listener does
+        lastX = e.clientX;                       // the coverflow + loop (same path as the trackpad)
       });
       const end = () => {
         if (!down) return; down = false;
         track.classList.remove('sm-dragging');
-        normalize();                            // keep the loop in sync; no snap — free movement,
-                                                // identical to the auto-scroll and wheel
       };
       window.addEventListener('mouseup', end);
       window.addEventListener('mouseleave', end);
@@ -350,32 +346,20 @@
        the big clone buffer; pauses on hover / drag / hidden tab. */
     if (!REDUCED) {
       let hovering = false, pointerActive = false;
-      const SPEED = 0.6;                 // px per frame — a touch faster, still a complete visible slide
-      let pos = track.scrollLeft;
+      const SPEED = 0.6;                 // px per frame — slow, continuous slide
       (function autoTick() {
-        const active = !hovering && !pointerActive && !tweening &&
+        const active = !hovering && !pointerActive &&
                        !track.classList.contains('sm-dragging') && !document.hidden;
-        autoDriving = active;                       // tell the scroll listener to stand down while we drive
         if (active) {
-          /* Apply moves INSTANTLY. The track's CSS scroll-behavior:smooth would
-             otherwise animate every per-frame update — the row chases/lags and
-             the loop wrap smooth-animates its big jump = the shake at both ends. */
+          /* Move it EXACTLY like the trackpad does: just nudge scrollLeft.
+             The single 'scroll' listener then runs normalize + coverflow + dots,
+             so auto-scroll, drag, and trackpad are literally the same code path
+             and produce the identical animation. scroll-behavior:auto so the
+             per-frame nudge is instant (smooth would chase/lag and shake). */
           track.style.scrollBehavior = 'auto';
-          /* Resync if something else moved the scroll (the initial positioning,
-             a resize, or a just-finished drag). Without this the accumulator is
-             stale on open and yanks the row — the "fast scroll on open" bug. */
-          if (Math.abs(pos - track.scrollLeft) > 2) pos = track.scrollLeft;
-          pos += SPEED;
-          track.scrollLeft = pos;
-          const before = track.scrollLeft;
-          normalize();                              // seamless wrap deep inside the clone buffer
-          const after = track.scrollLeft;
-          if (after !== before) pos += (after - before);   // keep accumulator synced across a wrap
-          coverflow();                              // scale in-sync every frame (same as dragging)
-          syncDots();
+          track.scrollLeft += SPEED;
         } else {
           track.style.scrollBehavior = '';          // restore CSS smooth (dot-click glide) while paused
-          pos = track.scrollLeft;                   // stay in sync while paused / dragging
         }
         requestAnimationFrame(autoTick);
       })();
