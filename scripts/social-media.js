@@ -358,6 +358,10 @@
                        !track.classList.contains('sm-dragging') && !document.hidden;
         autoDriving = active;                       // tell the scroll listener to stand down while we drive
         if (active) {
+          /* Apply moves INSTANTLY. The track's CSS scroll-behavior:smooth would
+             otherwise animate every per-frame update — the row chases/lags and
+             the loop wrap smooth-animates its big jump = the shake at both ends. */
+          track.style.scrollBehavior = 'auto';
           /* Resync if something else moved the scroll (the initial positioning,
              a resize, or a just-finished drag). Without this the accumulator is
              stale on open and yanks the row — the "fast scroll on open" bug. */
@@ -371,6 +375,7 @@
           coverflow();                              // scale in-sync every frame (same as dragging)
           syncDots();
         } else {
+          track.style.scrollBehavior = '';          // restore CSS smooth (dot-click glide) while paused
           pos = track.scrollLeft;                   // stay in sync while paused / dragging
         }
         requestAnimationFrame(autoTick);
