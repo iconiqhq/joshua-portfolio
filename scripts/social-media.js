@@ -335,9 +335,8 @@
       const end = () => {
         if (!down) return; down = false;
         track.classList.remove('sm-dragging');
-        const target = snapTarget();            // snap to the same rests the auto-scroll uses
-        if (Math.abs(target - track.scrollLeft) > 1) track.scrollLeft = target;
-        normalize();                            // keep the infinite loop in sync after release
+        normalize();                            // keep the loop in sync; no snap — free movement,
+                                                // identical to the auto-scroll and wheel
       };
       window.addEventListener('mouseup', end);
       window.addEventListener('mouseleave', end);
