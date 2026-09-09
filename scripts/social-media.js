@@ -295,15 +295,12 @@
       tweenRAF = requestAnimationFrame(frame);
     }
 
-    /* Desktop snap once a scroll settles (mobile uses native CSS scroll-snap) */
-    let dotTick = false, cfTick = false, settleTimer;
-    function settle() {
-      if (tweening || track.classList.contains('sm-dragging') || window.innerWidth < 640) return;
-      const t = snapTarget();
-      if (Math.abs(t - track.scrollLeft) > 2) track.scrollLeft = t;
-    }
+    /* Scroll listener handles ONLY manual wheel/trackpad scrolling. The auto-scroll,
+       the tween and the drag each drive coverflow themselves, so bail for those —
+       otherwise coverflow runs twice per frame and the cards flicker (the shake). */
+    let dotTick = false, cfTick = false, autoDriving = false;
     track.addEventListener('scroll', () => {
-      if (tweening) return;
+      if (tweening || autoDriving || track.classList.contains('sm-dragging')) return;
       normalize();
       if (!cfTick) { cfTick = true; requestAnimationFrame(() => { cfTick = false; coverflow(); }); }
       if (!dotTick) { dotTick = true; requestAnimationFrame(() => { dotTick = false; syncDots(); }); }
@@ -354,12 +351,17 @@
        the big clone buffer; pauses on hover / drag / hidden tab. */
     if (!REDUCED) {
       let hovering = false, pointerActive = false;
-      const SPEED = 0.4;                 // px per frame — slow, complete, clearly-visible slide
+      const SPEED = 0.6;                 // px per frame — a touch faster, still a complete visible slide
       let pos = track.scrollLeft;
       (function autoTick() {
         const active = !hovering && !pointerActive && !tweening &&
                        !track.classList.contains('sm-dragging') && !document.hidden;
+        autoDriving = active;                       // tell the scroll listener to stand down while we drive
         if (active) {
+          /* Resync if something else moved the scroll (the initial positioning,
+             a resize, or a just-finished drag). Without this the accumulator is
+             stale on open and yanks the row — the "fast scroll on open" bug. */
+          if (Math.abs(pos - track.scrollLeft) > 2) pos = track.scrollLeft;
           pos += SPEED;
           track.scrollLeft = pos;
           const before = track.scrollLeft;
@@ -367,6 +369,7 @@
           const after = track.scrollLeft;
           if (after !== before) pos += (after - before);   // keep accumulator synced across a wrap
           coverflow();                              // scale in-sync every frame (same as dragging)
+          syncDots();
         } else {
           pos = track.scrollLeft;                   // stay in sync while paused / dragging
         }
