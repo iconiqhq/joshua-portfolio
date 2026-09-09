@@ -147,6 +147,18 @@
             <span class="ms-status-text">${st.label}</span>
           </div>
         </div>
+
+        <!-- Default (not hovered): full-bleed profile picture; fades out on hover -->
+        <div class="ms-cover" aria-hidden="true">
+          ${hasPhoto
+            ? `<img class="ms-cover-photo" src="${mentee.photo}" alt="" loading="lazy">`
+            : `<span class="ms-cover-initial">${initial}</span>`}
+          <span class="ms-cover-shade"></span>
+          <div class="ms-cover-meta">
+            <h3 class="ms-cover-name">${mentee.name}${verifiedBadge}</h3>
+            <span class="ms-cover-niche">${mentee.niche}</span>
+          </div>
+        </div>
       </article>`;
   }
 

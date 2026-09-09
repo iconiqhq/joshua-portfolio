@@ -227,6 +227,79 @@
   transition: border-color var(--t-fast), box-shadow 0.16s linear;
 }
 
+/* Default state: full-bleed profile picture overlaying the profile card.
+   Fades out on hover to reveal the social-style card underneath. */
+.ms-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.ms-cover-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.ms-cover-initial {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 5rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ring-from), var(--ring-to));
+}
+
+.ms-cover-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.35) 36%,
+    transparent 64%);
+}
+
+.ms-cover-meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 22px 24px;
+  text-align: left;
+}
+
+.ms-cover-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.ms-cover-niche {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ms-card:hover .ms-cover,
+.ms-card:focus-within .ms-cover {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Banner (cover image) — image or solid brand colour via the JSON `banner` */
 .ms-banner {
   width: 100%;
