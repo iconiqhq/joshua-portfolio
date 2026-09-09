@@ -299,6 +299,31 @@
   }
 
   /* ── Main init ──────────────────────────────────── */
+  /* Keep the creator cards exactly as tall as the social ("brands I manage")
+     cards at every viewport width. The social card height is content-driven and
+     changes with width, so we measure a live one and copy it, retrying until it
+     has rendered (it loads async in social-media.js) and again on resize. */
+  function syncCreatorHeight(row) {
+    function apply() {
+      const sm = document.querySelector('#sm-cards-row .sm-card');
+      const cards = row.querySelectorAll('.ms-card');
+      if (!sm || !cards.length) return false;
+      const h = sm.offsetHeight;
+      if (!h) return false;
+      cards.forEach(c => { c.style.height = h + 'px'; });
+      return true;
+    }
+    // Retry for a short while in case the social row hasn't rendered yet.
+    let tries = 0;
+    (function attempt() {
+      if (apply() || tries++ > 40) return;
+      setTimeout(attempt, 100);
+    })();
+    window.addEventListener('load', apply);
+    let t;
+    window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(apply, 150); }, { passive: true });
+  }
+
   async function init() {
     if (!window.PortfolioData) return;
 
@@ -313,6 +338,7 @@
     if (row) {
       row.innerHTML = mentees.map(buildCard).join('');
       initDrag(row);
+      syncCreatorHeight(row);
     }
 
     const dotsEl = document.getElementById('ms-dots');
