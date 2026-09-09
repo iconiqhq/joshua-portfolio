@@ -490,66 +490,6 @@ a.sm-platform-btn:hover .sm-platform-icon {
   line-height: 1;
 }
 
-/* ── Status bar (shown on hover) ────────────────────── */
-.sm-status-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 16px 10px;
-  background: linear-gradient(to top, rgba(255,255,255,0.96) 60%, transparent 100%);
-  opacity: 0;
-  transform: translateY(3px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-
-.sm-card:hover .sm-status-bar {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.sm-status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.sm-card.status-active   .sm-status-dot { background: #22c55e; }
-.sm-card.status-inactive .sm-status-dot { background: #f59e0b; }
-.sm-card.status-past     .sm-status-dot { background: #ef4444; }
-
-.sm-status-text {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.sm-card.status-active   .sm-status-text { color: #22c55e; }
-.sm-card.status-inactive .sm-status-text { color: #f59e0b; }
-.sm-card.status-past     .sm-status-text { color: #ef4444; }
-
-.sm-status-sep {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: rgba(0, 0, 0, 0.2);
-}
-
-.sm-status-period {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.04em;
-}
-
-.sm-card.status-inactive .sm-status-period { color: rgba(245, 158, 11, 0.65); }
-.sm-card.status-past     .sm-status-period { color: rgba(239, 68, 68, 0.65); }
-
 /* ── Row Wrapper ────────────────────────────────────── */
 .sm-row-wrap {
   position: relative;
