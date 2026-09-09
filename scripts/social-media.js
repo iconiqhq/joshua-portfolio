@@ -253,16 +253,25 @@
       if (REDUCED) return;
       const sl = track.scrollLeft, vw = track.clientWidth;
       for (const m of cfMeta) {
-        /* Scale each card by how far its centre is from the viewport centre:
-           middle = big, sides = small. As the row swipes, every card grows
-           toward the centre and shrinks toward the edges (small → big → small). */
-        const cardCentre = (m.left + m.w / 2) - sl;
-        const off = (cardCentre - vw / 2) / vw;      // 0 at centre; ± toward the sides
-        const d = Math.min(1, Math.abs(off) * 2);    // 0 centre → 1 near the edges
-        const scale = (1 - 0.17 * d).toFixed(3);     // pure scale: big in the middle, small at the sides
-        const op    = (1 - 0.45 * d).toFixed(3);     // sides fade back
-        m.el.style.transform = 'scale(' + scale + ')';   // no rotateY → symmetric edges, no directional bleed
-        m.el.style.opacity = op;
+        /* Wheel coverflow (same model as the Artsons featured wheel): a card is
+           flat + full size while fully in view, then as it slides toward either
+           edge and starts leaving the viewport it spins in 3D, scales down and
+           fades — like cards turning on a wheel. Driven by how much of the card
+           is OFF-screen (p), so it's symmetric and plays on any scroll input. */
+        const left  = m.left - sl;
+        const right = left + m.w;
+        const vis   = Math.max(0, Math.min(1, (Math.min(right, vw) - Math.max(left, 0)) / m.w));
+        const p     = 1 - vis;                       // 0 = fully shown, 1 = fully off-screen
+        if (p < 0.06) {                              // deadzone: keep centred cards perfectly flat
+          m.el.style.transform = '';
+          m.el.style.opacity = '';
+          m.el.classList.remove('sm-cf');
+          continue;
+        }
+        const sign = (left + right) / 2 > vw / 2 ? -1 : 1;   // entering from right (−) vs leaving left (+)
+        m.el.style.transform =
+          'perspective(1100px) rotateY(' + (sign * 42 * p).toFixed(2) + 'deg) scale(' + (1 - 0.34 * p).toFixed(3) + ')';
+        m.el.style.opacity = (1 - 0.85 * p).toFixed(3);
         m.el.classList.add('sm-cf');
       }
     }
