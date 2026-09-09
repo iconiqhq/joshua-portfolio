@@ -82,6 +82,21 @@
       <article class="ms-card status-${mentee.status === 'on-hold' ? 'on-hold' : mentee.mentorshipTo ? 'completed' : 'active'}"
                data-id="${mentee.id}" role="listitem"
                style="--ring-from:${st.from};--ring-to:${st.to};--ring-glow:${st.glow}">
+
+        <!-- Default state: full-bleed photo (like Artsons) -->
+        <div class="ms-cover" aria-hidden="true">
+          ${hasPhoto
+            ? `<img class="ms-cover-photo" src="${mentee.photo}" alt="" loading="lazy">`
+            : `<span class="ms-cover-initial">${initial}</span>`}
+          <span class="ms-cover-shade"></span>
+          <div class="ms-cover-meta">
+            <h3 class="ms-cover-name">${mentee.name}</h3>
+            <span class="ms-cover-niche">${mentee.niche}</span>
+          </div>
+        </div>
+
+        <!-- Hover state: the existing detailed style -->
+        <div class="ms-detail">
         <div class="ms-ring">
           <div class="ms-ring-inner">
             ${photoHTML}
@@ -140,6 +155,7 @@
         </div>
 
         ${durHTML}
+        </div>
       </article>`;
   }
 
