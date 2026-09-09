@@ -348,18 +348,30 @@
       track.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
     }
 
-    /* Auto-scroll: advance ONE project every 2s with a smooth ease-in-out glide
-       (cards drift left → right). Each project is showcased at the centre for a
-       beat, then glides to the next. Loops seamlessly; pauses on hover/drag/hidden. */
+    /* Auto-scroll: one continuous, constant-speed slide right → left — the same
+       fluid motion as dragging. Every card completes a full glide from its slot
+       to the previous one (never a discrete "change"). Loops seamlessly inside
+       the big clone buffer; pauses on hover / drag / hidden tab. */
     if (!REDUCED) {
       let hovering = false, pointerActive = false;
-      const autoStep = () => {
-        if (hovering || pointerActive || tweening || track.classList.contains('sm-dragging') || document.hidden) return;
-        normalize();                               // reset into the middle of the clone buffer if needed
-        tweenTo(snapTarget() + step(), 1800);      // glide one card right → left; the big clone buffer
-                                                   // means this target is always in range (no edge/clamp)
-      };
-      setInterval(autoStep, 2500);
+      const SPEED = 0.4;                 // px per frame — slow, complete, clearly-visible slide
+      let pos = track.scrollLeft;
+      (function autoTick() {
+        const active = !hovering && !pointerActive && !tweening &&
+                       !track.classList.contains('sm-dragging') && !document.hidden;
+        if (active) {
+          pos += SPEED;
+          track.scrollLeft = pos;
+          const before = track.scrollLeft;
+          normalize();                              // seamless wrap deep inside the clone buffer
+          const after = track.scrollLeft;
+          if (after !== before) pos += (after - before);   // keep accumulator synced across a wrap
+          coverflow();                              // scale in-sync every frame (same as dragging)
+        } else {
+          pos = track.scrollLeft;                   // stay in sync while paused / dragging
+        }
+        requestAnimationFrame(autoTick);
+      })();
       track.addEventListener('mouseenter', () => { hovering = true; });
       track.addEventListener('mouseleave', () => { hovering = false; });
       track.addEventListener('pointerdown', () => { pointerActive = true; cancelAnimationFrame(tweenRAF); tweening = false; });
