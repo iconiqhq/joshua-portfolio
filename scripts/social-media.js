@@ -181,7 +181,7 @@
     const real = Array.from(track.children);
     const n = real.length;
     if (!n) return;
-    const CLONES = Math.min(n, 4);
+    const CLONES = Math.min(n, 8);   // big buffer so the loop reset happens deep in clones, never at the edge
 
     function prepClone(node) {
       node.classList.add('sm-clone');
@@ -315,29 +315,32 @@
     if (prev) prev.addEventListener('click', () => nudge(-1));
     if (next) next.addEventListener('click', () => nudge(1));
 
-    /* Desktop click-drag — moves 1:1 with the cursor and snaps on release,
-       exactly like Artsons (no momentum fling). Incremental deltas keep the
-       infinite loop seamless in both directions. */
+    /* Desktop click-drag — copied from Artsons' featured wheel (bindWheelDrag):
+       absolute start-position mapping, snap to nearest card on release, and
+       swallow the click that follows a drag. */
     if (window.matchMedia('(pointer: fine)').matches) {
-      let down = false, startX = 0, lastX = 0, moved = false;
+      let down = false, startX = 0, startScroll = 0, moved = false;
       track.addEventListener('mousedown', e => {
         if (e.target.closest('a')) return;      // let bio @mention links click through
-        cancelAnimationFrame(tweenRAF); tweening = false;   // take over from any in-flight auto-glide
-        down = true; moved = false; startX = lastX = e.clientX;
+        cancelAnimationFrame(tweenRAF); tweening = false;   // stop any auto-glide immediately
+        down = true; moved = false;
+        startX = e.clientX; startScroll = track.scrollLeft;
         track.classList.add('sm-dragging'); e.preventDefault();
       });
       window.addEventListener('mousemove', e => {
         if (!down) return;
-        const dx = e.clientX - lastX;
-        if (Math.abs(e.clientX - startX) > 4) moved = true;
-        track.scrollLeft -= dx;                 // follow the cursor
-        normalize();                            // wrap right away so a long drag never hits an edge
-        lastX = e.clientX;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        track.scrollLeft = startScroll - dx;    // follow the cursor 1:1 (exactly like Artsons)
+        coverflow();                            // animate cards live as you drag — same look as auto-scroll
+        syncDots();
       });
       const end = () => {
         if (!down) return; down = false;
         track.classList.remove('sm-dragging');
-        tweenTo(snapTarget(), 450);   // settle onto the nearest card (smooth)
+        const target = snapTarget();            // snap to the same rests the auto-scroll uses
+        if (Math.abs(target - track.scrollLeft) > 1) track.scrollLeft = target;
+        normalize();                            // keep the infinite loop in sync after release
       };
       window.addEventListener('mouseup', end);
       window.addEventListener('mouseleave', end);
@@ -352,14 +355,9 @@
       let hovering = false, pointerActive = false;
       const autoStep = () => {
         if (hovering || pointerActive || tweening || track.classList.contains('sm-dragging') || document.hidden) return;
-        normalize();
-        let target = snapTarget() + step();        // right → left (content drifts leftward)
-        const maxScroll = track.scrollWidth - track.clientWidth;
-        if (target > maxScroll - 1) {              // near the right edge: pre-wrap into the clone buffer
-          setInstant(track.scrollLeft - realWidth());
-          target -= realWidth();
-        }
-        tweenTo(target, 1800);                     // slow, clearly-visible eased scroll (was too quick)
+        normalize();                               // reset into the middle of the clone buffer if needed
+        tweenTo(snapTarget() + step(), 1800);      // glide one card right → left; the big clone buffer
+                                                   // means this target is always in range (no edge/clamp)
       };
       setInterval(autoStep, 2500);
       track.addEventListener('mouseenter', () => { hovering = true; });
