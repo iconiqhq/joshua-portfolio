@@ -164,31 +164,11 @@ body {
    instead of a text-colour swap alone.
 ═══════════════════════════════════════════════════ */
 
+/* Removed the glowing slider behind the active tab — the active icon + label
+   already turn electric blue, which is enough of a "you are here" signal.
+   Kept the element in the DOM (nav.js still references it) but fully hidden. */
 .nav-indicator {
-  position: absolute;
-  top: 6px;
-  left: 0;
-  height: calc(100% - 12px);
-  width: 1px;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(65, 189, 254, 0.16), rgba(225, 17, 251, 0.16));
-  border: 1px solid rgba(65, 189, 254, 0.28);
-  box-shadow: 0 0 18px rgba(65, 189, 254, 0.16);
-  opacity: 0;
-  pointer-events: none;
-  transform-origin: left center;
-  transform: translateX(0) scaleX(0);
-  transition: transform 420ms var(--ease-out-quart), opacity 200ms ease;
-  will-change: transform;
-}
-
-.nav-indicator.nav-indicator--visible {
-  opacity: 1;
-}
-
-.site-nav.nav-compact .nav-indicator {
-  top: 4px;
-  height: calc(100% - 8px);
+  display: none !important;
 }
 
 /* ═══════════════════════════════════════════════════
