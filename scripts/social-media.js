@@ -356,19 +356,26 @@
     if (!REDUCED) {
       let hovering = false, pointerActive = false;
       const SPEED = 0.6;                 // px per frame — slow, continuous slide
+      /* Float accumulator: scrollLeft rounds to whole px, so `scrollLeft += 0.6`
+         would round straight back and never advance (the stall). We keep the
+         real position as a float in `pos` and write it each frame — the fraction
+         accumulates and crosses integers. Auto-scroll still only writes
+         scrollLeft; the single 'scroll' listener runs normalize + coverflow +
+         dots for every input, so all three still share one path. */
+      let pos = track.scrollLeft;
       (function autoTick() {
         const active = !hovering && !pointerActive &&
                        !track.classList.contains('sm-dragging') && !document.hidden;
         if (active) {
-          /* Move it EXACTLY like the trackpad does: just nudge scrollLeft.
-             The single 'scroll' listener then runs normalize + coverflow + dots,
-             so auto-scroll, drag, and trackpad are literally the same code path
-             and produce the identical animation. scroll-behavior:auto so the
-             per-frame nudge is instant (smooth would chase/lag and shake). */
           track.style.scrollBehavior = 'auto';
-          track.scrollLeft += SPEED;
+          /* Resync if anything else moved the scroll — a drag, the trackpad, or
+             a normalize() loop-wrap (which jumps by ±one loop). Then advance. */
+          if (Math.abs(pos - track.scrollLeft) > 1.5) pos = track.scrollLeft;
+          pos += SPEED;
+          track.scrollLeft = pos;
         } else {
           track.style.scrollBehavior = '';          // restore CSS smooth (dot-click glide) while paused
+          pos = track.scrollLeft;                   // stay synced while paused / dragging
         }
         requestAnimationFrame(autoTick);
       })();
