@@ -213,8 +213,8 @@
 
 /* ── Card — same profile-card UI as the social cards ── */
 .ms-card {
-  width: 290px;
-  height: 424px;
+  width: 274px;
+  height: 404px;
   background: #ffffff;
   border: none;
   border-radius: var(--radius-lg);
@@ -358,7 +358,7 @@
   letter-spacing: 0.1em;
   color: rgba(0, 0, 0, 0.4);
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 /* ── Before / After growth (light theme) ────────────── */
