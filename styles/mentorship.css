@@ -213,8 +213,8 @@
 
 /* ── Card — same profile-card UI as the social cards ── */
 .ms-card {
-  width: 306px;
-  height: 444px;
+  width: 290px;
+  height: 424px;
   background: #ffffff;
   border: none;
   border-radius: var(--radius-lg);
