@@ -482,11 +482,18 @@
         lbState.videos.push(slide.querySelector('video'));
         lbState.descs.push(a.description || '');
 
+        if (i > 0) {
+          const sep = document.createElement('span');
+          sep.className = 'sm-lb__tab-sep';
+          sep.setAttribute('aria-hidden', 'true');
+          sep.textContent = '|';
+          tabs.appendChild(sep);
+        }
         const tab = document.createElement('button');
         tab.type = 'button';
         tab.className = 'sm-lb__tab';
         tab.setAttribute('role', 'tab');
-        tab.innerHTML = '<span class="sm-lb__tab-icon" aria-hidden="true">' + platformIcon(a.icon) + '</span><span class="sm-lb__tab-label">' + a.platform + '</span>';
+        tab.textContent = a.platform;
         tab.addEventListener('click', () => goTo(i));
         tabs.appendChild(tab);
       });
