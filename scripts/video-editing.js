@@ -36,10 +36,12 @@
     } catch (_) {}
   });
 
+  function dotScale(dist) { dist = Math.abs(dist); return dist === 0 ? 1.4 : Math.max(0.5, 1 - dist * 0.22); }
   function updateDots() {
     if (!dotsEl) return;
     dotsEl.querySelectorAll('.ve-dot').forEach((d, i) => {
       d.classList.toggle('ve-dot-active', i === current);
+      d.style.transform = 'scale(' + dotScale(i - current) + ')';   // TikTok: outer dots smaller
     });
   }
 

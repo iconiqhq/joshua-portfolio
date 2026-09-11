@@ -553,9 +553,15 @@
   z-index: 1;
 }
 
+/* Round dots, sized by JS dotScale (TikTok-style) — matches the other carousels */
+#ms-dots .carousel-dot {
+  width: 8px;
+  height: 8px;
+  transform-origin: center;
+}
+
 #ms-dots .carousel-dot.active {
-  background: var(--color-pink);
-  width: 20px;
+  background: var(--color-pink);   /* size handled by JS dotScale */
 }
 
 /* ── Responsive ─────────────────────────────────────── */

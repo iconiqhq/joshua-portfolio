@@ -273,11 +273,13 @@
   }
 
   /* ── Carousel dots ──────────────────────────────── */
+  function dotScale(dist) { dist = Math.abs(dist); return dist === 0 ? 1.4 : Math.max(0.5, 1 - dist * 0.22); }
   function initDots(row, container, count) {
     for (let i = 0; i < count; i++) {
       const btn = document.createElement('button');
       btn.className = 'carousel-dot' + (i === 0 ? ' active' : '');
       btn.setAttribute('aria-label', `Go to mentee ${i + 1}`);
+      btn.style.transform = 'scale(' + dotScale(i - 0) + ')';
       container.appendChild(btn);
 
       btn.addEventListener('click', () => {
@@ -294,7 +296,10 @@
       const gap   = parseInt(getComputedStyle(row).gap) || 20;
       const cardW = (cards[0]?.offsetWidth || 304) + gap;
       const idx   = Math.round(row.scrollLeft / cardW);
-      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i === idx);
+        d.style.transform = 'scale(' + dotScale(i - idx) + ')';   // TikTok: outer dots smaller
+      });
     }, { passive: true });
   }
 

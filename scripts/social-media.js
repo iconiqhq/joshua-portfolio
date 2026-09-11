@@ -28,6 +28,10 @@
 
   function statusOf(s) { return STATUS[s] || STATUS.active; }
 
+  /* Carousel dot sizing (shared look site-wide): the active dot is biggest and
+     dots shrink toward the edges — like TikTok's pager. */
+  function dotScale(dist) { dist = Math.abs(dist); return dist === 0 ? 1.4 : Math.max(0.5, 1 - dist * 0.22); }
+
   /* ── Formatting ─────────────────────────────────── */
   function fmt(n) {
     if (n === null || n === undefined || n === 0) return '—';
@@ -256,7 +260,10 @@
     }
     function syncDots() {
       const active = realIndex();
-      dotBtns.forEach((d, k) => d.setAttribute('aria-current', k === active ? 'true' : 'false'));
+      dotBtns.forEach((d, k) => {
+        d.setAttribute('aria-current', k === active ? 'true' : 'false');
+        d.style.transform = 'scale(' + dotScale(k - active) + ')';   // TikTok: outer dots smaller
+      });
     }
 
     /* Seamless wrap: jump by one real set only when the rounded index lands on a
@@ -367,6 +374,7 @@
     /* Start on the first real card. */
     cfMeasure();
     setInstant(realStart());
+    syncDots();   // apply dot sizes immediately (don't wait for the first rAF)
     requestAnimationFrame(() => { cfMeasure(); setInstant(realStart()); coverflow(); syncDots(); });
     window.addEventListener('load', () => { cfMeasure(); coverflow(); });
     window.addEventListener('resize', throttle(() => {

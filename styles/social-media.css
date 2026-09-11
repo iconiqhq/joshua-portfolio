@@ -565,12 +565,12 @@ a.sm-platform-btn:hover .sm-platform-icon {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.18);
   cursor: pointer;
+  transform-origin: center;
   transition: background 0.25s ease, transform 0.25s ease;
 }
 
 .sm-dots button[aria-current="true"] {
-  background: var(--color-blue);
-  transform: scale(1.35);
+  background: var(--color-blue);   /* size handled by JS dotScale (TikTok-style) */
 }
 
 /* Phone (1-up): native scroll-snap centers the single card as you swipe */
