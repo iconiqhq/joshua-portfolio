@@ -18,8 +18,20 @@
           "url": "https://www.instagram.com/radicalrevolution.official",
           "socialBlade": "https://socialblade.com/instagram/user/radicalrevolution.official",
           "currentFollowers": 470000,
-          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
-          "chartData":   [390000, 410000, 430000, 455000, 470000]
+          "chartLabels": [
+            "Jan '26",
+            "Feb '26",
+            "Mar '26",
+            "Apr '26",
+            "May '26"
+          ],
+          "chartData": [
+            390000,
+            410000,
+            430000,
+            455000,
+            470000
+          ]
         },
         {
           "name": "Facebook",
@@ -27,8 +39,20 @@
           "url": "https://www.facebook.com/radicalrevolution.official",
           "socialBlade": null,
           "currentFollowers": 234622,
-          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
-          "chartData":   [195000, 205000, 215000, 225000, 234622]
+          "chartLabels": [
+            "Jan '26",
+            "Feb '26",
+            "Mar '26",
+            "Apr '26",
+            "May '26"
+          ],
+          "chartData": [
+            195000,
+            205000,
+            215000,
+            225000,
+            234622
+          ]
         },
         {
           "name": "TikTok",
@@ -36,8 +60,20 @@
           "url": "https://www.tiktok.com/@radicalrevolution",
           "socialBlade": null,
           "currentFollowers": 297100,
-          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
-          "chartData":   [230000, 248000, 265000, 280000, 297100]
+          "chartLabels": [
+            "Jan '26",
+            "Feb '26",
+            "Mar '26",
+            "Apr '26",
+            "May '26"
+          ],
+          "chartData": [
+            230000,
+            248000,
+            265000,
+            280000,
+            297100
+          ]
         },
         {
           "name": "Threads",
@@ -45,8 +81,20 @@
           "url": "https://www.threads.com/@radicalrevolution.official",
           "socialBlade": null,
           "currentFollowers": 80500,
-          "chartLabels": ["Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26"],
-          "chartData":   [58000, 64000, 70000, 75500, 80500]
+          "chartLabels": [
+            "Jan '26",
+            "Feb '26",
+            "Mar '26",
+            "Apr '26",
+            "May '26"
+          ],
+          "chartData": [
+            58000,
+            64000,
+            70000,
+            75500,
+            80500
+          ]
         },
         {
           "name": "YouTube",
@@ -55,7 +103,29 @@
           "socialBlade": "https://socialblade.com/youtube/channel/UCMio9OW9_Yw7oc8v24kpBtg",
           "currentFollowers": 157000,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
+        }
+      ],
+      "analytics": [
+        {
+          "platform": "Instagram",
+          "icon": "instagram",
+          "video": "assets/videos/analytics/rr-ig.mp4"
+        },
+        {
+          "platform": "Facebook",
+          "icon": "facebook",
+          "video": "assets/videos/analytics/rr-fb.mp4"
+        },
+        {
+          "platform": "TikTok",
+          "icon": "tiktok",
+          "video": "assets/videos/analytics/rr-tiktok.mp4"
+        },
+        {
+          "platform": "YouTube",
+          "icon": "youtube",
+          "video": "assets/videos/analytics/rr-youtube.mp4"
         }
       ]
     },
@@ -78,7 +148,7 @@
           "socialBlade": null,
           "currentFollowers": 27000,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "Facebook",
@@ -87,7 +157,7 @@
           "socialBlade": null,
           "currentFollowers": 1200,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "TikTok",
@@ -96,7 +166,7 @@
           "socialBlade": null,
           "currentFollowers": 9720,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "YouTube",
@@ -105,7 +175,7 @@
           "socialBlade": null,
           "currentFollowers": 378,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "LinkedIn",
@@ -114,7 +184,7 @@
           "socialBlade": null,
           "currentFollowers": 211,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         }
       ]
     },
@@ -135,7 +205,7 @@
           "socialBlade": null,
           "currentFollowers": 7,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "Facebook",
@@ -144,7 +214,7 @@
           "socialBlade": null,
           "currentFollowers": 76,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "TikTok",
@@ -153,7 +223,7 @@
           "socialBlade": null,
           "currentFollowers": 0,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "YouTube",
@@ -162,7 +232,7 @@
           "socialBlade": null,
           "currentFollowers": 4,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         }
       ]
     },
@@ -186,7 +256,7 @@
           "socialBlade": "https://socialblade.com/instagram/user/spincrediblett",
           "currentFollowers": 4350,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "Facebook",
@@ -195,7 +265,7 @@
           "socialBlade": "https://socialblade.com/facebook/user/spincrediblett",
           "currentFollowers": 20,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "TikTok",
@@ -204,7 +274,7 @@
           "socialBlade": "https://socialblade.com/tiktok/user/spincrediblett",
           "currentFollowers": 51,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "YouTube",
@@ -213,7 +283,14 @@
           "socialBlade": "https://socialblade.com/youtube/channel/UClrHYEww9iRuf3e-kDaC8iw",
           "currentFollowers": 133,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
+        }
+      ],
+      "analytics": [
+        {
+          "platform": "Instagram",
+          "icon": "instagram",
+          "video": "assets/videos/analytics/spincredible-ig.mp4"
         }
       ]
     },
@@ -236,7 +313,7 @@
           "url": "",
           "currentFollowers": 28000,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         },
         {
           "name": "YouTube",
@@ -244,7 +321,14 @@
           "url": "",
           "currentFollowers": 7000,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
+        }
+      ],
+      "analytics": [
+        {
+          "platform": "YouTube",
+          "icon": "youtube",
+          "video": "assets/videos/analytics/political-youtube.mp4"
         }
       ]
     },
@@ -267,7 +351,7 @@
           "url": "https://web.facebook.com/JILSanJoseCityNE",
           "currentFollowers": 7600,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
         }
       ]
     },
@@ -290,7 +374,14 @@
           "url": "https://www.facebook.com/share/1CaBu1WHUX/?mibextid=wwXIfr",
           "currentFollowers": 598,
           "chartLabels": [],
-          "chartData":   []
+          "chartData": []
+        }
+      ],
+      "analytics": [
+        {
+          "platform": "Facebook",
+          "icon": "facebook",
+          "video": "assets/videos/analytics/teamkulot-fb.mp4"
         }
       ]
     }

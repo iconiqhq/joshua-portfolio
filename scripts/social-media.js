@@ -358,7 +358,8 @@
       track.addEventListener('mouseenter', () => { hovering = true; });
       track.addEventListener('mouseleave', () => { hovering = false; });
       setInterval(() => {
-        if (hovering || track.classList.contains('sm-dragging') || document.hidden) return;
+        if (hovering || track.classList.contains('sm-dragging') || document.hidden ||
+            document.body.classList.contains('sm-lb-open')) return;
         nudge(1);
       }, 2000);
     }
@@ -374,6 +375,157 @@
     }, 150));
   }
 
+  /* ── Project analytics lightbox ─────────────────────
+     Click a project → an overlay shows that project's per-platform analytics
+     videos as a carousel. Platform buttons on the right switch the carousel;
+     a description slot (placeholder for now) and the social links sit below. */
+  const VERIFIED_SVG = '<svg class="sm-verified-badge" viewBox="0 0 22 22" fill="none" aria-label="Verified" role="img"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.275.213-1.815.568s-.972.854-1.247 1.44c-.606-.222-1.262-.268-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.749 1.054-.88 1.688-.13.633-.085 1.29.139 1.896-.587.274-1.087.705-1.441 1.246-.354.54-.551 1.17-.569 1.816.018.647.215 1.276.569 1.817.354.54.854.972 1.441 1.246-.224.606-.269 1.262-.14 1.896.131.634.436 1.218.881 1.688.469.443 1.053.748 1.687.879.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.606.22 1.262.267 1.897.137.634-.132 1.218-.437 1.687-.882.445-.469.749-1.053.881-1.687.13-.633.086-1.29-.136-1.897.587-.274 1.087-.706 1.441-1.246.354-.54.551-1.17.569-1.816z" fill="#1D9BF0"/><path d="M6.5 11.5l2.8 2.8 5.7-5.6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  let lbEl = null;
+  let lbState = { slides: [], videos: [], descs: [], idx: 0 };
+
+  function buildLightboxShell() {
+    const el = document.createElement('div');
+    el.className = 'sm-lb';
+    el.id = 'sm-lb';
+    el.hidden = true;
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('aria-label', 'Project analytics');
+    el.innerHTML =
+      '<div class="sm-lb__backdrop" data-close></div>' +
+      '<div class="sm-lb__panel" role="document">' +
+        '<button class="sm-lb__close" type="button" aria-label="Close">&times;</button>' +
+        '<div class="sm-lb__stage">' +
+          '<div class="sm-lb__track"></div>' +
+          '<button class="sm-lb__nav sm-lb__prev" type="button" aria-label="Previous">&#8249;</button>' +
+          '<button class="sm-lb__nav sm-lb__next" type="button" aria-label="Next">&#8250;</button>' +
+        '</div>' +
+        '<aside class="sm-lb__side">' +
+          '<div class="sm-lb__head">' +
+            '<div class="sm-lb__ring"><div class="sm-lb__ring-inner"><img class="sm-lb__logo" alt=""><span class="sm-lb__initial"></span></div></div>' +
+            '<h3 class="sm-lb__name"></h3>' +
+            '<span class="sm-lb__industry"></span>' +
+          '</div>' +
+          '<div class="sm-lb__tabs" role="tablist" aria-label="Platform"></div>' +
+          '<div class="sm-lb__desc"></div>' +
+          '<div class="sm-lb__socials-wrap">' +
+            '<span class="sm-lb__socials-label">Follow</span>' +
+            '<div class="sm-lb__socials"></div>' +
+          '</div>' +
+        '</aside>' +
+      '</div>';
+    document.body.appendChild(el);
+    el.querySelector('.sm-lb__close').addEventListener('click', closeLightbox);
+    el.querySelector('[data-close]').addEventListener('click', closeLightbox);
+    el.querySelector('.sm-lb__prev').addEventListener('click', () => goTo(lbState.idx - 1));
+    el.querySelector('.sm-lb__next').addEventListener('click', () => goTo(lbState.idx + 1));
+    document.addEventListener('keydown', e => {
+      if (el.hidden) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') goTo(lbState.idx - 1);
+      else if (e.key === 'ArrowRight') goTo(lbState.idx + 1);
+    });
+    return el;
+  }
+
+  function goTo(i) {
+    const n = lbState.slides.length;
+    if (!n) return;
+    i = Math.max(0, Math.min(n - 1, i));
+    lbState.idx = i;
+    lbEl.querySelector('.sm-lb__track').style.transform = 'translateX(' + (-i * 100) + '%)';
+    lbState.videos.forEach((v, k) => {
+      if (!v) return;
+      if (k === i) { try { v.currentTime = 0; } catch (e) {} v.play().catch(() => {}); }
+      else v.pause();
+    });
+    lbEl.querySelectorAll('.sm-lb__tab').forEach((t, k) => t.setAttribute('aria-selected', k === i ? 'true' : 'false'));
+    const d = lbState.descs[i];
+    lbEl.querySelector('.sm-lb__desc').innerHTML = d
+      ? '<p>' + escHTML(d) + '</p>'
+      : '<p class="sm-lb__desc-empty">Description coming soon.</p>';
+    lbEl.querySelector('.sm-lb__prev').hidden = i <= 0;
+    lbEl.querySelector('.sm-lb__next').hidden = i >= n - 1;
+  }
+
+  function openProjectLightbox(project) {
+    if (!lbEl) lbEl = buildLightboxShell();
+    const st = statusOf(project.status);
+
+    lbEl.querySelector('.sm-lb__name').innerHTML = escHTML(project.brandName) + (project.verified ? VERIFIED_SVG : '');
+    lbEl.querySelector('.sm-lb__industry').textContent = project.industry || '';
+
+    const ring = lbEl.querySelector('.sm-lb__ring');
+    ring.style.setProperty('--ring-from', st.from);
+    ring.style.setProperty('--ring-to', st.to);
+    const logo = lbEl.querySelector('.sm-lb__logo'), initial = lbEl.querySelector('.sm-lb__initial');
+    const hasLogo = project.logo && !project.logo.includes('example') && !project.logo.includes('brand-02');
+    if (hasLogo) { logo.src = project.logo; logo.style.display = ''; initial.style.display = 'none'; }
+    else { logo.removeAttribute('src'); logo.style.display = 'none'; initial.style.display = ''; initial.textContent = (project.brandName || '?').charAt(0).toUpperCase(); }
+
+    const analytics = project.analytics || [];
+    const track = lbEl.querySelector('.sm-lb__track');
+    const tabs = lbEl.querySelector('.sm-lb__tabs');
+    track.innerHTML = ''; tabs.innerHTML = '';
+    lbState = { slides: [], videos: [], descs: [], idx: 0 };
+
+    if (analytics.length) {
+      analytics.forEach((a, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'sm-lb__slide';
+        slide.innerHTML = '<video class="sm-lb__video" src="' + a.video + '" muted loop playsinline controls preload="' + (i === 0 ? 'auto' : 'metadata') + '"></video>';
+        track.appendChild(slide);
+        lbState.slides.push(a);
+        lbState.videos.push(slide.querySelector('video'));
+        lbState.descs.push(a.description || '');
+
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'sm-lb__tab';
+        tab.setAttribute('role', 'tab');
+        tab.innerHTML = '<span class="sm-lb__tab-icon" aria-hidden="true">' + platformIcon(a.icon) + '</span><span class="sm-lb__tab-label">' + a.platform + '</span>';
+        tab.addEventListener('click', () => goTo(i));
+        tabs.appendChild(tab);
+      });
+      tabs.hidden = false;
+    } else {
+      const slide = document.createElement('div');
+      slide.className = 'sm-lb__slide sm-lb__slide--empty';
+      slide.innerHTML = '<div class="sm-lb__soon"><span aria-hidden="true">📊</span><p>Analytics coming soon</p></div>';
+      track.appendChild(slide);
+      lbState.slides.push({}); lbState.videos.push(null); lbState.descs.push('');
+      tabs.hidden = true;
+    }
+
+    const soc = lbEl.querySelector('.sm-lb__socials');
+    soc.innerHTML = '';
+    (project.platforms || []).forEach(p => {
+      if (!p.url) return;
+      const a = document.createElement('a');
+      a.className = 'sm-lb__social';
+      a.href = p.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.setAttribute('aria-label', p.name);
+      a.innerHTML = platformIcon(p.icon || p.name);
+      soc.appendChild(a);
+    });
+    lbEl.querySelector('.sm-lb__socials-wrap').hidden = soc.children.length === 0;
+
+    lbEl.hidden = false;
+    document.body.classList.add('sm-lb-open');
+    document.body.style.overflow = 'hidden';
+    goTo(0);
+    lbEl.querySelector('.sm-lb__close').focus();
+  }
+
+  function closeLightbox() {
+    if (!lbEl || lbEl.hidden) return;
+    lbState.videos.forEach(v => v && v.pause());
+    lbEl.hidden = true;
+    document.body.classList.remove('sm-lb-open');
+    document.body.style.overflow = '';
+  }
+
   /* ── Main ───────────────────────────────────────── */
   async function init() {
     if (!window.PortfolioData) return;
@@ -386,6 +538,17 @@
     if (row) {
       row.innerHTML = projects.map(buildCard).join('');
       initCarousel(row, document.getElementById('sm-dots'));
+
+      /* Click a project card → open its analytics lightbox. The carousel's
+         capture-phase handler already swallows the click after a drag, and we
+         ignore clicks on bio @mention links. */
+      row.addEventListener('click', e => {
+        if (e.target.closest('a')) return;
+        const card = e.target.closest('.sm-card');
+        if (!card || !card.dataset.id) return;
+        const proj = projects.find(p => String(p.id) === card.dataset.id);
+        if (proj) openProjectLightbox(proj);
+      });
     }
 
     const section = document.getElementById('social-media');
