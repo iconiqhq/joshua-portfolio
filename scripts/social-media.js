@@ -443,7 +443,7 @@
       else v.pause();
     });
     lbEl.querySelectorAll('.sm-lb__tab').forEach((t, k) => t.setAttribute('aria-selected', k === i ? 'true' : 'false'));
-    const d = lbState.descs[i];
+    const d = lbState.descs[i] || lbState.fallbackDesc;
     lbEl.querySelector('.sm-lb__desc').innerHTML = d
       ? '<p>' + escHTML(d) + '</p>'
       : '<p class="sm-lb__desc-empty">Description coming soon.</p>';
@@ -470,7 +470,7 @@
     const track = lbEl.querySelector('.sm-lb__track');
     const tabs = lbEl.querySelector('.sm-lb__tabs');
     track.innerHTML = ''; tabs.innerHTML = '';
-    lbState = { slides: [], videos: [], descs: [], idx: 0 };
+    lbState = { slides: [], videos: [], descs: [], idx: 0, fallbackDesc: project.analyticsDescription || '' };
 
     if (analytics.length) {
       analytics.forEach((a, i) => {
