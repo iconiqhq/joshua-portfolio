@@ -997,12 +997,13 @@ a.sm-platform-btn:hover .sm-platform-icon {
 .sm-lb__tab {
   background: none;
   border: none;
-  padding: 3px 9px;
+  padding: 2px 7px;
   cursor: pointer;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   line-height: 1.3;
+  white-space: nowrap;
   color: rgba(255, 255, 255, 0.45);
   transition: color 0.2s;
 }
@@ -1012,7 +1013,7 @@ a.sm-platform-btn:hover .sm-platform-icon {
 
 .sm-lb__tab-sep {
   color: rgba(255, 255, 255, 0.18);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   user-select: none;
 }
 
