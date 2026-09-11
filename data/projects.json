@@ -261,7 +261,7 @@
         {
           "name": "Facebook",
           "icon": "facebook",
-          "url": "https://www.facebook.com/share/1C7cujVoQQ/?mibextid=wwXIfr",
+          "url": "",
           "socialBlade": "https://socialblade.com/facebook/user/spincrediblett",
           "currentFollowers": 20,
           "chartLabels": [],
@@ -270,7 +270,7 @@
         {
           "name": "TikTok",
           "icon": "tiktok",
-          "url": "https://socialblade.com/tiktok/user/spincrediblett",
+          "url": "",
           "socialBlade": "https://socialblade.com/tiktok/user/spincrediblett",
           "currentFollowers": 51,
           "chartLabels": [],
@@ -279,7 +279,7 @@
         {
           "name": "YouTube",
           "icon": "youtube",
-          "url": "https://www.youtube.com/@spincredible",
+          "url": "",
           "socialBlade": "https://socialblade.com/youtube/channel/UClrHYEww9iRuf3e-kDaC8iw",
           "currentFollowers": 133,
           "chartLabels": [],
