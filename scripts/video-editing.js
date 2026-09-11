@@ -139,4 +139,29 @@
       );
     });
   });
+
+  /* ── Reels-style horizontal scroll (arrows + edge state) ─ */
+  (function () {
+    const row = document.getElementById('ve-reels-row');
+    const prev = document.getElementById('ve-reels-prev');
+    const next = document.getElementById('ve-reels-next');
+    if (!row || !next) return;
+    function step() {
+      const card = row.querySelector('.ve-vertical-card');
+      const gap = parseFloat(getComputedStyle(row).columnGap || getComputedStyle(row).gap) || 14;
+      return card ? (card.offsetWidth + gap) * 2 : 360;   // ~2 cards per click
+    }
+    function sync() {
+      const max = row.scrollWidth - row.clientWidth - 2;
+      const noOverflow = max <= 0;
+      if (prev) prev.hidden = noOverflow || row.scrollLeft <= 2;
+      next.hidden = noOverflow || row.scrollLeft >= max;
+    }
+    next.addEventListener('click', () => row.scrollBy({ left: step(), behavior: 'smooth' }));
+    if (prev) prev.addEventListener('click', () => row.scrollBy({ left: -step(), behavior: 'smooth' }));
+    row.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    window.addEventListener('load', sync);
+    sync();
+  })();
 })();

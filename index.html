@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="styles/social-media.css?v=22">
   <link rel="stylesheet" href="styles/mentorship.css?v=12">
   <link rel="stylesheet" href="styles/graphic-design.css?v=2">
-  <link rel="stylesheet" href="styles/video-editing.css?v=2">
+  <link rel="stylesheet" href="styles/video-editing.css?v=3">
   <link rel="stylesheet" href="styles/web3.css?v=5">
   <link rel="stylesheet" href="styles/tools.css?v=2">
   <link rel="stylesheet" href="styles/contact.css?v=2">
@@ -415,9 +415,9 @@
         </div>
       </div>
 
-      <!-- Vertical Videos Grid (sample layout) -->
+      <!-- Vertical Videos — FB/IG Reels-style horizontal scroll -->
       <div class="ve-vertical-wrap">
-        <div class="ve-vertical-grid">
+        <div class="ve-vertical-grid" id="ve-reels-row">
           <div class="ve-vertical-card">
             <iframe
               src="https://www.youtube.com/embed/90gvlWp946k?rel=0&modestbranding=1&controls=0&loop=1&playlist=90gvlWp946k&enablejsapi=1"
@@ -458,13 +458,8 @@
             </div>
           </div>
         </div>
-        <div class="ve-carousel-nav">
-          <div class="ve-nav-dots">
-            <span class="ve-dot ve-dot-active"></span>
-            <span class="ve-dot"></span>
-            <span class="ve-dot"></span>
-          </div>
-        </div>
+        <button class="ve-reels-arrow ve-reels-arrow--prev" id="ve-reels-prev" type="button" aria-label="Scroll left" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="ve-reels-arrow ve-reels-arrow--next" id="ve-reels-next" type="button" aria-label="Scroll right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
 
       <!-- Footer CTAs -->
@@ -983,7 +978,7 @@
   <script src="scripts/social-media.js?v=22"></script>
   <script src="scripts/mentorship.js?v=10"></script>
   <script src="scripts/graphic-design.js?v=2"></script>
-  <script src="scripts/video-editing.js?v=2"></script>
+  <script src="scripts/video-editing.js?v=3"></script>
   <script src="scripts/web3.js?v=2"></script>
   <script src="scripts/tools.js?v=2"></script>
   <script src="scripts/main.js?v=3"></script>
