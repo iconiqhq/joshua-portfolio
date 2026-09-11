@@ -404,8 +404,10 @@
         '<aside class="sm-lb__side">' +
           '<div class="sm-lb__head">' +
             '<div class="sm-lb__ring"><div class="sm-lb__ring-inner"><img class="sm-lb__logo" alt=""><span class="sm-lb__initial"></span></div></div>' +
-            '<h3 class="sm-lb__name"></h3>' +
-            '<span class="sm-lb__industry"></span>' +
+            '<div class="sm-lb__head-text">' +
+              '<h3 class="sm-lb__name"></h3>' +
+              '<span class="sm-lb__industry"></span>' +
+            '</div>' +
           '</div>' +
           '<div class="sm-lb__tabs" role="tablist" aria-label="Platform"></div>' +
           '<div class="sm-lb__desc"></div>' +

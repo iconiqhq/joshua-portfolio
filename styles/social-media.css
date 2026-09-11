@@ -931,9 +931,16 @@ a.sm-platform-btn:hover .sm-platform-icon {
 
 .sm-lb__head {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+.sm-lb__head-text {
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  gap: 4px;
+  min-width: 0;
 }
 
 .sm-lb__ring {
@@ -962,13 +969,11 @@ a.sm-platform-btn:hover .sm-platform-icon {
   color: #fff;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.3rem;
-  line-height: 1.2;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  display: block;
 }
-.sm-lb__name .sm-verified-badge { width: 18px; height: 18px; }
+.sm-lb__name .sm-verified-badge { width: 17px; height: 17px; margin-left: 5px; vertical-align: middle; }
 
 .sm-lb__industry {
   font-family: var(--font-mono);
