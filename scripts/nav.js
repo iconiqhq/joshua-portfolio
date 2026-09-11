@@ -114,3 +114,44 @@
   });
 
 })();
+
+
+/* ── Per-section URL (Artsons-style) ──────────────────────────────
+   The address bar reflects the section in view (#social-media, #mentorship, …)
+   so each section is shareable/bookmarkable. Uses replaceState so it never
+   floods the back-history; paused while a project lightbox is open (that owns
+   the URL). The first section (hero) shows the bare path, no hash. */
+(function () {
+  'use strict';
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  if (!sections.length) return;
+  let current = null, ticking = false;
+
+  function pick() {
+    if (document.body.classList.contains('sm-lb-open')) return;   // lightbox owns the URL
+    const mark = window.innerHeight * 0.35;
+    let winner = sections[0];
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top <= mark) winner = s;
+    }
+    const id = winner.id;
+    if (id === current) return;
+    current = id;
+    const isFirst = winner === sections[0];
+    const want = isFirst ? (location.pathname + location.search) : ('#' + id);
+    const have = isFirst ? '' : (location.hash || '');
+    if (isFirst) {
+      if (location.hash) history.replaceState(null, '', want);
+    } else if (have !== want) {
+      history.replaceState(null, '', want);
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; pick(); });
+  }, { passive: true });
+  window.addEventListener('load', pick);
+  pick();
+})();

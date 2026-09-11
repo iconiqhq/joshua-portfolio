@@ -383,6 +383,9 @@
 
   let lbEl = null;
   let lbState = { slides: [], videos: [], descs: [], idx: 0 };
+  let allProjects = [];          // set in init(), used by deep-link handlers
+  let currentProjectId = null;   // which project's lightbox is open
+  let preLbHash = '';            // URL hash before the lightbox opened (to restore on close)
 
   function buildLightboxShell() {
     const el = document.createElement('div');
@@ -418,8 +421,8 @@
         '</aside>' +
       '</div>';
     document.body.appendChild(el);
-    el.querySelector('.sm-lb__close').addEventListener('click', closeLightbox);
-    el.querySelector('[data-close]').addEventListener('click', closeLightbox);
+    el.querySelector('.sm-lb__close').addEventListener('click', () => closeLightbox());
+    el.querySelector('[data-close]').addEventListener('click', () => closeLightbox());
     el.querySelector('.sm-lb__prev').addEventListener('click', () => goTo(lbState.idx - 1));
     el.querySelector('.sm-lb__next').addEventListener('click', () => goTo(lbState.idx + 1));
     document.addEventListener('keydown', e => {
@@ -451,8 +454,9 @@
     lbEl.querySelector('.sm-lb__next').hidden = i >= n - 1;
   }
 
-  function openProjectLightbox(project) {
+  function openProjectLightbox(project, fromHistory) {
     if (!lbEl) lbEl = buildLightboxShell();
+    currentProjectId = String(project.id);
     const st = statusOf(project.status);
 
     lbEl.querySelector('.sm-lb__name').innerHTML = escHTML(project.brandName) + (project.verified ? VERIFIED_SVG : '');
@@ -525,15 +529,40 @@
     document.body.style.overflow = 'hidden';
     goTo(0);
     lbEl.querySelector('.sm-lb__close').focus();
+
+    /* Give the open project its own shareable URL (#project=<id>), Artsons-style.
+       pushState so Back closes it and restores the section you came from. */
+    if (!fromHistory) {
+      preLbHash = location.hash;   // remember the section we came from
+      history.pushState({ smProject: currentProjectId }, '',
+        '#project=' + encodeURIComponent(currentProjectId));
+    }
   }
 
-  function closeLightbox() {
+  function closeLightbox(fromHistory) {
     if (!lbEl || lbEl.hidden) return;
     lbState.videos.forEach(v => v && v.pause());
     lbEl.hidden = true;
     document.body.classList.remove('sm-lb-open');
     document.body.style.overflow = '';
+    currentProjectId = null;
+    // Restore the address bar to the section we came from (button/backdrop/Esc).
+    if (!fromHistory && location.hash.indexOf('#project=') === 0) {
+      history.replaceState(null, '', preLbHash || (location.pathname + location.search));
+    }
   }
+
+  /* Back/forward + shared links: sync the lightbox to the URL. */
+  window.addEventListener('popstate', () => {
+    const m = location.hash.match(/^#project=(.+)$/);
+    if (m) {
+      const id = decodeURIComponent(m[1]);
+      const proj = allProjects.find(p => String(p.id) === id);
+      if (proj && (!lbEl || lbEl.hidden || currentProjectId !== id)) openProjectLightbox(proj, true);
+    } else if (lbEl && !lbEl.hidden) {
+      closeLightbox(true);
+    }
+  });
 
   /* ── Main ───────────────────────────────────────── */
   async function init() {
@@ -542,6 +571,7 @@
     try { data = await window.PortfolioData.loadProjects(); } catch (e) { return; }
     const projects = (data && data.projects) || [];
     if (!projects.length) return;
+    allProjects = projects;
 
     const row = document.getElementById('sm-cards-row');
     if (row) {
@@ -558,6 +588,13 @@
         const proj = projects.find(p => String(p.id) === card.dataset.id);
         if (proj) openProjectLightbox(proj);
       });
+
+      /* Deep link: opened with #project=<id> → open that project's lightbox. */
+      const m = location.hash.match(/^#project=(.+)$/);
+      if (m) {
+        const proj = projects.find(p => String(p.id) === decodeURIComponent(m[1]));
+        if (proj) openProjectLightbox(proj, true);
+      }
     }
 
     const section = document.getElementById('social-media');
