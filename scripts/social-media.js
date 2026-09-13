@@ -301,9 +301,14 @@
 
     /* Snap after a scroll settles → glide to the nearest clean rest so a card
        always fits (CSS scroll-behavior:smooth animates the small correction). */
+    /* Mobile uses native CSS scroll-snap (scroll-snap-type: x mandatory). Any JS
+       re-snap on top of it fights the browser's own snap/momentum and shows up as
+       a shake at the loop boundary — so, like Artsons, on mobile we trust the
+       native snap and only keep the infinite loop + dots in sync. */
+    const isMobile = () => window.innerWidth < 640;
     let dotTick = false, settleTimer;
     function settle() {
-      if (track.classList.contains('sm-dragging')) return;
+      if (isMobile() || track.classList.contains('sm-dragging')) return;
       const t = snapTarget();
       if (Math.abs(t - track.scrollLeft) > 2) track.scrollLeft = t;
     }
@@ -317,6 +322,7 @@
     if ('onscrollend' in window) {
       track.addEventListener('scrollend', () => {
         if (track.classList.contains('sm-dragging')) return;
+        if (isMobile()) { normalize(); syncDots(); return; }   // trust native snap on mobile
         const t = snapTarget();
         if (Math.abs(t - track.scrollLeft) > 0.5) setInstant(t);
       });
