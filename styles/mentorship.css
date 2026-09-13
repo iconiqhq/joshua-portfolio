@@ -570,15 +570,31 @@
     gap: 18px;
   }
   .ms-card {
-    width: 320px;
-    height: 472px;
+    width: 280px;
+    height: 448px;
   }
+}
+
+/* Mobile: compact the creator card so it stays a bit smaller and still fits;
+   dots at normal (uniform) size — no TikTok scaling. */
+@media (max-width: 639px) {
+  #ms-dots .carousel-dot { transform: none !important; }
+  .ms-banner { height: 72px; }
+  .ms-body { padding: 0 16px 14px; }
+  .ms-body .ms-ring { width: 72px; height: 72px; margin-top: -38px; padding: 3px; }
+  .ms-brand-name { font-size: 1.2rem; margin-top: 8px; margin-bottom: 4px; }
+  .ms-cover-name { font-size: 1.25rem; }
+  .ms-brand-industry { margin-bottom: 8px; }
+  .ms-growth-block { padding: 8px 10px; }
+  .ms-platform-growth { padding: 5px 0; }
+  .ms-growth-num { font-size: var(--text-base); }
+  .ms-status-tag { display: none; }   /* hover pill is useless on touch — reclaim the space */
 }
 
 @media (max-width: 480px) {
   .ms-card {
-    width: 290px;
-    height: 472px;
+    width: 244px;
+    height: 420px;
   }
   .ms-stats-bar {
     flex-wrap: wrap;

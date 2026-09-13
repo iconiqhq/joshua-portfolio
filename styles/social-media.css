@@ -590,7 +590,14 @@ a.sm-platform-btn:hover .sm-platform-icon {
 }
 
 @media (max-width: 639px) {
-  #sm-cards-row { --sm-per-view: 1; }
+  #sm-cards-row { --sm-per-view: 1.12; }   /* a bit smaller card + next peeks */
+  .sm-card { min-height: 430px; }
+  .sm-banner { height: 80px; }
+  .sm-body { padding: 0 20px 18px; }
+  .sm-reach-value { font-size: 2rem; }
+  .sm-status-tag { display: none; }   /* hover pill is useless on touch */
+  /* Carousel dots at normal (uniform) size on mobile — no TikTok scaling */
+  .sm-dots button { transform: none !important; }
 }
 
 @media (max-width: 480px) {
