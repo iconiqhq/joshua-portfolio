@@ -197,7 +197,8 @@
     };
   }
 
-  function initCarousel(track, dots) {
+  function initCarousel(track, dots, opts) {
+    opts = opts || {};
     const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const real = Array.from(track.children);
     const n = real.length;
@@ -382,7 +383,7 @@
        so it reuses the same smooth glide + snap + seamless loop). Right → left
        (scrollLeft grows, content drifts left). Pauses on hover, drag, or a hidden
        tab; resumes on its own. Skipped entirely under reduced-motion. */
-    if (!REDUCED) {
+    if (!REDUCED && opts.autoScroll !== false) {
       let hovering = false;
       track.addEventListener('mouseenter', () => { hovering = true; });
       track.addEventListener('mouseleave', () => { hovering = false; });
@@ -645,6 +646,10 @@
       });
     }, { threshold: 0.15 }).observe(section);
   }
+
+  /* Share the carousel engine so other sections (e.g. Creators) can use the
+     exact same swipe/drag/snap/coverflow/loop. */
+  window.__jlCarousel = initCarousel;
 
   document.addEventListener('DOMContentLoaded', init);
 })();

@@ -365,15 +365,21 @@
     if (!mentees.length) return;
 
     const row = document.getElementById('ms-cards-row');
+    const dotsEl = document.getElementById('ms-dots');
     if (row) {
       row.innerHTML = mentees.map(buildCard).join('');
-      initDrag(row);
+      /* Use the exact same carousel engine as the Social Media ("featured
+         project") carousel — drag/snap/coverflow/seamless loop. Auto-advance is
+         off here (only two creators). Falls back to the basic drag if the shared
+         engine hasn't loaded. */
+      if (typeof window.__jlCarousel === 'function') {
+        window.__jlCarousel(row, dotsEl, { autoScroll: false });
+      } else {
+        initDrag(row);
+        if (dotsEl) initDots(row, dotsEl, mentees.length);
+      }
       syncCreatorHeight(row);
-      initMobilePeek(row);
     }
-
-    const dotsEl = document.getElementById('ms-dots');
-    if (row && dotsEl) initDots(row, dotsEl, mentees.length);
 
     const section = document.getElementById('mentorship');
     if (!section) return;

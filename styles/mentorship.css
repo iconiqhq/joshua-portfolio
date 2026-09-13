@@ -213,6 +213,7 @@
 
 /* ── Card — same profile-card UI as the social cards ── */
 .ms-card {
+  flex: 0 0 auto;            /* keep width in the carousel engine (don't shrink) */
   width: 274px;
   height: 404px;
   background: #ffffff;
@@ -540,10 +541,27 @@
   background: linear-gradient(to left, #020202 0%, transparent 100%);
 }
 
+/* Same carousel engine as the social cards — needs these track styles. */
 .ms-cards-row {
-  padding-top: var(--sp-4);
-  padding-bottom: var(--sp-8);
-  justify-content: center;   /* only a couple of creators — keep them centered */
+  position: relative;
+  display: flex;
+  gap: 16px;
+  max-width: 580px;          /* fits the two creators, centered; clones sit off-screen */
+  margin-inline: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: var(--sp-4) 4px var(--sp-8);
+  cursor: pointer;
+  -webkit-overflow-scrolling: touch;
+}
+.ms-cards-row::-webkit-scrollbar { display: none; }
+#ms-cards-row.sm-dragging {
+  scroll-behavior: auto;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* ── Carousel dots ──────────────────────────────────── */
@@ -553,16 +571,22 @@
   z-index: 1;
 }
 
-/* Round dots, sized by JS dotScale (TikTok-style) — matches the other carousels */
-#ms-dots .carousel-dot {
+/* Round dots (engine creates plain <button>s), sized by JS dotScale (TikTok). */
+#ms-dots button {
   width: 8px;
   height: 8px;
   min-width: 0;    /* opt out of the global 44px mobile touch-target sizing */
   min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
   transform-origin: center;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
 
-#ms-dots .carousel-dot.active {
+#ms-dots button[aria-current="true"] {
   background: var(--color-pink);   /* size handled by JS dotScale */
 }
 
@@ -579,11 +603,12 @@
 
 /* Mobile: compact the creator card so it stays a bit smaller and still fits. */
 @media (max-width: 639px) {
-  /* 2-up: main card anchored left with space, next is a smaller preview.
-     Gentle proximity snap (not mandatory) → no shake at the last card. */
+  /* 2-up, same as social: main card anchored left with space, next is a smaller
+     preview. Mandatory snap — the engine's clone loop gives the last card runway,
+     so there's no shake at the boundary. */
   #ms-cards-row {
-    justify-content: flex-start;
-    scroll-snap-type: x proximity;
+    max-width: none;
+    scroll-snap-type: x mandatory;
     scroll-padding-left: 16px;
     padding-left: 16px;
     padding-right: 8px;
