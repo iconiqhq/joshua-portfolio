@@ -560,6 +560,8 @@ a.sm-platform-btn:hover .sm-platform-icon {
 .sm-dots button {
   width: 8px;
   height: 8px;
+  min-width: 0;    /* opt out of the global 44px mobile touch-target sizing */
+  min-height: 0;
   padding: 0;
   border: none;
   border-radius: 50%;

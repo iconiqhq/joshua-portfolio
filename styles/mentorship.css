@@ -557,6 +557,8 @@
 #ms-dots .carousel-dot {
   width: 8px;
   height: 8px;
+  min-width: 0;    /* opt out of the global 44px mobile touch-target sizing */
+  min-height: 0;
   transform-origin: center;
 }
 
