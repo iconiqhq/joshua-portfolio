@@ -579,6 +579,16 @@
 
 /* Mobile: compact the creator card so it stays a bit smaller and still fits. */
 @media (max-width: 639px) {
+  /* 2-up: main card anchored left with space, next is a smaller preview.
+     Gentle proximity snap (not mandatory) → no shake at the last card. */
+  #ms-cards-row {
+    justify-content: flex-start;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: 16px;
+    padding-left: 16px;
+    padding-right: 8px;
+  }
+  #ms-cards-row .ms-card { scroll-snap-align: start; }
   .ms-banner { height: 72px; }
   .ms-body { padding: 0 16px 14px; }
   .ms-body .ms-ring { width: 72px; height: 72px; margin-top: -38px; padding: 3px; }

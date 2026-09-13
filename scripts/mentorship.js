@@ -330,6 +330,30 @@
     window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(apply, 150); }, { passive: true });
   }
 
+  /* Mobile: the main (left) creator card is full size; the next is a smaller,
+     slightly-faded preview — matches the social carousel. Scaled by distance
+     from the viewport's LEFT edge so the anchored card stays full. */
+  function initMobilePeek(row) {
+    let ticking = false;
+    function apply() {
+      ticking = false;
+      const cards = row.querySelectorAll('.ms-card');
+      if (window.innerWidth >= 640) { cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; }); return; }
+      const sl = row.scrollLeft, vw = row.clientWidth;
+      cards.forEach(c => {
+        const left = c.offsetLeft - sl;
+        const d = Math.min(1, Math.max(0, left / vw));
+        c.style.transformOrigin = 'left center';
+        c.style.transform = 'scale(' + (1 - 0.12 * d).toFixed(3) + ')';
+        c.style.opacity = (1 - 0.18 * d).toFixed(3);
+      });
+    }
+    row.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }, { passive: true });
+    window.addEventListener('resize', apply);
+    window.addEventListener('load', apply);
+    apply();
+  }
+
   async function init() {
     if (!window.PortfolioData) return;
 
@@ -345,6 +369,7 @@
       row.innerHTML = mentees.map(buildCard).join('');
       initDrag(row);
       syncCreatorHeight(row);
+      initMobilePeek(row);
     }
 
     const dotsEl = document.getElementById('ms-dots');
