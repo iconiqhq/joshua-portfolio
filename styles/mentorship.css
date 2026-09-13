@@ -577,10 +577,8 @@
   }
 }
 
-/* Mobile: compact the creator card so it stays a bit smaller and still fits;
-   dots at normal (uniform) size — no TikTok scaling. */
+/* Mobile: compact the creator card so it stays a bit smaller and still fits. */
 @media (max-width: 639px) {
-  #ms-dots .carousel-dot { transform: none !important; }
   .ms-banner { height: 72px; }
   .ms-body { padding: 0 16px 14px; }
   .ms-body .ms-ring { width: 72px; height: 72px; margin-top: -38px; padding: 3px; }

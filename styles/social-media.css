@@ -598,8 +598,6 @@ a.sm-platform-btn:hover .sm-platform-icon {
   .sm-body { padding: 0 20px 18px; }
   .sm-reach-value { font-size: 2rem; }
   .sm-status-tag { display: none; }   /* hover pill is useless on touch */
-  /* Carousel dots at normal (uniform) size on mobile — no TikTok scaling */
-  .sm-dots button { transform: none !important; }
 }
 
 @media (max-width: 480px) {

@@ -518,8 +518,6 @@
 @media (max-width: 640px) {
   .ve-vertical-grid { gap: 10px; }
   .ve-vertical-card { width: 42vw; }
-  /* Carousel dots at normal (uniform) size on mobile — no TikTok scaling */
-  .ve-dot { transform: none !important; }
 }
 
 .ve-featured-meta {
