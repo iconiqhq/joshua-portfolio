@@ -592,7 +592,12 @@ a.sm-platform-btn:hover .sm-platform-icon {
 }
 
 @media (max-width: 639px) {
-  #sm-cards-row { --sm-per-view: 1.8; }   /* 2-up: main card + a smaller "next" preview */
+  #sm-cards-row {
+    --sm-per-view: 1.8;              /* 2-up: main card + a smaller "next" preview */
+    padding-left: 16px;             /* space so the main card isn't against the edge */
+    padding-right: 8px;
+    scroll-padding-left: 16px;      /* keep that gap when the card snaps */
+  }
   .sm-card { min-height: 430px; }
   .sm-banner { height: 80px; }
   .sm-body { padding: 0 20px 18px; }
