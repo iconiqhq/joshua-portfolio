@@ -288,22 +288,28 @@
       for (let k = 0; k < cfMeta.length; k++) {
         const m = cfMeta[k];
         let d, op;
+        let scale;
         if (mobile) {
           /* Mobile 2-up: the snapped (left) card is full size; cards to its right
-             shrink + fade a touch — a smaller preview of what's next. Scale is by
-             the card's distance from the viewport's LEFT edge (not the centre). */
+             shrink + fade a touch — a smaller preview of what's next. Scale from
+             the card's LEFT edge (transform-origin) so shrinking doesn't widen the
+             gap between cards — same as the creators carousel. */
           const left = m.left - sl;
           d = Math.min(1, Math.max(0, left / vw));
-          op = 1 - 0.2 * d;
+          scale = 1 - 0.12 * d;
+          op = 1 - 0.18 * d;
+          m.el.style.transformOrigin = 'left center';
         } else {
           /* Desktop: scale by distance from the viewport CENTRE — middle cards
              full size, cards toward the sides a bit smaller (and slightly faded). */
           const cardCentre = (m.left + m.w / 2) - sl;
           const off = (cardCentre - vw / 2) / vw;
           d = Math.min(1, Math.abs(off) * 2);
+          scale = 1 - 0.17 * d;
           op = 1 - 0.45 * d;
+          m.el.style.transformOrigin = '';
         }
-        m.el.style.transform = 'scale(' + (1 - 0.17 * d).toFixed(3) + ')';
+        m.el.style.transform = 'scale(' + scale.toFixed(3) + ')';
         m.el.style.opacity = op.toFixed(3);
         m.el.classList.add('sm-cf');
       }

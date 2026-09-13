@@ -594,7 +594,7 @@ a.sm-platform-btn:hover .sm-platform-icon {
 @media (max-width: 639px) {
   #sm-cards-row {
     --sm-per-view: 1.8;              /* 2-up: main card + a smaller "next" preview */
-    --sm-gap: 14px;                 /* tighter gap between cards (matches creators) */
+    --sm-gap: 16px;                 /* same gap as the creators carousel */
     padding-left: 16px;             /* space so the main card isn't against the edge */
     padding-right: 8px;
     scroll-padding-left: 16px;      /* keep that gap when the card snaps */
