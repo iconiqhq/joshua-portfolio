@@ -575,10 +575,10 @@ a.sm-platform-btn:hover .sm-platform-icon {
   background: var(--color-blue);   /* size handled by JS dotScale (TikTok-style) */
 }
 
-/* Phone (1-up): native scroll-snap centers the single card as you swipe */
+/* Phone (2-up): main card anchors left, the next peeks smaller (coverflow) */
 @media (max-width: 639px) {
   #sm-cards-row { scroll-snap-type: x mandatory; }
-  .sm-card { scroll-snap-align: center; }
+  .sm-card { scroll-snap-align: start; }
 }
 
 /* ── Responsive ─────────────────────────────────────── */
@@ -592,7 +592,7 @@ a.sm-platform-btn:hover .sm-platform-icon {
 }
 
 @media (max-width: 639px) {
-  #sm-cards-row { --sm-per-view: 1.12; }   /* a bit smaller card + next peeks */
+  #sm-cards-row { --sm-per-view: 1.8; }   /* 2-up: main card + a smaller "next" preview */
   .sm-card { min-height: 430px; }
   .sm-banner { height: 80px; }
   .sm-body { padding: 0 20px 18px; }

@@ -284,17 +284,27 @@
       cfTick = false;
       if (REDUCED) return;
       const sl = track.scrollLeft, vw = track.clientWidth;
+      const mobile = window.innerWidth < 640;
       for (let k = 0; k < cfMeta.length; k++) {
-        /* Previous style: scale each card by how far its centre is from the
-           viewport centre — the middle cards are full size, the ones toward the
-           sides are a bit smaller (and slightly faded). A continuous scale, so
-           it plays smoothly as the wheel drags/scrolls. */
         const m = cfMeta[k];
-        const cardCentre = (m.left + m.w / 2) - sl;
-        const off = (cardCentre - vw / 2) / vw;      // 0 at centre; ± toward the sides
-        const d = Math.min(1, Math.abs(off) * 2);    // 0 centre → 1 near the edges
+        let d, op;
+        if (mobile) {
+          /* Mobile 2-up: the snapped (left) card is full size; cards to its right
+             shrink + fade a touch — a smaller preview of what's next. Scale is by
+             the card's distance from the viewport's LEFT edge (not the centre). */
+          const left = m.left - sl;
+          d = Math.min(1, Math.max(0, left / vw));
+          op = 1 - 0.2 * d;
+        } else {
+          /* Desktop: scale by distance from the viewport CENTRE — middle cards
+             full size, cards toward the sides a bit smaller (and slightly faded). */
+          const cardCentre = (m.left + m.w / 2) - sl;
+          const off = (cardCentre - vw / 2) / vw;
+          d = Math.min(1, Math.abs(off) * 2);
+          op = 1 - 0.45 * d;
+        }
         m.el.style.transform = 'scale(' + (1 - 0.17 * d).toFixed(3) + ')';
-        m.el.style.opacity = (1 - 0.45 * d).toFixed(3);
+        m.el.style.opacity = op.toFixed(3);
         m.el.classList.add('sm-cf');
       }
     }
