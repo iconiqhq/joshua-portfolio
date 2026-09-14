@@ -363,7 +363,7 @@
     max-width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    --ve-gap: 8vw;
+    --ve-gap: 3vw;
     padding-left: 2vw;
     padding-right: 2vw;
     scroll-padding-left: 2vw;
