@@ -406,12 +406,18 @@
     scroll-padding-left: 2vw;
   }
   /* Main video full size; the peek (non-active) videos are smaller. Scale them
-     from their LEFT edge so they stay tucked next to the main (no gap opens). */
+     from their LEFT edge so they stay tucked next to the main (no gap opens),
+     and transition the scale so the 2nd video grows smoothly into the main
+     (and back) when you swipe/click. */
   .ve-vcard { width: 60vw; }
-  .ve-video-row .ve-vcard { transform: none !important; }
+  .ve-video-row .ve-vcard {
+    transform: none !important;
+    transform-origin: left center;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color var(--t-fast), box-shadow var(--t-fast);
+  }
   .ve-video-row .ve-vcard:not(.ve-vcard--playing) {
     transform: scale(0.78) !important;
-    transform-origin: left center;
   }
   /* Prev/next arrows at the far edges of the whole video strip. The stage is
      translated +10vw, so undo that to land them at the viewport edges.
