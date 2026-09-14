@@ -231,215 +231,70 @@
   color: var(--color-text-secondary);
 }
 
-/* ── Featured Video ─────────────────────────────────── */
-#ve-featured-wrap {
-  position: relative;
-  z-index: 1;
-}
+/* ── Featured long-form videos ──────────────────────────
+   Driven by the SAME carousel engine as the social section
+   (window.__jlCarousel): 1:1 drag → scrollLeft, snap to nearest,
+   coverflow, seamless clone loop, dots, native mobile scroll-snap.
+   So the row / card / dots CSS below mirrors the social carousel
+   (#sm-cards-row / .sm-card / .sm-dots), sized for 16:9 videos.
+   Each card is a click-to-play thumbnail. */
+#ve-featured-wrap { position: relative; z-index: 1; }
 
-/* ── Carousel Nav ───────────────────────────────────── */
-.ve-carousel-nav {
+.ve-video-row {
+  --ve-per-view: 2.4;                 /* several videos visible, coverflow like social */
+  --ve-gap: 20px;
+  position: relative;                 /* offsetParent for the coverflow math */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 18px;
-}
-
-.ve-carousel-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(225, 17, 251, 0.07);
-  border: 1px solid rgba(225, 17, 251, 0.25);
-  color: var(--color-pink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: var(--ve-gap);
+  max-width: 1180px;
+  margin-inline: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 26px 4px 30px;
   cursor: pointer;
-  transition: background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
-  outline: none;
-  flex-shrink: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.ve-video-row::-webkit-scrollbar { display: none; }
+.ve-video-row img,
+.ve-video-row svg { -webkit-user-drag: none; }
+.ve-video-row.sm-dragging {           /* engine toggles .sm-dragging during a drag */
+  scroll-behavior: auto;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.ve-carousel-btn:hover {
-  background: rgba(225, 17, 251, 0.18);
-  border-color: rgba(225, 17, 251, 0.6);
-  box-shadow: 0 0 22px rgba(225, 17, 251, 0.18);
-  transform: scale(1.1);
-}
-
-/* ── Dots ───────────────────────────────────────────── */
-.ve-nav-dots {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ve-dot {
-  width: 8px;
-  height: 8px;
-  min-width: 0;
-  min-height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.28);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transform-origin: center;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
-  flex-shrink: 0;
-  display: block;
-}
-
-.ve-dot:hover {
-  background: rgba(255, 255, 255, 0.55);
-}
-
-.ve-dot-active {
-  background: var(--color-pink);   /* size handled by JS dotScale (TikTok-style) */
-  box-shadow: 0 0 6px rgba(225, 17, 251, 0.6);
-}
-
-/* ── Slide Transitions ──────────────────────────────── */
-.ve-featured-frame {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.ve-exit-left {
-  opacity: 0 !important;
-  transform: translateX(-52px) !important;
-  transition: opacity 0.3s ease, transform 0.3s ease !important;
-}
-
-.ve-exit-right {
-  opacity: 0 !important;
-  transform: translateX(52px) !important;
-  transition: opacity 0.3s ease, transform 0.3s ease !important;
-}
-
-.ve-enter-right {
-  opacity: 0 !important;
-  transform: translateX(52px) !important;
-  transition: none !important;
-}
-
-.ve-enter-left {
-  opacity: 0 !important;
-  transform: translateX(-52px) !important;
-  transition: none !important;
-}
-
-.ve-entering {
-  opacity: 1 !important;
-  transform: translateX(0) !important;
-  transition: opacity 0.42s ease, transform 0.42s var(--ease-out-quart) !important;
-}
-
-.ve-featured-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: clamp(14px, 2vw, 20px);
-}
-
-.ve-featured-tag {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-pink);
-  padding: 4px 14px;
-  border: 1px solid rgba(225, 17, 251, 0.35);
-  border-radius: 100px;
-  background: rgba(225, 17, 251, 0.06);
-}
-
-.ve-featured-category {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.28);
-}
-
-.ve-featured-frame {
-  position: relative;
-  width: 100%;
+/* Video card = one 16:9 thumbnail; the engine drives its coverflow transform inline */
+.ve-vcard {
+  flex: 0 0 auto;
+  width: calc((100% - (var(--ve-per-view) - 1) * var(--ve-gap)) / var(--ve-per-view));
   aspect-ratio: 16 / 9;
+  position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(225, 17, 251, 0.18);
-  box-shadow:
-    0 0 0 1px rgba(225, 17, 251, 0.08),
-    0 0 60px rgba(225, 17, 251, 0.12),
-    0 32px 80px rgba(0, 0, 0, 0.55);
-  transition: border-color 0.5s ease, box-shadow 0.5s ease;
-}
-
-.ve-featured-frame:hover {
-  border-color: rgba(225, 17, 251, 0.38);
-  box-shadow:
-    0 0 0 1px rgba(225, 17, 251, 0.14),
-    0 0 80px rgba(225, 17, 251, 0.2),
-    0 32px 80px rgba(0, 0, 0, 0.55);
-}
-
-.ve-featured-frame iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-
-/* Sliding track: one video per view; drag/flick moves it and snaps. */
-.ve-track {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  will-change: transform;
-}
-
-.ve-slide {
-  position: relative;
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
   background: #050505;
+  border: 1px solid rgba(225, 17, 251, 0.18);
+  box-shadow: 0 0 40px rgba(225, 17, 251, 0.08), 0 20px 50px rgba(0, 0, 0, 0.5);
+  backface-visibility: hidden;
+  cursor: pointer;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.ve-vcard.sm-cf { will-change: transform, opacity; }
+.ve-vcard:hover {
+  border-color: rgba(225, 17, 251, 0.4);
+  box-shadow: 0 0 60px rgba(225, 17, 251, 0.18), 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
-.ve-slide .ve-poster {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+.ve-vcard__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.ve-vcard iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; z-index: 1; }
 
-.ve-slide iframe {
+.ve-vcard__play {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-  z-index: 1;
-}
-
-/* Play affordance on the (non-live) poster slides */
-.ve-slide-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
+  width: 54px; height: 54px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -448,63 +303,35 @@
   border: 1.5px solid rgba(225, 17, 251, 0.6);
   box-shadow: 0 0 26px rgba(225, 17, 251, 0.3);
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
 }
-.ve-slide-play svg { width: 22px; height: 22px; margin-left: 2px; }
-.ve-slide--live .ve-slide-play,
-.ve-slide--live .ve-poster { opacity: 0; }
+.ve-vcard__play svg { width: 20px; height: 20px; margin-left: 2px; }
+.ve-vcard:hover .ve-vcard__play {
+  transform: translate(-50%, -50%) scale(1.12);
+  background: rgba(225, 17, 251, 0.35);
+  box-shadow: 0 0 24px rgba(225, 17, 251, 0.4);
+}
+.ve-vcard--playing .ve-vcard__play,
+.ve-vcard--playing .ve-vcard__poster { opacity: 0; pointer-events: none; }
 
-.ve-swipe-catcher {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  cursor: grab;
-  touch-action: pan-y;
-  background: transparent;
-}
+/* Dots reuse the shared .sm-dots look (via class), tinted pink for this section */
+#ve-video-dots { margin-top: 14px; }
+#ve-video-dots button { background: rgba(255, 255, 255, 0.28); }
+#ve-video-dots button:hover { background: rgba(255, 255, 255, 0.55); }
+#ve-video-dots button[aria-current="true"] { background: var(--color-pink); box-shadow: 0 0 6px rgba(225, 17, 251, 0.6); }
 
-.ve-swipe-catcher.ve-swiping {
-  cursor: grabbing;
-}
-
-/* Edge prev/next arrows — sit above the swipe catcher so a click on the arrow
-   changes the video directly (swipe still works everywhere else on the frame). */
-.ve-edge-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 3;
-  width: 44px;
-  height: 44px;
-  min-width: 0;
-  min-height: 0;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: rgba(10, 6, 12, 0.55);
-  border: 1px solid rgba(225, 17, 251, 0.4);
-  color: #fff;
-  cursor: pointer;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
-}
-.ve-edge-arrow svg { width: 22px; height: 22px; }
-.ve-edge-arrow--prev { left: 12px; }
-.ve-edge-arrow--next { right: 12px; }
-.ve-edge-arrow:hover {
-  background: rgba(225, 17, 251, 0.28);
-  border-color: rgba(225, 17, 251, 0.7);
-  box-shadow: 0 0 22px rgba(225, 17, 251, 0.25);
-}
-.ve-edge-arrow:active { transform: translateY(-50%) scale(0.92); }
-.ve-edge-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-.ve-edge-arrow:disabled { opacity: 0.28; pointer-events: none; }
-@media (max-width: 640px) {
-  .ve-edge-arrow { width: 38px; height: 38px; }
-  .ve-edge-arrow svg { width: 19px; height: 19px; }
-  .ve-edge-arrow--prev { left: 8px; }
-  .ve-edge-arrow--next { right: 8px; }
+/* Same responsive per-view steps as social (tablet 2-up, phone ~1.5 + native snap) */
+@media (max-width: 1023px) { .ve-video-row { --ve-per-view: 1.8; } }
+@media (max-width: 639px) {
+  .ve-video-row {
+    --ve-per-view: 1.5;
+    --ve-gap: 14px;
+    scroll-snap-type: x mandatory;
+    padding-left: 16px;
+    padding-right: 8px;
+    scroll-padding-left: 16px;
+  }
+  .ve-vcard { scroll-snap-align: start; }
 }
 
 /* ── Vertical Videos Grid ───────────────────────────── */
@@ -646,41 +473,7 @@
   .ve-vertical-card { width: 42vw; }
 }
 
-.ve-featured-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: clamp(12px, 1.8vw, 18px);
-}
-
-.ve-featured-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
-  letter-spacing: -0.02em;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.ve-featured-sep {
-  color: rgba(255, 255, 255, 0.2);
-  font-size: var(--text-sm);
-}
-
-.ve-featured-client {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.08em;
-  color: rgba(225, 17, 251, 0.65);
-}
-
 /* ── Responsive ─────────────────────────────────────── */
 @media (max-width: 640px) {
   .ve-brand-actions { flex-direction: column; align-items: center; gap: var(--sp-3); }
-  .ve-featured-frame { border-radius: var(--radius-md); }
-}
-
-/* ── Reduced motion ─────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .ve-featured-frame,
-  .ve-featured-frame:hover { transition: none; }
 }
