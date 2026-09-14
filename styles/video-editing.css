@@ -362,18 +362,20 @@
   min-width: 0;
   min-height: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  color: #111;
-  border: none;
+  background: rgba(12, 12, 14, 0.82);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   display: none;                 /* shown on desktop; touch uses swipe */
   place-items: center;
   cursor: pointer;
   z-index: 4;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  transition: background 0.2s, transform 0.15s;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
 .ve-varrow svg { width: 22px; height: 22px; }
-.ve-varrow:hover { background: #fff; }
+.ve-varrow:hover { background: rgba(0, 0, 0, 0.92); border-color: rgba(255, 255, 255, 0.3); }
 .ve-varrow:active { transform: translateY(-50%) scale(0.92); }
 .ve-varrow:focus-visible { outline: 2px solid var(--color-pink); outline-offset: 2px; }
 @media (hover: none) { .ve-varrow { display: none !important; } }  /* touch: swipe only */
