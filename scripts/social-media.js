@@ -323,17 +323,22 @@
        a shake at the loop boundary — so, like Artsons, on mobile we trust the
        native snap and only keep the infinite loop + dots in sync. */
     const isMobile = () => window.innerWidth < 640;
-    let dotTick = false, settleTimer;
+    let dotTick = false, settleTimer, wrapTimer;
     function settle() {
       if (isMobile() || track.classList.contains('sm-dragging')) return;
       const t = snapTarget();
       if (Math.abs(t - track.scrollLeft) > 2) track.scrollLeft = t;
     }
     track.addEventListener('scroll', () => {
-      normalize();
+      /* Desktop: wrap the loop immediately (the teleport is invisible). Mobile:
+         DEFER the wrap — teleporting mid-fling interrupts the browser's momentum
+         and shows up as a shake, so we wrap only after the swipe settles (140ms
+         debounce) + on scrollend. This is exactly what the Artsons wheel does. */
+      if (!isMobile()) normalize();
       if (!cfTick) { cfTick = true; requestAnimationFrame(coverflow); }
       if (!dotTick) { dotTick = true; requestAnimationFrame(() => { dotTick = false; syncDots(); }); }
       clearTimeout(settleTimer); settleTimer = setTimeout(settle, 90);
+      if (isMobile()) { clearTimeout(wrapTimer); wrapTimer = setTimeout(() => { normalize(); syncDots(); }, 140); }
     }, { passive: true });
     /* Re-center once scrolling FULLY stops (after momentum). */
     if ('onscrollend' in window) {
