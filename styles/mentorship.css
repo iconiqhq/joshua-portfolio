@@ -214,8 +214,8 @@
 /* ── Card — same profile-card UI as the social cards ── */
 .ms-card {
   flex: 0 0 auto;            /* keep width in the carousel engine (don't shrink) */
-  width: 274px;
-  height: 404px;
+  width: 228px;
+  height: 344px;
   background: #ffffff;
   border: none;
   border-radius: var(--radius-lg);
@@ -596,8 +596,8 @@
     gap: 18px;
   }
   .ms-card {
-    width: 280px;
-    height: 448px;
+    width: 236px;
+    height: 380px;
   }
 }
 
@@ -628,8 +628,8 @@
 
 @media (max-width: 480px) {
   .ms-card {
-    width: 244px;
-    height: 420px;
+    width: 208px;
+    height: 356px;
   }
   .ms-stats-bar {
     flex-wrap: wrap;
