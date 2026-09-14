@@ -151,19 +151,21 @@
     }, { passive: true });
     if ('onscrollend' in window) row.addEventListener('scrollend', activateCentered);
 
+    /* Glide the row to a card's rest position — the SAME thing a swipe does
+       (just set row.scrollLeft; the row's scroll-behavior:smooth animates it).
+       Not scrollIntoView: that scrolls ANCESTORS too (the page/section jumps). */
+    function glideTo(card) {
+      if (card && card.classList.contains('ve-vcard')) row.scrollLeft = card.offsetLeft;
+    }
+
     /* Tapping a side peek glides it to the main position (then it autoplays). */
     row.addEventListener('click', e => {
       const card = e.target.closest('.ve-vcard');
-      if (card && card !== activeCard) card.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
+      if (card && card !== activeCard) glideTo(card);
     });
 
     /* Glide to the next/previous video (the clone loop makes the ends wrap
        round). activateCentered plays whichever settles at the main position. */
-    function glideTo(sib) {
-      if (sib && sib.classList.contains('ve-vcard')) {
-        sib.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
-      }
-    }
     function advanceToNext() { if (activeCard) glideTo(activeCard.nextElementSibling); }
     function advanceToPrev() { if (activeCard) glideTo(activeCard.previousElementSibling); }
 
