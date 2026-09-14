@@ -195,6 +195,21 @@
 }
 
 /* ── Grid — Instagram 3×3 ───────────────────────────── */
+/* ── Description ─────────────────────────────────────── */
+.gd-block-intro {
+  text-align: center;
+  max-width: 660px;
+  margin: clamp(-8px, -0.5vw, 0px) auto clamp(28px, 4vw, 44px);
+  position: relative;
+  z-index: 1;
+}
+.gd-block-desc {
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-sm), 1.4vw, var(--text-base));
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
 .gd-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

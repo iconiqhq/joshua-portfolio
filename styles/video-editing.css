@@ -205,6 +205,32 @@
   text-transform: uppercase;
 }
 
+/* ── Block intro (description above each video type) ── */
+.ve-block-intro {
+  text-align: center;
+  max-width: 660px;
+  margin: 0 auto clamp(20px, 3vw, 34px);
+  position: relative;
+  z-index: 1;
+}
+.ve-block-intro--spaced {
+  margin-top: clamp(48px, 7vw, 84px);
+}
+.ve-block-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.ve-block-desc {
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-sm), 1.4vw, var(--text-base));
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
 /* ── Featured Video ─────────────────────────────────── */
 #ve-featured-wrap {
   position: relative;

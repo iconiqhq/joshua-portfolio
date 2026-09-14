@@ -87,47 +87,59 @@
 
   updateDots();
 
-  /* ── Swipe / drag to change video (mouse + touch) ────── */
+  /* ── Swipe / drag to change video — left↔right, mouse + touch ──
+     Works the same on desktop (mouse drag) and mobile (touch swipe):
+       • The first few px lock the gesture direction — a horizontal drag is
+         a swipe (we take it over); a vertical drag is handed back so the
+         page still scrolls normally.
+       • Move/up are tracked on `window`, so a fast flick that leaves the
+         video frame still updates and still releases (the old code cancelled
+         mid-swipe on pointerleave, which is why it felt like it didn't work). */
   if (catcher) {
-    const SWIPE_THRESHOLD = 50;
-    let dragging  = false;
-    let startX    = 0;
-    let dx        = 0;
+    const SWIPE_THRESHOLD = 45;
+    let dragging = false, startX = 0, startY = 0, dx = 0, axis = null; // axis: 'x' | 'y' | null
 
-    catcher.addEventListener('pointerdown', e => {
-      if (busy) return;
-      dragging = true;
-      dx = 0;
-      startX = e.clientX;
-      frame.style.transition = 'none';
-      catcher.classList.add('ve-swiping');
-      if (catcher.setPointerCapture) catcher.setPointerCapture(e.pointerId);
-    });
-
-    catcher.addEventListener('pointermove', e => {
+    function onMove(e) {
       if (!dragging) return;
       dx = e.clientX - startX;
-      frame.style.transform = `translateX(${dx}px)`;
-    });
+      const dy = e.clientY - startY;
+      if (axis === null) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;        // wait until the drag commits
+        axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+        if (axis === 'y') { endSwipe(); return; }                // vertical → let the page scroll
+      }
+      if (axis === 'x') {
+        if (e.cancelable) e.preventDefault();
+        frame.style.transform = `translateX(${dx}px)`;
+      }
+    }
 
     function endSwipe() {
       if (!dragging) return;
       dragging = false;
       catcher.classList.remove('ve-swiping');
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', endSwipe);
+      window.removeEventListener('pointercancel', endSwipe);
       frame.style.transition = '';
       frame.style.transform = '';
 
-      if (dx <= -SWIPE_THRESHOLD && videos[current + 1]) {
-        goTo(current + 1);
-      } else if (dx >= SWIPE_THRESHOLD && videos[current - 1]) {
-        goTo(current - 1);
-      }
-      dx = 0;
+      const moved = axis === 'x' ? dx : 0;
+      axis = null; dx = 0;
+      if (moved <= -SWIPE_THRESHOLD && videos[current + 1]) goTo(current + 1);
+      else if (moved >= SWIPE_THRESHOLD && videos[current - 1]) goTo(current - 1);
     }
 
-    catcher.addEventListener('pointerup', endSwipe);
-    catcher.addEventListener('pointercancel', endSwipe);
-    catcher.addEventListener('pointerleave', endSwipe);
+    catcher.addEventListener('pointerdown', e => {
+      if (busy) return;
+      dragging = true; dx = 0; axis = null;
+      startX = e.clientX; startY = e.clientY;
+      frame.style.transition = 'none';
+      catcher.classList.add('ve-swiping');
+      window.addEventListener('pointermove', onMove, { passive: false });
+      window.addEventListener('pointerup', endSwipe);
+      window.addEventListener('pointercancel', endSwipe);
+    });
   }
 
   /* ── Vertical video play overlays ───────────────────── */
