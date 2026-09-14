@@ -410,10 +410,11 @@
      was what opened up the big empty space. */
   .ve-vcard { width: 60vw; }
   .ve-video-row .ve-vcard { transform: none !important; }
-  /* Prev/next arrows over the left & right edges of the main video */
+  /* Prev/next arrows at the far edges of the whole video strip. The stage is
+     translated +10vw, so undo that to land them at the viewport edges. */
   .ve-varrow { display: grid; }
-  .ve-varrow--prev { left: calc(2vw + 10px); }
-  .ve-varrow--next { left: calc(62vw - 54px); }
+  .ve-varrow--prev { left: calc(2vw - 10vw); right: auto; }
+  .ve-varrow--next { right: calc(2vw + 10vw); left: auto; }
 }
 
 /* Phone: big main video (~85vw) + a small next peek, with native snap. */
