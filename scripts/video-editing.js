@@ -55,19 +55,39 @@
 
     let userEngaged = false;
 
+    const PLAY_SVG  = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    const PAUSE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+    function togglePlay(card) {
+      const p = card && card._player;
+      if (!p || !p.getPlayerState) return;
+      if (p.getPlayerState() === YT.PlayerState.PLAYING) p.pauseVideo(); else p.playVideo();
+    }
+
     /* Start the live player inside a card (autoplay; unmute once the browser
        allows). The player's iframe is pointer-events:none (CSS) so the carousel
-       drag/swipe still works right over it. When the video ENDS, advance to the
-       next card. */
+       drag/swipe still works right over it — a dedicated play/pause button gives
+       the viewer control. When the video ENDS, advance to the next card. */
     function playCard(card) {
       if (!card || card.classList.contains('ve-vcard--playing')) return;
       card.classList.add('ve-vcard--playing');
       const host = document.createElement('div');
       host.className = 've-vcard__player';
       card.appendChild(host);
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 've-vcard__toggle';
+      btn.setAttribute('aria-label', 'Pause');
+      btn.innerHTML = PAUSE_SVG;
+      btn.addEventListener('pointerdown', function (e) { e.stopPropagation(); });   // don't start a carousel drag
+      btn.addEventListener('mousedown', function (e) { e.stopPropagation(); });
+      btn.addEventListener('click', function (e) { e.stopPropagation(); togglePlay(card); });
+      card.appendChild(btn);
+
       whenYT(function () {
         // The card may have been swiped away before the API finished loading.
-        if (!card.isConnected || !card.classList.contains('ve-vcard--playing')) { host.remove(); return; }
+        if (!card.isConnected || !card.classList.contains('ve-vcard--playing')) { host.remove(); btn.remove(); return; }
         card._player = new YT.Player(host, {
           videoId: card.dataset.id,
           playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1, controls: 1, color: 'white' },
@@ -76,7 +96,9 @@
               try { e.target.playVideo(); if (userEngaged) { e.target.unMute(); e.target.setVolume(100); } } catch (_) {}
             },
             onStateChange: function (e) {
-              if (e.data === YT.PlayerState.ENDED) advanceToNext();   // 0 = ended → next video
+              if (e.data === YT.PlayerState.ENDED) { advanceToNext(); return; }   // 0 = ended → next video
+              if (e.data === YT.PlayerState.PLAYING) { btn.innerHTML = PAUSE_SVG; btn.setAttribute('aria-label', 'Pause'); }
+              else if (e.data === YT.PlayerState.PAUSED) { btn.innerHTML = PLAY_SVG; btn.setAttribute('aria-label', 'Play'); }
             }
           }
         });
@@ -84,7 +106,7 @@
     }
     function stopCard(card) {
       if (card._player) { try { card._player.destroy(); } catch (_) {} card._player = null; }
-      card.querySelectorAll('iframe, .ve-vcard__player').forEach(el => el.remove());
+      card.querySelectorAll('iframe, .ve-vcard__player, .ve-vcard__toggle').forEach(el => el.remove());
       card.classList.remove('ve-vcard--playing');
     }
 

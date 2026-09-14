@@ -317,14 +317,61 @@
 .ve-vcard--playing .ve-vcard__play,
 .ve-vcard--playing .ve-vcard__poster { opacity: 0; pointer-events: none; }
 
+/* Play/pause control — clickable even though the video iframe is
+   pointer-events:none (so swipe still works over the rest of the card). */
+.ve-vcard__toggle {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(10, 6, 12, 0.62);
+  border: 1px solid rgba(225, 17, 251, 0.5);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.14s ease;
+}
+.ve-vcard__toggle svg { width: 22px; height: 22px; }
+.ve-vcard__toggle:hover {
+  background: rgba(225, 17, 251, 0.34);
+  border-color: rgba(225, 17, 251, 0.75);
+  box-shadow: 0 0 22px rgba(225, 17, 251, 0.28);
+}
+.ve-vcard__toggle:active { transform: scale(0.92); }
+.ve-vcard__toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
 /* Dots reuse the shared .sm-dots look (via class), tinted pink for this section */
 #ve-video-dots { margin-top: 14px; }
 #ve-video-dots button { background: rgba(255, 255, 255, 0.28); }
 #ve-video-dots button:hover { background: rgba(255, 255, 255, 0.55); }
 #ve-video-dots button[aria-current="true"] { background: var(--color-pink); box-shadow: 0 0 6px rgba(225, 17, 251, 0.6); }
 
-/* Same responsive per-view steps as social (tablet 2-up, phone ~1.5 + native snap) */
-@media (max-width: 1023px) { .ve-video-row { --ve-per-view: 1.4; } }
+/* Desktop / tablet: break the row out to the full screen width so the main
+   video is ~70vw, with a ~20vw peek of the next and ~8vw gap between them. */
+@media (min-width: 640px) {
+  .ve-video-row {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    --ve-gap: 8vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    scroll-padding-left: 2vw;
+  }
+  .ve-vcard { width: 70vw; }
+}
+
+/* Phone: 1.5-up (main + smaller next peek) with native snap. */
 @media (max-width: 639px) {
   .ve-video-row {
     --ve-per-view: 1.5;
