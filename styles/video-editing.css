@@ -241,7 +241,7 @@
 #ve-featured-wrap { position: relative; z-index: 1; }
 
 .ve-video-row {
-  --ve-per-view: 2.4;                 /* several videos visible, coverflow like social */
+  --ve-per-view: 1.5;                 /* big center video + side peeks, coverflow like social */
   --ve-gap: 20px;
   position: relative;                 /* offsetParent for the coverflow math */
   display: flex;
@@ -321,7 +321,7 @@
 #ve-video-dots button[aria-current="true"] { background: var(--color-pink); box-shadow: 0 0 6px rgba(225, 17, 251, 0.6); }
 
 /* Same responsive per-view steps as social (tablet 2-up, phone ~1.5 + native snap) */
-@media (max-width: 1023px) { .ve-video-row { --ve-per-view: 1.8; } }
+@media (max-width: 1023px) { .ve-video-row { --ve-per-view: 1.4; } }
 @media (max-width: 639px) {
   .ve-video-row {
     --ve-per-view: 1.5;
