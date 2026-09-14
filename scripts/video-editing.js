@@ -88,58 +88,58 @@
   updateDots();
 
   /* ── Swipe / drag to change video — left↔right, mouse + touch ──
-     Works the same on desktop (mouse drag) and mobile (touch swipe):
-       • The first few px lock the gesture direction — a horizontal drag is
-         a swipe (we take it over); a vertical drag is handed back so the
-         page still scrolls normally.
-       • Move/up are tracked on `window`, so a fast flick that leaves the
-         video frame still updates and still releases (the old code cancelled
-         mid-swipe on pointerleave, which is why it felt like it didn't work). */
+     The catcher is a transparent overlay ON TOP of the YouTube <iframe>.
+     The iframe is cross-origin, so during a drag it would normally swallow
+     the move/up events and the swipe would die halfway. The fix is
+     setPointerCapture: once a horizontal drag is confirmed we capture the
+     pointer to the catcher, so every following move/up is delivered to us
+     even while the finger/cursor is over the iframe.
+       • The first ~8px lock the axis: horizontal → swipe (we capture + take
+         over); vertical → we bail so the page scrolls normally.
+       • Capture is taken only AFTER the horizontal lock, so a vertical scroll
+         gesture is never interfered with. */
   if (catcher) {
     const SWIPE_THRESHOLD = 45;
-    let dragging = false, startX = 0, startY = 0, dx = 0, axis = null; // axis: 'x' | 'y' | null
-
-    function onMove(e) {
-      if (!dragging) return;
-      dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      if (axis === null) {
-        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;        // wait until the drag commits
-        axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
-        if (axis === 'y') { endSwipe(); return; }                // vertical → let the page scroll
-      }
-      if (axis === 'x') {
-        if (e.cancelable) e.preventDefault();
-        frame.style.transform = `translateX(${dx}px)`;
-      }
-    }
+    let dragging = false, startX = 0, startY = 0, dx = 0, axis = null, pid = null;
 
     function endSwipe() {
       if (!dragging) return;
       dragging = false;
       catcher.classList.remove('ve-swiping');
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', endSwipe);
-      window.removeEventListener('pointercancel', endSwipe);
+      if (pid !== null) { try { catcher.releasePointerCapture(pid); } catch (_) {} }
       frame.style.transition = '';
       frame.style.transform = '';
 
       const moved = axis === 'x' ? dx : 0;
-      axis = null; dx = 0;
+      axis = null; dx = 0; pid = null;
       if (moved <= -SWIPE_THRESHOLD && videos[current + 1]) goTo(current + 1);
       else if (moved >= SWIPE_THRESHOLD && videos[current - 1]) goTo(current - 1);
     }
 
     catcher.addEventListener('pointerdown', e => {
       if (busy) return;
-      dragging = true; dx = 0; axis = null;
+      dragging = true; dx = 0; axis = null; pid = e.pointerId;
       startX = e.clientX; startY = e.clientY;
       frame.style.transition = 'none';
-      catcher.classList.add('ve-swiping');
-      window.addEventListener('pointermove', onMove, { passive: false });
-      window.addEventListener('pointerup', endSwipe);
-      window.addEventListener('pointercancel', endSwipe);
     });
+
+    catcher.addEventListener('pointermove', e => {
+      if (!dragging || e.pointerId !== pid) return;
+      dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (axis === null) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;         // wait until the drag commits
+        if (Math.abs(dy) > Math.abs(dx)) { dragging = false; return; } // vertical → let the page scroll
+        axis = 'x';
+        catcher.classList.add('ve-swiping');
+        try { catcher.setPointerCapture(pid); } catch (_) {}      // keep events over the iframe
+      }
+      if (e.cancelable) e.preventDefault();
+      frame.style.transform = `translateX(${dx}px)`;
+    });
+
+    catcher.addEventListener('pointerup', endSwipe);
+    catcher.addEventListener('pointercancel', endSwipe);
   }
 
   /* ── Vertical video play overlays ───────────────────── */
