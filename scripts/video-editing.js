@@ -116,16 +116,20 @@
   if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
   if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
 
-  /* ── Swipe / drag — same feel as the social-media carousel ──
-     The catcher overlays the (cross-origin) video, so the drag would normally
-     be swallowed by the iframe. Once a horizontal drag is confirmed we
-     setPointerCapture, and the whole track follows the finger/cursor 1:1;
-     on release it snaps to the nearest video (a light flick still advances a
-     full slide). A vertical drag is handed back so the page keeps scrolling. */
+  /* ── Drag — the SAME model as the social-media carousel ──
+     Social maps the drag 1:1 onto the track's scroll position (you can drag
+     freely across the whole strip), hard-clamps at the first/last edge, and on
+     release snaps to the NEAREST slide (a quick flick nudges one further, like
+     native momentum). Here the track is a transform instead of scrollLeft (so a
+     drag over the cross-origin iframe isn't swallowed — the catcher captures the
+     pointer once the drag goes horizontal), but the feel is identical. A vertical
+     drag is handed back so the page keeps scrolling. */
   if (catcher) {
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const minX = () => -(videos.length - 1) * step();       // furthest-left scroll (last slide)
     let dragging = false, startX = 0, startY = 0, dx = 0, axis = null, pid = null, baseX = 0, t0 = 0;
 
-    function endSwipe() {
+    function endDrag() {
       if (!dragging) return;
       dragging = false;
       catcher.classList.remove('ve-swiping');
@@ -133,15 +137,13 @@
 
       let target = current;
       if (axis === 'x') {
-        const dt = Math.max(1, performance.now() - t0);
-        const vx = dx / dt;                                  // px per ms
-        const passed = Math.abs(dx) > Math.min(70, step() * 0.18);
-        const flick  = Math.abs(vx) > 0.4;
-        if ((passed || flick) && dx < 0) target = current + 1;
-        else if ((passed || flick) && dx > 0) target = current - 1;
+        const frac = -clamp(baseX + dx, minX(), 0) / step(); // fractional slide position now
+        target = Math.round(frac);                           // snap to nearest (social's snapTarget)
+        const vx = dx / Math.max(1, performance.now() - t0); // px/ms — flick momentum
+        if (Math.abs(vx) > 0.5) target = dx < 0 ? Math.ceil(frac) : Math.floor(frac);
       }
       axis = null; dx = 0; pid = null;
-      goTo(target, true);                                    // snaps (also re-seats if unchanged)
+      goTo(target, true);
     }
 
     catcher.addEventListener('pointerdown', e => {
@@ -163,15 +165,11 @@
         try { catcher.setPointerCapture(pid); } catch (_) {} // keep events over the iframe
       }
       if (e.cancelable) e.preventDefault();
-      // Rubber-band a touch past the first/last edge so it feels bounded.
-      let move = dx;
-      const atStart = current === 0, atEnd = current === videos.length - 1;
-      if ((atStart && dx > 0) || (atEnd && dx < 0)) move = dx * 0.35;
-      setX(baseX + move, false);
+      setX(clamp(baseX + dx, minX(), 0), false);             // 1:1, hard-clamped at both ends
     });
 
-    catcher.addEventListener('pointerup', endSwipe);
-    catcher.addEventListener('pointercancel', endSwipe);
+    catcher.addEventListener('pointerup', endDrag);
+    catcher.addEventListener('pointercancel', endDrag);
   }
 
   /* Keep the current slide centred on resize/orientation change */
