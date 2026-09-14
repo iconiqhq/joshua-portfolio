@@ -411,10 +411,17 @@
   .ve-vcard { width: 60vw; }
   .ve-video-row .ve-vcard { transform: none !important; }
   /* Prev/next arrows at the far edges of the whole video strip. The stage is
-     translated +10vw, so undo that to land them at the viewport edges. */
-  .ve-varrow { display: grid; }
+     translated +10vw, so undo that to land them at the viewport edges.
+     (Shown only on mouse-pointer desktops — see the query below; touch/mobile
+     uses swipe and gets no arrows.) */
   .ve-varrow--prev { left: calc(2vw - 10vw); right: auto; }
   .ve-varrow--next { right: calc(2vw + 10vw); left: auto; }
+}
+
+/* Show the arrows only on real mouse-pointer desktops — never on mobile/touch
+   (which navigates by swiping). */
+@media (min-width: 640px) and (hover: hover) and (pointer: fine) {
+  .ve-varrow { display: grid; }
 }
 
 /* Phone: big main video (~85vw) + a small next peek, with native snap. */
