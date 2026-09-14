@@ -368,11 +368,14 @@
     const dotsEl = document.getElementById('ms-dots');
     if (row) {
       row.innerHTML = mentees.map(buildCard).join('');
-      /* Use the exact same carousel engine as the Social Media ("featured
-         project") carousel — drag/snap/coverflow/seamless loop. Auto-advance is
-         off here (only two creators). Falls back to the basic drag if the shared
-         engine hasn't loaded. */
-      if (typeof window.__jlCarousel === 'function') {
+      /* Desktop with just a couple of creators: show them side by side, no
+         carousel. Mobile (they don't both fit): the same swipe carousel engine
+         as the Social Media section — drag/snap/coverflow/seamless loop. */
+      const useCarousel = window.matchMedia('(max-width: 639px)').matches;
+      if (!useCarousel) {
+        row.classList.add('ms-static');           // static centered row (styled in CSS)
+        if (dotsEl) dotsEl.hidden = true;          // no pager needed
+      } else if (typeof window.__jlCarousel === 'function') {
         window.__jlCarousel(row, dotsEl, { autoScroll: false });
       } else {
         initDrag(row);

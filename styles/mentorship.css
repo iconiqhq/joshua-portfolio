@@ -558,6 +558,13 @@
   -webkit-overflow-scrolling: touch;
 }
 .ms-cards-row::-webkit-scrollbar { display: none; }
+/* Desktop static row: just the creators, centered, no carousel/scroll. */
+.ms-cards-row.ms-static {
+  overflow: visible;
+  justify-content: center;
+  cursor: default;
+  max-width: none;
+}
 #ms-cards-row.sm-dragging {
   scroll-behavior: auto;
   user-select: none;
