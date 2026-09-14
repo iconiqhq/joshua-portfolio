@@ -371,7 +371,7 @@
   /* Drop the coverflow scale on desktop so both videos sit at full size with
      only the 2vw gap between them — the shrink (of the main card AND the peek)
      was what opened up the big empty space. */
-  .ve-vcard { width: 70vw; }
+  .ve-vcard { width: 60vw; }
   .ve-video-row .ve-vcard { transform: none !important; }
 }
 
