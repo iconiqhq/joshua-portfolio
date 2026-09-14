@@ -93,7 +93,10 @@
           playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1, controls: 1, color: 'white' },
           events: {
             onReady: function (e) {
-              try { e.target.playVideo(); if (userEngaged) { e.target.unMute(); e.target.setVolume(100); } } catch (_) {}
+              // Always try to play with sound. Browsers may keep it muted until
+              // the page has had a user gesture — the interaction listener below
+              // unmutes it the moment that happens.
+              try { e.target.unMute(); e.target.setVolume(100); e.target.playVideo(); } catch (_) {}
             },
             onStateChange: function (e) {
               if (e.data === YT.PlayerState.ENDED) { advanceToNext(); return; }   // 0 = ended → next video
