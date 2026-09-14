@@ -361,8 +361,12 @@
   .ve-video-row {
     width: 100vw;
     max-width: 100vw;
+    /* full-bleed, then shift right so the main video sits a bit toward centre
+       (the engine rests the active card flush-left, so padding can't inset it —
+       translating the row does, and reveals a sliver of the previous video). */
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
+    transform: translateX(10vw);
     --ve-gap: 2vw;
     padding-left: 2vw;
     padding-right: 2vw;
