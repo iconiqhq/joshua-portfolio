@@ -290,7 +290,8 @@
 .ve-vcard__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 /* pointer-events:none so a drag/swipe passes through the playing video to the
    carousel track (an iframe would otherwise swallow the gesture). */
-.ve-vcard iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; z-index: 1; pointer-events: none; }
+.ve-vcard iframe,
+.ve-vcard .ve-vcard__player { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; z-index: 1; pointer-events: none; }
 
 .ve-vcard__play {
   position: absolute;

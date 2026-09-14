@@ -12,30 +12,8 @@
   const row    = document.getElementById('ve-cards-row');
   const dotsEl = document.getElementById('ve-video-dots');
 
-  function embedSrc(id) {
-    // autoplay + mute=1 guarantees it starts; we unmute on load (works once the
-    // page has any user interaction — browsers block sound-autoplay before that).
-    return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&color=white&autoplay=1&mute=1&loop=1&playlist=${id}&enablejsapi=1`;
-  }
   function poster(id)         { return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`; }
   function posterFallback(id) { return `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }
-
-  /* ── Pause every other section iframe when one starts playing ── */
-  window.addEventListener('message', function (e) {
-    if (e.origin !== 'https://www.youtube.com') return;
-    try {
-      const data = JSON.parse(e.data);
-      if (data.event === 'onStateChange' && data.info === 1) {
-        document.querySelectorAll('#video-editing iframe').forEach(function (el) {
-          if (el.contentWindow !== e.source) {
-            el.contentWindow.postMessage(
-              JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*'
-            );
-          }
-        });
-      }
-    } catch (_) {}
-  });
 
   /* ── Featured long-form videos ─────────────────────── */
   if (wrap && row) {
@@ -57,29 +35,56 @@
 
     row.innerHTML = videos.map(cardHTML).join('');
 
-    /* Start the live embed inside a card (autoplay; unmute once allowed). The
-       iframe is pointer-events:none (CSS) so the carousel drag/swipe still works
-       right over the playing video. */
+    /* Load the official YouTube IFrame Player API — it reliably fires the ENDED
+       event (raw postMessage does not), which is what drives auto-advance. */
+    let ytReady = !!(window.YT && window.YT.Player);
+    const ytQueue = [];
+    function whenYT(cb) { if (ytReady) cb(); else ytQueue.push(cb); }
+    if (!ytReady) {
+      const prevCb = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (typeof prevCb === 'function') { try { prevCb(); } catch (_) {} }
+        ytReady = true; ytQueue.splice(0).forEach(cb => cb());
+      };
+      if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+        const s = document.createElement('script');
+        s.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(s);
+      }
+    }
+
+    let userEngaged = false;
+
+    /* Start the live player inside a card (autoplay; unmute once the browser
+       allows). The player's iframe is pointer-events:none (CSS) so the carousel
+       drag/swipe still works right over it. When the video ENDS, advance to the
+       next card. */
     function playCard(card) {
-      if (!card || card.querySelector('iframe')) return;
-      const f = document.createElement('iframe');
-      f.src = embedSrc(card.dataset.id);
-      f.title = 'Featured long-form video';
-      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      f.setAttribute('allowfullscreen', '');
-      f.addEventListener('load', function () {
-        try {
-          const send = (func, args) => f.contentWindow.postMessage(
-            JSON.stringify({ event: 'command', func: func, args: args || [] }), '*');
-          send('unMute'); send('setVolume', [100]); send('playVideo');   // audio on when the browser allows
-        } catch (_) {}
-      });
-      card.appendChild(f);
+      if (!card || card.classList.contains('ve-vcard--playing')) return;
       card.classList.add('ve-vcard--playing');
+      const host = document.createElement('div');
+      host.className = 've-vcard__player';
+      card.appendChild(host);
+      whenYT(function () {
+        // The card may have been swiped away before the API finished loading.
+        if (!card.isConnected || !card.classList.contains('ve-vcard--playing')) { host.remove(); return; }
+        card._player = new YT.Player(host, {
+          videoId: card.dataset.id,
+          playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1, controls: 1, color: 'white' },
+          events: {
+            onReady: function (e) {
+              try { e.target.playVideo(); if (userEngaged) { e.target.unMute(); e.target.setVolume(100); } } catch (_) {}
+            },
+            onStateChange: function (e) {
+              if (e.data === YT.PlayerState.ENDED) advanceToNext();   // 0 = ended → next video
+            }
+          }
+        });
+      });
     }
     function stopCard(card) {
-      const f = card.querySelector('iframe');
-      if (f) f.remove();
+      if (card._player) { try { card._player.destroy(); } catch (_) {} card._player = null; }
+      card.querySelectorAll('iframe, .ve-vcard__player').forEach(el => el.remove());
       card.classList.remove('ve-vcard--playing');
     }
 
@@ -127,17 +132,22 @@
       if (card && card !== activeCard) card.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
     });
 
-    /* Sound-autoplay is blocked by the browser until the page has seen a user
-       gesture, so unmute the live video on the first interaction anywhere (and
-       whenever the viewer interacts thereafter). */
+    /* Glide to the next video (the card after the active one; the clone loop makes
+       the last wrap round to the first). activateCentered plays it on settle. */
+    function advanceToNext() {
+      if (!activeCard) return;
+      const next = activeCard.nextElementSibling;
+      if (next && next.classList.contains('ve-vcard')) {
+        next.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
+      }
+    }
+
+    /* Sound-autoplay is blocked until the page has seen a user gesture, so unmute
+       the active player on the first interaction anywhere (and thereafter). */
     function unmuteActive() {
-      const f = row.querySelector('.ve-vcard--playing iframe');
-      if (!f) return;
-      try {
-        const send = (func, args) => f.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: func, args: args || [] }), '*');
-        send('unMute'); send('setVolume', [100]);
-      } catch (_) {}
+      userEngaged = true;
+      const p = activeCard && activeCard._player;
+      if (p && p.unMute) { try { p.unMute(); p.setVolume(100); } catch (_) {} }
     }
     ['pointerdown', 'touchstart', 'keydown'].forEach(ev =>
       window.addEventListener(ev, unmuteActive, { passive: true }));
