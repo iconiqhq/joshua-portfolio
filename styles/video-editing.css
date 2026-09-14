@@ -363,12 +363,15 @@
     max-width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    --ve-gap: 3vw;
+    --ve-gap: 2vw;
     padding-left: 2vw;
     padding-right: 2vw;
     scroll-padding-left: 2vw;
   }
-  .ve-vcard { width: 70vw; }
+  /* Shrink the coverflow neighbours toward their LEFT edge so the scaled-down
+     peek stays tucked next to the main video (default center-origin scaling
+     pushes its edge inward and looks like a big gap). */
+  .ve-vcard { width: 70vw; transform-origin: left center; }
 }
 
 /* Phone: big main video (~85vw) + a small next peek, with native snap. */
