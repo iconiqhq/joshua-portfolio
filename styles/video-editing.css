@@ -407,6 +407,46 @@
   cursor: grabbing;
 }
 
+/* Edge prev/next arrows — sit above the swipe catcher so a click on the arrow
+   changes the video directly (swipe still works everywhere else on the frame). */
+.ve-edge-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 6, 12, 0.55);
+  border: 1px solid rgba(225, 17, 251, 0.4);
+  color: #fff;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
+}
+.ve-edge-arrow svg { width: 22px; height: 22px; }
+.ve-edge-arrow--prev { left: 12px; }
+.ve-edge-arrow--next { right: 12px; }
+.ve-edge-arrow:hover {
+  background: rgba(225, 17, 251, 0.28);
+  border-color: rgba(225, 17, 251, 0.7);
+  box-shadow: 0 0 22px rgba(225, 17, 251, 0.25);
+}
+.ve-edge-arrow:active { transform: translateY(-50%) scale(0.92); }
+.ve-edge-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ve-edge-arrow:disabled { opacity: 0.28; pointer-events: none; }
+@media (max-width: 640px) {
+  .ve-edge-arrow { width: 38px; height: 38px; }
+  .ve-edge-arrow svg { width: 19px; height: 19px; }
+  .ve-edge-arrow--prev { left: 8px; }
+  .ve-edge-arrow--next { right: 8px; }
+}
+
 /* ── Vertical Videos Grid ───────────────────────────── */
 .ve-vertical-wrap {
   margin-top: clamp(16px, 2.5vw, 28px);

@@ -8,6 +8,8 @@
   const iframe  = document.getElementById('ve-iframe');
   const dotsEl  = document.getElementById('ve-nav-dots');
   const catcher = document.getElementById('ve-swipe-catcher');
+  const prevBtn = document.getElementById('ve-prev');
+  const nextBtn = document.getElementById('ve-next');
 
   if (!wrap || !frame || !iframe) return;
 
@@ -38,11 +40,14 @@
 
   function dotScale(dist) { dist = Math.abs(dist); return dist === 0 ? 1.4 : Math.max(0.5, 1 - dist * 0.22); }
   function updateDots() {
-    if (!dotsEl) return;
-    dotsEl.querySelectorAll('.ve-dot').forEach((d, i) => {
-      d.classList.toggle('ve-dot-active', i === current);
-      d.style.transform = 'scale(' + dotScale(i - current) + ')';   // TikTok: outer dots smaller
-    });
+    if (dotsEl) {
+      dotsEl.querySelectorAll('.ve-dot').forEach((d, i) => {
+        d.classList.toggle('ve-dot-active', i === current);
+        d.style.transform = 'scale(' + dotScale(i - current) + ')';   // TikTok: outer dots smaller
+      });
+    }
+    if (prevBtn) prevBtn.disabled = current <= 0;
+    if (nextBtn) nextBtn.disabled = current >= videos.length - 1;
   }
 
   function goTo(index) {
@@ -84,6 +89,10 @@
       dot.addEventListener('click', () => goTo(i));
     });
   }
+
+  /* Prev / next edge arrows */
+  if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
 
   updateDots();
 
