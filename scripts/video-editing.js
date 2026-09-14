@@ -1,27 +1,49 @@
-/* video-editing.js — Section 05: featured video carousel */
+/* video-editing.js — Section 05: featured video carousel
+   The featured video is a real sliding track (same motion as the social-media
+   carousel): drag/flick moves the videos 1:1 and snaps to the nearest one.
+   Each slide is a video — a YouTube poster that upgrades to a live, muted,
+   looping embed once it settles at centre, so only ONE iframe is ever live. */
 
 (function () {
   'use strict';
 
   const wrap    = document.getElementById('ve-featured-wrap');
   const frame   = document.getElementById('ve-featured-frame');
-  const iframe  = document.getElementById('ve-iframe');
+  const track   = document.getElementById('ve-track');
   const dotsEl  = document.getElementById('ve-nav-dots');
   const catcher = document.getElementById('ve-swipe-catcher');
   const prevBtn = document.getElementById('ve-prev');
   const nextBtn = document.getElementById('ve-next');
 
-  if (!wrap || !frame || !iframe) return;
+  if (!wrap || !frame || !track) return;
 
   const videos = JSON.parse(wrap.dataset.videos || '[]');
-  let current  = 0;
-  let busy     = false;
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 0;
 
-  function buildSrc(id) {
+  function embedSrc(id) {
     return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&color=white&autoplay=1&mute=1&loop=1&playlist=${id}&enablejsapi=1`;
   }
+  function posterSrc(id) { return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`; }
+  function posterFallback(id) { return `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }
 
-  /* Pause all section iframes except the one currently playing */
+  /* ── Build one slide per video (poster + play affordance) ── */
+  const slides = videos.map((id, i) => {
+    const slide = document.createElement('div');
+    slide.className = 've-slide';
+    slide.dataset.id = id;
+    slide.innerHTML =
+      '<img class="ve-poster" src="' + posterSrc(id) + '" alt="Video ' + (i + 1) + '" ' +
+        'loading="lazy" decoding="async" ' +
+        'onerror="this.onerror=null;this.src=\'' + posterFallback(id) + '\'">' +
+      '<span class="ve-slide-play" aria-hidden="true">' +
+        '<svg viewBox="0 0 20 20" fill="none"><path d="M6 4L16 10L6 16V4Z" fill="currentColor"/></svg>' +
+      '</span>';
+    track.appendChild(slide);
+    return slide;
+  });
+
+  /* ── Pause every other section iframe when one starts playing ── */
   window.addEventListener('message', function (e) {
     if (e.origin !== 'https://www.youtube.com') return;
     try {
@@ -38,6 +60,35 @@
     } catch (_) {}
   });
 
+  /* ── Geometry + transform ─────────────────────────────── */
+  function step() { return frame.clientWidth; }           // one slide per view, no gap
+  function setX(px, animate) {
+    track.style.transition = animate && !REDUCED
+      ? 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
+      : 'none';
+    track.style.transform = 'translate3d(' + px + 'px,0,0)';
+  }
+
+  /* ── Only the settled slide holds a live iframe ───────── */
+  let activeTimer = 0;
+  function setActiveIframe(i) {
+    slides.forEach((slide, k) => {
+      const has = !!slide.querySelector('iframe');
+      if (k === i && !has) {
+        const f = document.createElement('iframe');
+        f.src = embedSrc(slide.dataset.id);
+        f.title = 'Featured video ' + (i + 1);
+        f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        f.setAttribute('allowfullscreen', '');
+        slide.appendChild(f);
+        slide.classList.add('ve-slide--live');
+      } else if (k !== i && has) {
+        slide.querySelector('iframe').remove();
+        slide.classList.remove('ve-slide--live');
+      }
+    });
+  }
+
   function dotScale(dist) { dist = Math.abs(dist); return dist === 0 ? 1.4 : Math.max(0.5, 1 - dist * 0.22); }
   function updateDots() {
     if (dotsEl) {
@@ -50,86 +101,54 @@
     if (nextBtn) nextBtn.disabled = current >= videos.length - 1;
   }
 
-  function goTo(index) {
-    if (busy || index === current || !videos[index]) return;
-    busy = true;
-
-    const dir = index > current ? 'next' : 'prev';
-
-    /* slide current out */
-    frame.classList.add(dir === 'next' ? 've-exit-left' : 've-exit-right');
-
-    setTimeout(() => {
-      iframe.src = buildSrc(videos[index]);
-      current = index;
-      updateDots();
-
-      frame.classList.remove('ve-exit-left', 've-exit-right');
-      frame.classList.add(dir === 'next' ? 've-enter-right' : 've-enter-left');
-
-      /* Force layout so the enter-state is actually applied before we
-         transition out of it — avoids relying on requestAnimationFrame,
-         which can stall (e.g. backgrounded tab) and leave the frame stuck
-         invisible at opacity:0. */
-      void frame.offsetWidth;
-
-      frame.classList.remove('ve-enter-right', 've-enter-left');
-      frame.classList.add('ve-entering');
-
-      setTimeout(() => {
-        frame.classList.remove('ve-entering');
-        busy = false;
-      }, 420);
-    }, 300);
+  function goTo(index, animate = true) {
+    index = Math.max(0, Math.min(videos.length - 1, index));
+    current = index;
+    setX(-index * step(), animate);
+    updateDots();
+    // Load the live embed once the slide has settled at centre.
+    clearTimeout(activeTimer);
+    activeTimer = setTimeout(() => setActiveIframe(index), animate && !REDUCED ? 480 : 0);
   }
 
-  /* Wire up dots */
-  if (dotsEl) {
-    dotsEl.querySelectorAll('.ve-dot').forEach((dot, i) => {
-      dot.addEventListener('click', () => goTo(i));
-    });
-  }
-
-  /* Prev / next edge arrows */
+  /* Dots + edge arrows */
+  if (dotsEl) dotsEl.querySelectorAll('.ve-dot').forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
   if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
   if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
 
-  updateDots();
-
-  /* ── Swipe / drag to change video — left↔right, mouse + touch ──
-     The catcher is a transparent overlay ON TOP of the YouTube <iframe>.
-     The iframe is cross-origin, so during a drag it would normally swallow
-     the move/up events and the swipe would die halfway. The fix is
-     setPointerCapture: once a horizontal drag is confirmed we capture the
-     pointer to the catcher, so every following move/up is delivered to us
-     even while the finger/cursor is over the iframe.
-       • The first ~8px lock the axis: horizontal → swipe (we capture + take
-         over); vertical → we bail so the page scrolls normally.
-       • Capture is taken only AFTER the horizontal lock, so a vertical scroll
-         gesture is never interfered with. */
+  /* ── Swipe / drag — same feel as the social-media carousel ──
+     The catcher overlays the (cross-origin) video, so the drag would normally
+     be swallowed by the iframe. Once a horizontal drag is confirmed we
+     setPointerCapture, and the whole track follows the finger/cursor 1:1;
+     on release it snaps to the nearest video (a light flick still advances a
+     full slide). A vertical drag is handed back so the page keeps scrolling. */
   if (catcher) {
-    const SWIPE_THRESHOLD = 45;
-    let dragging = false, startX = 0, startY = 0, dx = 0, axis = null, pid = null;
+    let dragging = false, startX = 0, startY = 0, dx = 0, axis = null, pid = null, baseX = 0, t0 = 0;
 
     function endSwipe() {
       if (!dragging) return;
       dragging = false;
       catcher.classList.remove('ve-swiping');
       if (pid !== null) { try { catcher.releasePointerCapture(pid); } catch (_) {} }
-      frame.style.transition = '';
-      frame.style.transform = '';
 
-      const moved = axis === 'x' ? dx : 0;
+      let target = current;
+      if (axis === 'x') {
+        const dt = Math.max(1, performance.now() - t0);
+        const vx = dx / dt;                                  // px per ms
+        const passed = Math.abs(dx) > Math.min(70, step() * 0.18);
+        const flick  = Math.abs(vx) > 0.4;
+        if ((passed || flick) && dx < 0) target = current + 1;
+        else if ((passed || flick) && dx > 0) target = current - 1;
+      }
       axis = null; dx = 0; pid = null;
-      if (moved <= -SWIPE_THRESHOLD && videos[current + 1]) goTo(current + 1);
-      else if (moved >= SWIPE_THRESHOLD && videos[current - 1]) goTo(current - 1);
+      goTo(target, true);                                    // snaps (also re-seats if unchanged)
     }
 
     catcher.addEventListener('pointerdown', e => {
-      if (busy) return;
       dragging = true; dx = 0; axis = null; pid = e.pointerId;
       startX = e.clientX; startY = e.clientY;
-      frame.style.transition = 'none';
+      baseX = -current * step(); t0 = performance.now();
+      track.style.transition = 'none';
     });
 
     catcher.addEventListener('pointermove', e => {
@@ -137,19 +156,29 @@
       dx = e.clientX - startX;
       const dy = e.clientY - startY;
       if (axis === null) {
-        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;         // wait until the drag commits
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;    // wait until the drag commits
         if (Math.abs(dy) > Math.abs(dx)) { dragging = false; return; } // vertical → let the page scroll
         axis = 'x';
         catcher.classList.add('ve-swiping');
-        try { catcher.setPointerCapture(pid); } catch (_) {}      // keep events over the iframe
+        try { catcher.setPointerCapture(pid); } catch (_) {} // keep events over the iframe
       }
       if (e.cancelable) e.preventDefault();
-      frame.style.transform = `translateX(${dx}px)`;
+      // Rubber-band a touch past the first/last edge so it feels bounded.
+      let move = dx;
+      const atStart = current === 0, atEnd = current === videos.length - 1;
+      if ((atStart && dx > 0) || (atEnd && dx < 0)) move = dx * 0.35;
+      setX(baseX + move, false);
     });
 
     catcher.addEventListener('pointerup', endSwipe);
     catcher.addEventListener('pointercancel', endSwipe);
   }
+
+  /* Keep the current slide centred on resize/orientation change */
+  window.addEventListener('resize', () => setX(-current * step(), false));
+
+  /* Init: seat slide 0 and play it */
+  goTo(0, false);
 
   /* ── Vertical video play overlays ───────────────────── */
   document.querySelectorAll('.ve-play-overlay').forEach(overlay => {
