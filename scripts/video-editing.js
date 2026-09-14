@@ -137,18 +137,49 @@
     }
 
     /* Drive it with the shared social-media carousel engine — identical
-       animation + swipe motion. Auto-advance is off (like the creators row).
+       drag/snap/loop/dots. Auto-advance is off (like the creators row).
        Falls back gracefully if the shared engine hasn't loaded. */
     if (typeof window.__jlCarousel === 'function') {
       window.__jlCarousel(row, dotsEl, { autoScroll: false });
     }
 
-    /* Re-evaluate the main card whenever scrolling settles. */
+    /* Coverflow — the same continuous growing/shrinking feel as the social
+       carousel, but scaled by distance from the MAIN slot (not the viewport
+       centre): the main video is full size, and each card grows from small into
+       full as it becomes the main (and back). Scaled from the LEFT edge so the
+       shrunk peek stays tucked next to the main (tight gap). Registered AFTER the
+       engine so this rAF overwrites the engine's own coverflow each frame. */
+    const MIN_SCALE = 0.8, MIN_OPACITY = 0.72, REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function cardStep() {
+      const a = row.querySelector('.ve-vcard'), b = a && a.nextElementSibling;
+      return (a && b) ? (b.offsetLeft - a.offsetLeft) : (a ? a.offsetWidth : 1);
+    }
+    let cfRaf = 0;
+    function videoCoverflow() {
+      cfRaf = 0;
+      if (REDUCED || window.innerWidth < 640) return;   // phones use their own layout
+      const sl = row.scrollLeft, step = cardStep() || 1;
+      row.querySelectorAll('.ve-vcard').forEach(c => {
+        const d = Math.min(1, Math.abs((c.offsetLeft - sl) / step));   // 0 at main slot → 1 one slot away
+        const scale = 1 - (1 - MIN_SCALE) * d;
+        c.style.transformOrigin = 'left center';
+        c.style.transform = 'scale(' + scale.toFixed(3) + ')';
+        c.style.opacity = (1 - (1 - MIN_OPACITY) * d).toFixed(3);
+      });
+    }
+    function cfTick() { if (!cfRaf) cfRaf = requestAnimationFrame(videoCoverflow); }
+
+    /* Re-evaluate the main card + coverflow whenever scrolling changes. */
     let settleT = 0;
     row.addEventListener('scroll', () => {
+      cfTick();
       clearTimeout(settleT);
       settleT = setTimeout(activateCentered, 180);
     }, { passive: true });
+    window.addEventListener('resize', cfTick);
+    window.addEventListener('load', cfTick);
+    requestAnimationFrame(videoCoverflow);
+    setTimeout(videoCoverflow, 300);
     if ('onscrollend' in window) row.addEventListener('scrollend', activateCentered);
 
     /* Glide the row to a card's rest position — the SAME thing a swipe does
