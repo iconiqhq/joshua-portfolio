@@ -157,15 +157,21 @@
       if (card && card !== activeCard) card.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
     });
 
-    /* Glide to the next video (the card after the active one; the clone loop makes
-       the last wrap round to the first). activateCentered plays it on settle. */
-    function advanceToNext() {
-      if (!activeCard) return;
-      const next = activeCard.nextElementSibling;
-      if (next && next.classList.contains('ve-vcard')) {
-        next.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
+    /* Glide to the next/previous video (the clone loop makes the ends wrap
+       round). activateCentered plays whichever settles at the main position. */
+    function glideTo(sib) {
+      if (sib && sib.classList.contains('ve-vcard')) {
+        sib.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
       }
     }
+    function advanceToNext() { if (activeCard) glideTo(activeCard.nextElementSibling); }
+    function advanceToPrev() { if (activeCard) glideTo(activeCard.previousElementSibling); }
+
+    /* Prev / next arrows (desktop) */
+    const prevBtn = document.getElementById('ve-vprev');
+    const nextBtn = document.getElementById('ve-vnext');
+    if (prevBtn) prevBtn.addEventListener('click', advanceToPrev);
+    if (nextBtn) nextBtn.addEventListener('click', advanceToNext);
 
     /* Sound-autoplay is blocked until the page has seen a user gesture, so unmute
        the active player on the first interaction anywhere (and thereafter). */
