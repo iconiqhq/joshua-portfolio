@@ -368,10 +368,11 @@
     padding-right: 2vw;
     scroll-padding-left: 2vw;
   }
-  /* Shrink the coverflow neighbours toward their LEFT edge so the scaled-down
-     peek stays tucked next to the main video (default center-origin scaling
-     pushes its edge inward and looks like a big gap). */
-  .ve-vcard { width: 70vw; transform-origin: left center; }
+  /* Drop the coverflow scale on desktop so both videos sit at full size with
+     only the 2vw gap between them — the shrink (of the main card AND the peek)
+     was what opened up the big empty space. */
+  .ve-vcard { width: 70vw; }
+  .ve-video-row .ve-vcard { transform: none !important; }
 }
 
 /* Phone: big main video (~85vw) + a small next peek, with native snap. */
