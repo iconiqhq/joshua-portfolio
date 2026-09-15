@@ -484,8 +484,10 @@
     lbEl.querySelectorAll('.sm-lb__tab').forEach((t, k) => t.setAttribute('aria-selected', k === i ? 'true' : 'false'));
     const d = lbState.descs[i] || lbState.fallbackDesc;
     const foll = lbState.followers ? lbState.followers[i] : undefined;
+    const platName = String((lbState.slides[i] && lbState.slides[i].platform) || '').toLowerCase();
+    const follLabel = platName === 'youtube' ? 'subscribers' : 'followers';
     const follHTML = (typeof foll === 'number')
-      ? '<p class="sm-lb__followers"><strong>' + foll.toLocaleString('en-US') + '</strong> followers</p>'
+      ? '<p class="sm-lb__followers"><strong>' + foll.toLocaleString('en-US') + '</strong> ' + follLabel + '</p>'
       : '';
     let html = follHTML;
     if (d) html += '<p>' + escHTML(d) + '</p>';
