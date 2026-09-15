@@ -1038,6 +1038,20 @@ a.sm-platform-btn:hover .sm-platform-icon {
   flex: 1;
 }
 .sm-lb__desc-empty { color: rgba(255, 255, 255, 0.3); font-style: italic; }
+/* Follower count shown above the per-platform description */
+.sm-lb__followers {
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.5);
+}
+.sm-lb__followers strong {
+  color: var(--color-blue);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 4px;
+}
 
 .sm-lb__socials-wrap { border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 16px; }
 .sm-lb__socials-wrap[hidden] { display: none; }

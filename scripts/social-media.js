@@ -483,9 +483,14 @@
     });
     lbEl.querySelectorAll('.sm-lb__tab').forEach((t, k) => t.setAttribute('aria-selected', k === i ? 'true' : 'false'));
     const d = lbState.descs[i] || lbState.fallbackDesc;
-    lbEl.querySelector('.sm-lb__desc').innerHTML = d
-      ? '<p>' + escHTML(d) + '</p>'
-      : '<p class="sm-lb__desc-empty">Description coming soon.</p>';
+    const foll = lbState.followers ? lbState.followers[i] : undefined;
+    const follHTML = (typeof foll === 'number')
+      ? '<p class="sm-lb__followers"><strong>' + foll.toLocaleString('en-US') + '</strong> followers</p>'
+      : '';
+    let html = follHTML;
+    if (d) html += '<p>' + escHTML(d) + '</p>';
+    else if (!follHTML) html = '<p class="sm-lb__desc-empty">Description coming soon.</p>';
+    lbEl.querySelector('.sm-lb__desc').innerHTML = html;
     lbEl.querySelector('.sm-lb__prev').hidden = i <= 0;
     lbEl.querySelector('.sm-lb__next').hidden = i >= n - 1;
   }
@@ -510,7 +515,13 @@
     const track = lbEl.querySelector('.sm-lb__track');
     const tabs = lbEl.querySelector('.sm-lb__tabs');
     track.innerHTML = ''; tabs.innerHTML = '';
-    lbState = { slides: [], videos: [], descs: [], idx: 0, fallbackDesc: project.analyticsDescription || '' };
+    lbState = { slides: [], videos: [], descs: [], followers: [], idx: 0, fallbackDesc: project.analyticsDescription || '' };
+
+    /* Per-platform follower counts (from the sheet-merged data), keyed by name. */
+    const followersByPlat = {};
+    (project.platforms || []).forEach(pl => {
+      followersByPlat[String(pl.name || '').toLowerCase()] = pl.currentFollowers;
+    });
 
     if (analytics.length) {
       analytics.forEach((a, i) => {
@@ -521,6 +532,7 @@
         lbState.slides.push(a);
         lbState.videos.push(slide.querySelector('video'));
         lbState.descs.push(a.description || '');
+        lbState.followers.push(followersByPlat[String(a.platform || '').toLowerCase()]);
 
         if (i > 0) {
           const sep = document.createElement('span');
@@ -543,7 +555,7 @@
       slide.className = 'sm-lb__slide sm-lb__slide--empty';
       slide.innerHTML = '<div class="sm-lb__soon"><span aria-hidden="true">📊</span><p>Analytics coming soon</p></div>';
       track.appendChild(slide);
-      lbState.slides.push({}); lbState.videos.push(null); lbState.descs.push('');
+      lbState.slides.push({}); lbState.videos.push(null); lbState.descs.push(''); lbState.followers.push(undefined);
       tabs.hidden = true;
     }
 
