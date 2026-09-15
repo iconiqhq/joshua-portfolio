@@ -10,7 +10,7 @@
      Only the `followers` value is used; it overrides that platform's count on
      the site (Total Reach re-sums automatically). Growth charts stay from JSON.
      Leave this empty to just use the numbers in data/projects.json. */
-  const FOLLOWERS_CSV_URL = '';
+  const FOLLOWERS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1HAW9MtQebfYVGBfl2Pt9bJc_HZmA3I2kK7n4zD_52As/gviz/tq?tqx=out:csv';
 
   async function loadJSON(path) {
     /* Revalidate so edits to the /data JSON show up without a stale cache. */
