@@ -524,9 +524,11 @@
     (project.platforms || []).forEach(pl => {
       followersByPlat[String(pl.name || '').toLowerCase()] = pl.currentFollowers;
     });
+    const follOf = (name) => followersByPlat[String(name || '').toLowerCase()] || 0;
 
     if (analytics.length) {
-      analytics.forEach((a, i) => {
+      /* Tabs ordered by follower count — biggest platform first. */
+      analytics.slice().sort((a, b) => follOf(b.platform) - follOf(a.platform)).forEach((a, i) => {
         const slide = document.createElement('div');
         slide.className = 'sm-lb__slide';
         slide.innerHTML = '<video class="sm-lb__video" src="' + a.video + '" muted loop playsinline controls preload="' + (i === 0 ? 'auto' : 'metadata') + '"></video>';
@@ -554,8 +556,9 @@
       tabs.hidden = false;
     } else if (project.platforms && project.platforms.length) {
       /* No analytics videos yet — still show a tab + follower count per platform
-         (with a "coming soon" placeholder); the videos can be added later. */
-      project.platforms.forEach((pl, i) => {
+         (with a "coming soon" placeholder); the videos can be added later.
+         Tabs ordered by follower count — biggest platform first. */
+      project.platforms.slice().sort((a, b) => follOf(b.name) - follOf(a.name)).forEach((pl, i) => {
         const slide = document.createElement('div');
         slide.className = 'sm-lb__slide sm-lb__slide--empty';
         slide.innerHTML = '<div class="sm-lb__soon"><span aria-hidden="true">📊</span><p>Analytics coming soon</p></div>';
