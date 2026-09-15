@@ -552,6 +552,35 @@
         tabs.appendChild(tab);
       });
       tabs.hidden = false;
+    } else if (project.platforms && project.platforms.length) {
+      /* No analytics videos yet — still show a tab + follower count per platform
+         (with a "coming soon" placeholder); the videos can be added later. */
+      project.platforms.forEach((pl, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'sm-lb__slide sm-lb__slide--empty';
+        slide.innerHTML = '<div class="sm-lb__soon"><span aria-hidden="true">📊</span><p>Analytics coming soon</p></div>';
+        track.appendChild(slide);
+        lbState.slides.push({ platform: pl.name });
+        lbState.videos.push(null);
+        lbState.descs.push('');   // falls back to the project's analyticsDescription
+        lbState.followers.push(followersByPlat[String(pl.name || '').toLowerCase()]);
+
+        if (i > 0) {
+          const sep = document.createElement('span');
+          sep.className = 'sm-lb__tab-sep';
+          sep.setAttribute('aria-hidden', 'true');
+          sep.textContent = '|';
+          tabs.appendChild(sep);
+        }
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'sm-lb__tab';
+        tab.setAttribute('role', 'tab');
+        tab.textContent = pl.name;
+        tab.addEventListener('click', () => goTo(i));
+        tabs.appendChild(tab);
+      });
+      tabs.hidden = false;
     } else {
       const slide = document.createElement('div');
       slide.className = 'sm-lb__slide sm-lb__slide--empty';
