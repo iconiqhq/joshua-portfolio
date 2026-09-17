@@ -1,112 +1,186 @@
 {
-  "pieces": [
+  "projects": [
     {
-      "id": "piece-01",
-      "title": "Brand Identity System",
-      "client": "Client Name",
-      "category": "Brand Identity",
-      "description": "Full brand identity — logo, palette, typography, and usage guidelines.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Logo", "Branding"],
-      "year": "2024",
-      "featured": true
+      "id": "church-posters",
+      "title": "Church Posters",
+      "cover": "assets/images/design/church-posters/01.webp",
+      "images": [
+        "assets/images/design/church-posters/01.webp",
+        "assets/images/design/church-posters/02.webp",
+        "assets/images/design/church-posters/03.webp",
+        "assets/images/design/church-posters/04.webp",
+        "assets/images/design/church-posters/05.webp",
+        "assets/images/design/church-posters/06.webp"
+      ]
     },
     {
-      "id": "piece-02",
-      "title": "Social Media Kit",
-      "client": "Client Name",
-      "category": "Social Media",
-      "description": "Template system for Instagram, Facebook, and TikTok content.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Templates", "Social"],
-      "year": "2024",
-      "featured": false
+      "id": "earn-rt",
+      "title": "Earn RT",
+      "cover": "assets/images/design/earn-rt/01.webp",
+      "images": [
+        "assets/images/design/earn-rt/01.webp",
+        "assets/images/design/earn-rt/02.webp"
+      ]
     },
     {
-      "id": "piece-03",
-      "title": "Event Poster Series",
-      "client": "Client Name",
-      "category": "Print",
-      "description": "A series of promotional posters for a brand launch event.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Print", "Poster"],
-      "year": "2023",
-      "featured": false
+      "id": "how-to-buy-a-mini-harvester",
+      "title": "How to buy a Mini Harvester",
+      "cover": "assets/images/design/how-to-buy-a-mini-harvester/01.webp",
+      "images": [
+        "assets/images/design/how-to-buy-a-mini-harvester/01.webp",
+        "assets/images/design/how-to-buy-a-mini-harvester/02.webp"
+      ]
     },
     {
-      "id": "piece-04",
-      "title": "Product Packaging",
-      "client": "Client Name",
-      "category": "Packaging",
-      "description": "Label and packaging design for a consumer product line.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Packaging", "Label"],
-      "year": "2024",
-      "featured": true
+      "id": "lyka",
+      "title": "LYKA",
+      "cover": "assets/images/design/lyka/01.webp",
+      "images": [
+        "assets/images/design/lyka/01.webp",
+        "assets/images/design/lyka/02.webp",
+        "assets/images/design/lyka/03.webp",
+        "assets/images/design/lyka/04.webp",
+        "assets/images/design/lyka/05.webp",
+        "assets/images/design/lyka/06.webp"
+      ]
     },
     {
-      "id": "piece-05",
-      "title": "Editorial Layout",
-      "client": "Client Name",
-      "category": "Editorial",
-      "description": "Magazine-style editorial layout for a digital publication.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Editorial", "Layout"],
-      "year": "2023",
-      "featured": false
+      "id": "longping",
+      "title": "Longping",
+      "cover": "assets/images/design/longping/01.webp",
+      "images": [
+        "assets/images/design/longping/01.webp",
+        "assets/images/design/longping/02.webp"
+      ]
     },
     {
-      "id": "piece-06",
-      "title": "Icon & Illustration Set",
-      "client": "Client Name",
-      "category": "Illustration",
-      "description": "Custom icon set and spot illustrations for a mobile app.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Icons", "Illustration"],
-      "year": "2024",
-      "featured": false
+      "id": "pump-my-profile",
+      "title": "Pump my Profile",
+      "cover": "assets/images/design/pump-my-profile/01.webp",
+      "images": [
+        "assets/images/design/pump-my-profile/01.webp",
+        "assets/images/design/pump-my-profile/02.webp",
+        "assets/images/design/pump-my-profile/03.webp",
+        "assets/images/design/pump-my-profile/04.webp",
+        "assets/images/design/pump-my-profile/05.webp",
+        "assets/images/design/pump-my-profile/06.webp",
+        "assets/images/design/pump-my-profile/07.webp",
+        "assets/images/design/pump-my-profile/08.webp",
+        "assets/images/design/pump-my-profile/09.webp",
+        "assets/images/design/pump-my-profile/10.webp"
+      ]
     },
     {
-      "id": "piece-07",
-      "title": "Merch & Apparel Design",
-      "client": "Client Name",
-      "category": "Print",
-      "description": "Apparel graphics and merchandise design for a creator brand.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Print", "Merch"],
-      "year": "2024",
-      "featured": false
+      "id": "realgo",
+      "title": "RealGo",
+      "cover": "assets/images/design/realgo/01.webp",
+      "images": [
+        "assets/images/design/realgo/01.webp",
+        "assets/images/design/realgo/02.webp",
+        "assets/images/design/realgo/03.webp",
+        "assets/images/design/realgo/04.webp",
+        "assets/images/design/realgo/05.webp"
+      ]
     },
     {
-      "id": "piece-08",
-      "title": "Content Template System",
-      "client": "Client Name",
-      "category": "Social Media",
-      "description": "Reels covers, story templates, and highlight icons for a lifestyle brand.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Templates", "Reels"],
-      "year": "2025",
-      "featured": false
+      "id": "rebel-bots",
+      "title": "Rebel Bots",
+      "cover": "assets/images/design/rebel-bots/01.webp",
+      "images": [
+        "assets/images/design/rebel-bots/01.webp",
+        "assets/images/design/rebel-bots/02.webp"
+      ]
     },
     {
-      "id": "piece-09",
-      "title": "Brand Launch Campaign",
-      "client": "Client Name",
-      "category": "Brand Identity",
-      "description": "Full visual identity suite for a new brand launch — logo to launch assets.",
-      "image": "assets/images/design-portfolio/piece-01.jpg",
-      "url": null,
-      "tags": ["Branding", "Campaign"],
-      "year": "2025",
-      "featured": false
+      "id": "ronin-chat",
+      "title": "Ronin Chat",
+      "cover": "assets/images/design/ronin-chat/01.webp",
+      "images": [
+        "assets/images/design/ronin-chat/01.webp",
+        "assets/images/design/ronin-chat/02.webp",
+        "assets/images/design/ronin-chat/03.webp",
+        "assets/images/design/ronin-chat/04.webp",
+        "assets/images/design/ronin-chat/05.webp",
+        "assets/images/design/ronin-chat/06.webp",
+        "assets/images/design/ronin-chat/07.webp",
+        "assets/images/design/ronin-chat/08.webp",
+        "assets/images/design/ronin-chat/09.webp",
+        "assets/images/design/ronin-chat/10.webp"
+      ]
+    },
+    {
+      "id": "ronin-eye",
+      "title": "Ronin Eye",
+      "cover": "assets/images/design/ronin-eye/01.webp",
+      "images": [
+        "assets/images/design/ronin-eye/01.webp",
+        "assets/images/design/ronin-eye/02.webp",
+        "assets/images/design/ronin-eye/03.webp"
+      ]
+    },
+    {
+      "id": "sk-poblacion-east",
+      "title": "SK Poblacion East",
+      "cover": "assets/images/design/sk-poblacion-east/01.webp",
+      "images": [
+        "assets/images/design/sk-poblacion-east/01.webp",
+        "assets/images/design/sk-poblacion-east/02.webp",
+        "assets/images/design/sk-poblacion-east/03.webp",
+        "assets/images/design/sk-poblacion-east/04.webp"
+      ]
+    },
+    {
+      "id": "tma",
+      "title": "TMA",
+      "cover": "assets/images/design/tma/01.webp",
+      "images": [
+        "assets/images/design/tma/01.webp",
+        "assets/images/design/tma/02.webp",
+        "assets/images/design/tma/03.webp"
+      ]
+    },
+    {
+      "id": "team-kulot",
+      "title": "Team Kulot",
+      "cover": "assets/images/design/team-kulot/01.webp",
+      "images": [
+        "assets/images/design/team-kulot/01.webp",
+        "assets/images/design/team-kulot/02.webp",
+        "assets/images/design/team-kulot/03.webp",
+        "assets/images/design/team-kulot/04.webp"
+      ]
+    },
+    {
+      "id": "trilogy",
+      "title": "Trilogy",
+      "cover": "assets/images/design/trilogy/01.webp",
+      "images": [
+        "assets/images/design/trilogy/01.webp",
+        "assets/images/design/trilogy/02.webp",
+        "assets/images/design/trilogy/03.webp"
+      ]
+    },
+    {
+      "id": "trixie-salvador-2025",
+      "title": "Trixie Salvador 2025",
+      "cover": "assets/images/design/trixie-salvador-2025/01.webp",
+      "images": [
+        "assets/images/design/trixie-salvador-2025/01.webp",
+        "assets/images/design/trixie-salvador-2025/02.webp",
+        "assets/images/design/trixie-salvador-2025/03.webp",
+        "assets/images/design/trixie-salvador-2025/04.webp"
+      ]
+    },
+    {
+      "id": "zhara",
+      "title": "Zhara",
+      "cover": "assets/images/design/zhara/01.webp",
+      "images": [
+        "assets/images/design/zhara/01.webp",
+        "assets/images/design/zhara/02.webp",
+        "assets/images/design/zhara/03.webp",
+        "assets/images/design/zhara/04.webp"
+      ]
     }
   ]
 }
