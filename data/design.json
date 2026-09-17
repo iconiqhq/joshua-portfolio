@@ -61,9 +61,7 @@
       "images": [
         "assets/images/design/meme-coins-social-media-postings/01.webp",
         "assets/images/design/meme-coins-social-media-postings/02.webp",
-        "assets/images/design/meme-coins-social-media-postings/03.webp",
-        "assets/images/design/meme-coins-social-media-postings/04.webp",
-        "assets/images/design/meme-coins-social-media-postings/05.webp"
+        "assets/images/design/meme-coins-social-media-postings/03.webp"
       ]
     },
     {
@@ -91,6 +89,17 @@
         "assets/images/design/pump-my-profile/08.webp",
         "assets/images/design/pump-my-profile/09.webp",
         "assets/images/design/pump-my-profile/10.webp"
+      ]
+    },
+    {
+      "id": "realgo-merch",
+      "title": "RealGo Merch",
+      "cover": "assets/images/design/realgo-merch/01.webp",
+      "images": [
+        "assets/images/design/realgo-merch/01.webp",
+        "assets/images/design/realgo-merch/02.webp",
+        "assets/images/design/realgo-merch/03.webp",
+        "assets/images/design/realgo-merch/04.webp"
       ]
     },
     {
