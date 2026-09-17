@@ -130,6 +130,16 @@
       ]
     },
     {
+      "id": "salmo",
+      "title": "Salmo",
+      "cover": "assets/images/design/salmo/01.webp",
+      "images": [
+        "assets/images/design/salmo/01.webp",
+        "assets/images/design/salmo/02.webp",
+        "assets/images/design/salmo/03.webp"
+      ]
+    },
+    {
       "id": "tma",
       "title": "TMA",
       "cover": "assets/images/design/tma/01.webp",
