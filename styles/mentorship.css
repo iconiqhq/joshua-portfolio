@@ -594,7 +594,7 @@
 }
 
 #ms-dots button[aria-current="true"] {
-  background: var(--color-pink);   /* size handled by JS dotScale */
+  background: #fff;   /* size handled by JS dotScale */
 }
 
 /* ── Responsive ─────────────────────────────────────── */

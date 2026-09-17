@@ -572,7 +572,8 @@ a.sm-platform-btn:hover .sm-platform-icon {
 }
 
 .sm-dots button[aria-current="true"] {
-  background: var(--color-blue);   /* size handled by JS dotScale (TikTok-style) */
+  background: #fff;   /* size handled by JS dotScale (TikTok-style) */
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.35);   /* ring keeps the white dot visible on the light section */
 }
 
 /* Phone (2-up): main card anchors left, the next peeks smaller (coverflow) */

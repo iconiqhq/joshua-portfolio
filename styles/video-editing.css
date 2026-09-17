@@ -385,7 +385,7 @@
 #ve-video-dots { margin-top: 14px; }
 #ve-video-dots button { background: rgba(255, 255, 255, 0.28); }
 #ve-video-dots button:hover { background: rgba(255, 255, 255, 0.55); }
-#ve-video-dots button[aria-current="true"] { background: var(--color-pink); box-shadow: 0 0 6px rgba(225, 17, 251, 0.6); }
+#ve-video-dots button[aria-current="true"] { background: #fff; box-shadow: 0 0 6px rgba(255, 255, 255, 0.5); }
 
 /* Desktop / tablet: break the row out to the full screen width so the main
    video is ~70vw, with a ~20vw peek of the next and ~8vw gap between them. */

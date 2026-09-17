@@ -1103,13 +1103,13 @@
 }
 
 .web3-nft-dot:hover {
-  background: rgba(0, 248, 8, 0.5);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .web3-nft-dot-active {
   width: 20px;
-  background: var(--color-green);
-  box-shadow: 0 0 8px rgba(0, 248, 8, 0.55);
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 /* ── Footer CTA ─────────────────────────────────────── */
