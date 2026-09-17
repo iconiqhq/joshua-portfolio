@@ -55,7 +55,17 @@
           '<button class="gd-lb__nav gd-lb__prev" type="button" aria-label="Previous">&#8249;</button>' +
           '<button class="gd-lb__nav gd-lb__next" type="button" aria-label="Next">&#8250;</button>' +
         '</div>' +
-        '<div class="gd-lb__bar"><h3 class="gd-lb__title"></h3><div class="gd-lb__dots" role="tablist"></div></div>' +
+        '<div class="gd-lb__side">' +
+          '<div class="gd-lb__head">' +
+            '<div class="gd-lb__head-text">' +
+              '<span class="gd-lb__title"></span>' +
+              '<span class="gd-lb__kind">Graphic Design</span>' +
+            '</div>' +
+          '</div>' +
+          '<p class="gd-lb__count"></p>' +
+          '<div class="gd-lb__dots" role="tablist"></div>' +
+          '<p class="gd-lb__desc gd-lb__desc-empty">Project story coming soon.</p>' +
+        '</div>' +
       '</div>';
     document.body.appendChild(el);
 
@@ -122,6 +132,8 @@
     lbEl.querySelector('.gd-lb__prev').hidden = lb.idx <= 0;
     lbEl.querySelector('.gd-lb__next').hidden = lb.idx >= n - 1;
     lbEl.querySelector('.gd-lb__dots').hidden = n <= 1;
+    const count = lbEl.querySelector('.gd-lb__count');
+    if (count) count.textContent = (lb.idx + 1) + ' / ' + n;
   }
 
   /* Drag/swipe — 1:1 follow + snap to nearest (a flick advances one). */
