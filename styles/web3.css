@@ -1124,13 +1124,13 @@
 .web3-footer-cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 13px 30px;
+  gap: 7px;
+  padding: 9px 20px;
   border: 1px solid rgba(0,248,8,0.28);
   border-radius: 100px;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  letter-spacing: 0.08em;
+  font-size: var(--text-xs);
+  letter-spacing: 0.07em;
   color: var(--color-green);
   text-decoration: none;
   transition:
@@ -1139,6 +1139,7 @@
     box-shadow var(--t-base),
     transform var(--t-base);
 }
+.web3-footer-cta svg { width: 13px; height: 13px; }
 
 .web3-footer-cta:hover {
   background: rgba(0,248,8,0.07);
