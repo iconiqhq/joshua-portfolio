@@ -526,47 +526,42 @@
     });
     const follOf = (name) => followersByPlat[String(name || '').toLowerCase()] || 0;
 
-    if (analytics.length) {
-      /* Tabs ordered by follower count — biggest platform first. */
-      analytics.slice().sort((a, b) => follOf(b.platform) - follOf(a.platform)).forEach((a, i) => {
-        const slide = document.createElement('div');
-        slide.className = 'sm-lb__slide';
-        slide.innerHTML = '<video class="sm-lb__video" src="' + a.video + '" muted loop playsinline controls preload="' + (i === 0 ? 'auto' : 'metadata') + '"></video>';
-        track.appendChild(slide);
-        lbState.slides.push(a);
-        lbState.videos.push(slide.querySelector('video'));
-        lbState.descs.push(a.description || '');
-        lbState.followers.push(followersByPlat[String(a.platform || '').toLowerCase()]);
+    /* Decide which tabs to build:
+       - showAllPlatforms: one tab per platform — its analytics video when we
+         have one, else a "coming soon" placeholder (mixed / partial analytics).
+       - otherwise analytics only (each analytics entry), or a placeholder tab
+         per platform when there are no analytics yet.
+       Tabs are always ordered by follower count — biggest platform first. */
+    const analyticsByPlat = {};
+    analytics.forEach(a => { analyticsByPlat[String(a.platform || '').toLowerCase()] = a; });
+    const platforms = project.platforms || [];
 
-        if (i > 0) {
-          const sep = document.createElement('span');
-          sep.className = 'sm-lb__tab-sep';
-          sep.setAttribute('aria-hidden', 'true');
-          sep.textContent = '|';
-          tabs.appendChild(sep);
-        }
-        const tab = document.createElement('button');
-        tab.type = 'button';
-        tab.className = 'sm-lb__tab';
-        tab.setAttribute('role', 'tab');
-        tab.textContent = a.platform;
-        tab.addEventListener('click', () => goTo(i));
-        tabs.appendChild(tab);
+    let entries = [];
+    if (project.showAllPlatforms && platforms.length) {
+      entries = platforms.map(pl => {
+        const a = analyticsByPlat[String(pl.name || '').toLowerCase()];
+        return { platform: pl.name, video: (a && a.video) || null, description: (a && a.description) || '' };
       });
-      tabs.hidden = false;
-    } else if (project.platforms && project.platforms.length) {
-      /* No analytics videos yet — still show a tab + follower count per platform
-         (with a "coming soon" placeholder); the videos can be added later.
-         Tabs ordered by follower count — biggest platform first. */
-      project.platforms.slice().sort((a, b) => follOf(b.name) - follOf(a.name)).forEach((pl, i) => {
+    } else if (analytics.length) {
+      entries = analytics.map(a => ({ platform: a.platform, video: a.video, description: a.description || '' }));
+    } else if (platforms.length) {
+      entries = platforms.map(pl => ({ platform: pl.name, video: null, description: '' }));
+    }
+
+    if (entries.length) {
+      entries.sort((a, b) => follOf(b.platform) - follOf(a.platform)).forEach((entry, i) => {
         const slide = document.createElement('div');
-        slide.className = 'sm-lb__slide sm-lb__slide--empty';
-        slide.innerHTML = '<div class="sm-lb__soon"><span aria-hidden="true">📊</span><p>Analytics coming soon</p></div>';
+        slide.className = 'sm-lb__slide' + (entry.video ? '' : ' sm-lb__slide--empty');
+        if (entry.video) {
+          slide.innerHTML = '<video class="sm-lb__video" src="' + entry.video + '" muted loop playsinline controls preload="' + (i === 0 ? 'auto' : 'metadata') + '"></video>';
+        } else {
+          slide.innerHTML = '<div class="sm-lb__soon"><span aria-hidden="true">📊</span><p>Analytics coming soon</p></div>';
+        }
         track.appendChild(slide);
-        lbState.slides.push({ platform: pl.name });
-        lbState.videos.push(null);
-        lbState.descs.push('');   // falls back to the project's analyticsDescription
-        lbState.followers.push(followersByPlat[String(pl.name || '').toLowerCase()]);
+        lbState.slides.push(entry);
+        lbState.videos.push(entry.video ? slide.querySelector('video') : null);
+        lbState.descs.push(entry.description || '');   // '' falls back to the project's analyticsDescription
+        lbState.followers.push(followersByPlat[String(entry.platform || '').toLowerCase()]);
 
         if (i > 0) {
           const sep = document.createElement('span');
@@ -579,7 +574,7 @@
         tab.type = 'button';
         tab.className = 'sm-lb__tab';
         tab.setAttribute('role', 'tab');
-        tab.textContent = pl.name;
+        tab.textContent = entry.platform;
         tab.addEventListener('click', () => goTo(i));
         tabs.appendChild(tab);
       });

@@ -236,7 +236,20 @@
           "chartData": []
         }
       ],
-      "analyticsDescription": "Just getting started — I'm building Salmo's social presence from zero across every platform, so there's no analytics to show yet. The foundation is being laid now; the numbers will follow."
+      "analyticsDescription": "Salmo Construction's socials were built from scratch. Facebook and TikTok are already gaining real traction, while Instagram and YouTube are still ramping up — the foundation is set and the numbers are climbing.",
+      "showAllPlatforms": true,
+      "analytics": [
+        {
+          "platform": "Facebook",
+          "icon": "facebook",
+          "video": "assets/videos/analytics/salmo-fb.mp4"
+        },
+        {
+          "platform": "TikTok",
+          "icon": "tiktok",
+          "video": "assets/videos/analytics/salmo-tiktok.mp4"
+        }
+      ]
     },
     {
       "id": "spincredible",
