@@ -75,32 +75,35 @@
       host.className = 've-vcard__player';
       card.appendChild(host);
 
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 've-vcard__toggle';
-      btn.setAttribute('aria-label', 'Pause');
-      btn.innerHTML = PAUSE_SVG;
-      let lastTouch = 0;
-      btn.addEventListener('pointerdown', function (e) { e.stopPropagation(); });   // don't start a carousel drag
-      btn.addEventListener('mousedown', function (e) { e.stopPropagation(); });
-      // Handle the tap inside the touch gesture itself — mobile browsers delay/
-      // drop the synthetic click, and YouTube ignores programmatic play() unless
-      // it runs directly within a user gesture. This makes the button work on phones.
-      btn.addEventListener('touchend', function (e) {
-        e.stopPropagation(); e.preventDefault();
-        lastTouch = Date.now();
-        togglePlay(card);
-      }, { passive: false });
-      btn.addEventListener('click', function (e) {
+      // Full-surface tap layer over the video: tap/click ANYWHERE toggles
+      // play/pause (a centered control shows the state), while a drag still
+      // swipes the carousel. We only toggle on a clean tap (no movement), and do
+      // it inside the gesture so mobile browsers / YouTube allow play().
+      const tap = document.createElement('div');
+      tap.className = 've-vcard__tap';
+      tap.setAttribute('role', 'button');
+      tap.setAttribute('tabindex', '0');
+      tap.setAttribute('aria-label', 'Play or pause');
+      tap.innerHTML = '<span class="ve-vcard__toggle"><span class="ve-vcard__ticon">' + PAUSE_SVG + '</span></span>';
+      let tx = 0, ty = 0, tmoved = false, tt0 = 0;
+      // Don't stopPropagation on down — the carousel drag (desktop mousedown /
+      // mobile native scroll) must still work over the video.
+      tap.addEventListener('pointerdown', function (e) { tx = e.clientX; ty = e.clientY; tmoved = false; tt0 = Date.now(); });
+      tap.addEventListener('pointermove', function (e) { if (!tmoved && Math.hypot(e.clientX - tx, e.clientY - ty) > 10) tmoved = true; });
+      tap.addEventListener('pointercancel', function () { tmoved = true; });   // a scroll/drag took over
+      tap.addEventListener('pointerup', function (e) {
+        if (tmoved || Date.now() - tt0 > 600) return;   // it was a swipe, not a tap
         e.stopPropagation();
-        if (Date.now() - lastTouch < 600) return;   // touchend already toggled
         togglePlay(card);
       });
-      card.appendChild(btn);
+      tap.addEventListener('keydown', function (e) {
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); togglePlay(card); }
+      });
+      card.appendChild(tap);
 
       whenYT(function () {
         // The card may have been swiped away before the API finished loading.
-        if (!card.isConnected || !card.classList.contains('ve-vcard--playing')) { host.remove(); btn.remove(); return; }
+        if (!card.isConnected || !card.classList.contains('ve-vcard--playing')) { host.remove(); tap.remove(); return; }
         card._player = new YT.Player(host, {
           videoId: card.dataset.id,
           playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1, controls: 1, color: 'white' },
@@ -113,8 +116,9 @@
             },
             onStateChange: function (e) {
               if (e.data === YT.PlayerState.ENDED) { advanceToNext(); return; }   // 0 = ended → next video
-              if (e.data === YT.PlayerState.PLAYING) { btn.innerHTML = PAUSE_SVG; btn.setAttribute('aria-label', 'Pause'); }
-              else if (e.data === YT.PlayerState.PAUSED) { btn.innerHTML = PLAY_SVG; btn.setAttribute('aria-label', 'Play'); }
+              const icon = tap.querySelector('.ve-vcard__ticon');
+              if (e.data === YT.PlayerState.PLAYING) { if (icon) icon.innerHTML = PAUSE_SVG; tap.setAttribute('aria-label', 'Pause'); card.classList.remove('ve-vcard--paused'); }
+              else if (e.data === YT.PlayerState.PAUSED) { if (icon) icon.innerHTML = PLAY_SVG; tap.setAttribute('aria-label', 'Play'); card.classList.add('ve-vcard--paused'); }
             }
           }
         });
@@ -122,8 +126,8 @@
     }
     function stopCard(card) {
       if (card._player) { try { card._player.destroy(); } catch (_) {} card._player = null; }
-      card.querySelectorAll('iframe, .ve-vcard__player, .ve-vcard__toggle').forEach(el => el.remove());
-      card.classList.remove('ve-vcard--playing');
+      card.querySelectorAll('iframe, .ve-vcard__player, .ve-vcard__tap').forEach(el => el.remove());
+      card.classList.remove('ve-vcard--playing', 've-vcard--paused');
     }
 
     /* Autoplay whichever card is the MAIN one on screen (nearest the row's
