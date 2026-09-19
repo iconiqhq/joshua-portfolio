@@ -98,6 +98,7 @@
   function closeLightbox() {
     if (lbEl) lbEl.hidden = true;
     document.body.classList.remove('gd-lb-open');
+    resetPanel(false);
   }
 
   function step() { return lbEl.querySelector('.gd-lb__stage').clientWidth; }
@@ -124,33 +125,76 @@
     lbEl.querySelector('.gd-lb__dots').hidden = n <= 1;
   }
 
-  /* Drag/swipe — 1:1 follow + snap to nearest (a flick advances one). */
+  /* Reset the panel/backdrop after a vertical drag (or before reopening). */
+  function resetPanel(animate) {
+    if (!lbEl) return;
+    const panel = lbEl.querySelector('.gd-lb__panel');
+    const backdrop = lbEl.querySelector('.gd-lb__backdrop');
+    panel.style.transition = animate ? 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    panel.style.transform = '';
+    backdrop.style.transition = animate ? 'opacity 0.28s ease' : 'none';
+    backdrop.style.opacity = '';
+  }
+
+  /* Drag/swipe — horizontal 1:1 follow + snap; on touch, a vertical
+     drag pulls the panel and releases into a close (Instagram-style). */
   function initDrag(stage, track) {
-    let down = false, x0 = 0, y0 = 0, dx = 0, axis = null, pid = null, base = 0;
+    let down = false, x0 = 0, y0 = 0, dx = 0, dy = 0, axis = null, pid = null, base = 0, vClose = false;
     const minX = () => -(lb.images.length - 1) * step();
+    const CLOSE_DIST = 90;
     stage.addEventListener('pointerdown', e => {
       if (e.target.closest('.gd-lb__nav')) return;
-      down = true; dx = 0; axis = null; pid = e.pointerId;
+      down = true; dx = 0; dy = 0; axis = null; pid = e.pointerId;
       x0 = e.clientX; y0 = e.clientY; base = -lb.idx * step();
+      vClose = e.pointerType === 'touch' || window.matchMedia('(hover: none)').matches;
       track.style.transition = 'none';
+      lbEl.querySelector('.gd-lb__panel').style.transition = 'none';
     });
     stage.addEventListener('pointermove', e => {
       if (!down || e.pointerId !== pid) return;
-      dx = e.clientX - x0; const dy = e.clientY - y0;
+      dx = e.clientX - x0; dy = e.clientY - y0;
       if (axis === null) {
         if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-        if (Math.abs(dy) > Math.abs(dx)) { down = false; return; }
-        axis = 'x'; try { stage.setPointerCapture(pid); } catch (_) {}
+        if (Math.abs(dy) > Math.abs(dx)) {
+          if (!vClose) { down = false; return; }   // desktop: ignore vertical
+          axis = 'y';
+        } else {
+          axis = 'x';
+        }
+        try { stage.setPointerCapture(pid); } catch (_) {}
       }
       if (e.cancelable) e.preventDefault();
-      setX(Math.max(minX(), Math.min(0, base + dx)), false);
+      if (axis === 'x') {
+        setX(Math.max(minX(), Math.min(0, base + dx)), false);
+      } else {
+        const panel = lbEl.querySelector('.gd-lb__panel');
+        const backdrop = lbEl.querySelector('.gd-lb__backdrop');
+        panel.style.transform = 'translateY(' + dy + 'px)';
+        backdrop.style.opacity = String(Math.max(0, 1 - Math.abs(dy) / 420));
+      }
     });
     function end() {
       if (!down) return; down = false;
       if (pid != null) { try { stage.releasePointerCapture(pid); } catch (_) {} }
+      if (axis === 'y') {
+        if (Math.abs(dy) > CLOSE_DIST) {
+          const panel = lbEl.querySelector('.gd-lb__panel');
+          const backdrop = lbEl.querySelector('.gd-lb__backdrop');
+          const outY = (dy < 0 ? -1 : 1) * Math.max(Math.abs(dy), window.innerHeight * 0.6);
+          panel.style.transition = 'transform 0.24s ease, opacity 0.24s ease';
+          panel.style.transform = 'translateY(' + outY + 'px)';
+          backdrop.style.transition = 'opacity 0.24s ease';
+          backdrop.style.opacity = '0';
+          setTimeout(() => { closeLightbox(); }, 200);
+        } else {
+          resetPanel(true);
+        }
+        axis = null; dx = 0; dy = 0; pid = null;
+        return;
+      }
       let target = lb.idx;
       if (axis === 'x' && Math.abs(dx) > Math.min(80, step() * 0.2)) target = lb.idx + (dx < 0 ? 1 : -1);
-      axis = null; dx = 0; pid = null;
+      axis = null; dx = 0; dy = 0; pid = null;
       goTo(target, true);
     }
     stage.addEventListener('pointerup', end);

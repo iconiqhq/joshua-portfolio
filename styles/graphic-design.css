@@ -326,13 +326,15 @@
 }
 .gd-lb__close:hover { background: rgba(255, 255, 255, 0.2); }
 @media (max-width: 640px) { .gd-lb__close { top: -6px; right: 0; } }
+/* On touch/mobile the close button is replaced by swipe-up/down to dismiss */
+@media (hover: none) { .gd-lb__close { display: none; } }
 
 /* Stage — the image carousel */
 .gd-lb__stage {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
-  touch-action: pan-y;
+  touch-action: none;   /* JS handles both swipe (next) and pull-to-close */
   cursor: grab;
 }
 .gd-lb__stage:active { cursor: grabbing; }

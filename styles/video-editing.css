@@ -339,6 +339,7 @@
   backdrop-filter: blur(6px);
   cursor: pointer;
   pointer-events: auto;
+  touch-action: manipulation;   /* no tap delay; keep the tap out of the scroll gesture */
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.14s ease;
 }
 .ve-vcard__toggle svg { width: 22px; height: 22px; }

@@ -80,9 +80,22 @@
       btn.className = 've-vcard__toggle';
       btn.setAttribute('aria-label', 'Pause');
       btn.innerHTML = PAUSE_SVG;
+      let lastTouch = 0;
       btn.addEventListener('pointerdown', function (e) { e.stopPropagation(); });   // don't start a carousel drag
       btn.addEventListener('mousedown', function (e) { e.stopPropagation(); });
-      btn.addEventListener('click', function (e) { e.stopPropagation(); togglePlay(card); });
+      // Handle the tap inside the touch gesture itself — mobile browsers delay/
+      // drop the synthetic click, and YouTube ignores programmatic play() unless
+      // it runs directly within a user gesture. This makes the button work on phones.
+      btn.addEventListener('touchend', function (e) {
+        e.stopPropagation(); e.preventDefault();
+        lastTouch = Date.now();
+        togglePlay(card);
+      }, { passive: false });
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (Date.now() - lastTouch < 600) return;   // touchend already toggled
+        togglePlay(card);
+      });
       card.appendChild(btn);
 
       whenYT(function () {
