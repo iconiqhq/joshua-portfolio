@@ -127,8 +127,18 @@
   if (!sections.length) return;
   let current = null, ticking = false;
 
+  const ids = new Set(sections.map(s => s.id));
+
+  /* A project lightbox (social or graphic design) owns the URL while open. */
+  function lbOpen() {
+    return document.body.classList.contains('sm-lb-open') ||
+           document.body.classList.contains('gd-lb-open');
+  }
+
   function pick() {
-    if (document.body.classList.contains('sm-lb-open')) return;   // lightbox owns the URL
+    if (lbOpen()) return;
+    // A project deep-link (/project/… or /design/…) owns the URL — never clobber it.
+    if (/^\/(project|design)\//.test(location.pathname || '')) return;
     const mark = window.innerHeight * 0.35;
     let winner = sections[0];
     for (const s of sections) {
@@ -138,13 +148,34 @@
     if (id === current) return;
     current = id;
     const isFirst = winner === sections[0];
-    const want = isFirst ? (location.pathname + location.search) : ('#' + id);
-    const have = isFirst ? '' : (location.hash || '');
-    if (isFirst) {
-      if (location.hash) history.replaceState(null, '', want);
-    } else if (have !== want) {
-      history.replaceState(null, '', want);
-    }
+    const want = isFirst ? '/' : ('/' + id);   // clean path, no '#'
+    if (location.pathname !== want) history.replaceState(null, '', want);
+  }
+
+  /* Landing on a shared section path (e.g. /graphic-design) → jump there.
+     Sections below shift as images/carousels load, so re-settle a few times
+     until the target rests near the top (or the viewer takes over).
+     Project paths (/project/…, /design/…) are handled by their own scripts. */
+  let userTookOver = false;
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(ev =>
+    window.addEventListener(ev, () => { userTookOver = true; }, { passive: true, once: true }));
+
+  function applyPath() {
+    const seg = (location.pathname || '/').replace(/^\/+|\/+$/g, '');
+    if (!seg || !ids.has(seg)) return false;
+    const target = document.getElementById(seg);
+    if (!target) return false;
+    current = seg;
+    let tries = 0;
+    (function settle() {
+      if (userTookOver) return;
+      const top = target.getBoundingClientRect().top + window.scrollY - 20;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+      if (++tries < 14 && Math.abs(target.getBoundingClientRect().top - 20) > 4) {
+        setTimeout(settle, 110);
+      }
+    })();
+    return true;
   }
 
   window.addEventListener('scroll', () => {
@@ -152,6 +183,8 @@
     ticking = true;
     requestAnimationFrame(() => { ticking = false; pick(); });
   }, { passive: true });
-  window.addEventListener('load', pick);
-  pick();
+
+  const hadPath = applyPath();                       // best-effort now
+  window.addEventListener('load', () => { if (!applyPath()) pick(); });   // authoritative after layout
+  if (!hadPath) pick();                              // home load reflects the section in view
 })();

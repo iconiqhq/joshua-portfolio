@@ -7,10 +7,56 @@
 
   let lbEl = null;
   const lb = { images: [], idx: 0 };
+  let projectsRef = [];
+  let currentId = null;
+  let preLbPath = '';
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  /* ── Per-project shareable links (/design/<id>) + share button ──────── */
+  const designPath = id => '/design/' + encodeURIComponent(id);
+  const matchDesignPath = () => (location.pathname || '').match(/^\/design\/(.+?)\/?$/);
+  const SHARE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/></svg>';
+
+  let toastEl, toastTimer;
+  function showToast(msg) {
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'gd-toast';
+      toastEl.setAttribute('role', 'status');
+      document.body.appendChild(toastEl);
+    }
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+  function legacyCopy(text) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.top = '-9999px';
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand('copy'); document.body.removeChild(ta); return ok;
+    } catch (e) { return false; }
+  }
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(() => true, () => legacyCopy(text));
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+  function shareProject(project) {
+    if (!project) return;
+    const url = location.origin + designPath(project.id);
+    if (navigator.share) {   // native sheet (Messenger, WhatsApp, Copy, …)
+      navigator.share({ title: 'Iconiq Creatives — ' + project.title, url: url }).catch(() => {});
+      return;
+    }
+    copyText(url).then(ok => showToast(ok ? 'Link copied' : 'Couldn’t copy — check the address bar'));
   }
 
   /* ── Masonry grid of covers ─────────────────────────── */
@@ -18,13 +64,26 @@
     const grid = document.getElementById('gd-grid');
     if (!grid) return;
     grid.innerHTML = projects.map((p, i) =>
-      '<button class="gd-item" type="button" data-idx="' + i + '" aria-label="View ' + esc(p.title) + ' designs">' +
-        '<img class="gd-item__img" src="' + p.cover + '" alt="' + esc(p.title) + '" loading="lazy" decoding="async" draggable="false">' +
-        '<span class="gd-item__label">' + esc(p.title) + '</span>' +
-      '</button>'
+      '<div class="gd-item" data-idx="' + i + '">' +
+        '<a class="gd-item__link" href="' + designPath(p.id) + '" aria-label="View ' + esc(p.title) + ' designs">' +
+          '<img class="gd-item__img" src="' + p.cover + '" alt="' + esc(p.title) + '" loading="lazy" decoding="async" draggable="false">' +
+          '<span class="gd-item__label">' + esc(p.title) + '</span>' +
+        '</a>' +
+        '<button class="gd-item__share" type="button" aria-label="Share ' + esc(p.title) + '">' + SHARE_ICON + '</button>' +
+      '</div>'
     ).join('');
-    grid.querySelectorAll('.gd-item').forEach(btn => {
-      btn.addEventListener('click', () => openLightbox(projects[+btn.dataset.idx]));
+    grid.querySelectorAll('.gd-item').forEach(item => {
+      const idx = +item.dataset.idx;
+      item.querySelector('.gd-item__link').addEventListener('click', e => {
+        // Let modified clicks (new tab / new window / middle-click) use the real link.
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+        e.preventDefault();
+        openLightbox(projects[idx]);
+      });
+      item.querySelector('.gd-item__share').addEventListener('click', e => {
+        e.preventDefault(); e.stopPropagation();
+        shareProject(projects[idx]);
+      });
     });
     reveal(grid.querySelectorAll('.gd-item'));
   }
@@ -73,7 +132,7 @@
     return el;
   }
 
-  function openLightbox(project) {
+  function openLightbox(project, fromHistory) {
     if (!lbEl) lbEl = buildShell();
     const track = lbEl.querySelector('.gd-lb__track');
     const dots = lbEl.querySelector('.gd-lb__dots');
@@ -90,15 +149,27 @@
     ).join('');
     dots.querySelectorAll('.gd-lb__dot').forEach((d, i) => d.addEventListener('click', () => goTo(i)));
 
+    currentId = String(project.id);
     document.body.classList.add('gd-lb-open');
     lbEl.hidden = false;
     requestAnimationFrame(() => { setX(0, false); syncNav(); });
+
+    /* Give the open project its own shareable URL (/design/<id>). */
+    if (!fromHistory) {
+      preLbPath = location.pathname;
+      history.pushState({ gdDesign: currentId }, '', designPath(currentId));
+    }
   }
 
-  function closeLightbox() {
-    if (lbEl) lbEl.hidden = true;
+  function closeLightbox(fromHistory) {
+    if (!lbEl || lbEl.hidden) return;
+    lbEl.hidden = true;
     document.body.classList.remove('gd-lb-open');
     resetPanel(false);
+    currentId = null;
+    if (!fromHistory && matchDesignPath()) {
+      history.replaceState(null, '', preLbPath || '/graphic-design');
+    }
   }
 
   function step() { return lbEl.querySelector('.gd-lb__stage').clientWidth; }
@@ -202,13 +273,40 @@
     window.addEventListener('resize', () => { if (lbEl && !lbEl.hidden) setX(-lb.idx * step(), false); });
   }
 
+  /* Back/forward + shared links: sync the lightbox to the URL. */
+  window.addEventListener('popstate', () => {
+    const m = matchDesignPath();
+    if (m) {
+      const id = decodeURIComponent(m[1]);
+      const proj = projectsRef.find(p => String(p.id) === id);
+      if (proj && (!lbEl || lbEl.hidden || currentId !== id)) openLightbox(proj, true);
+    } else if (lbEl && !lbEl.hidden) {
+      closeLightbox(true);
+    }
+  });
+
   /* ── Init ───────────────────────────────────────────── */
   async function init() {
     if (!window.PortfolioData) return;
     let data;
     try { data = await window.PortfolioData.loadDesign(); } catch (e) { return; }
     const projects = (data && data.projects) || [];
-    if (projects.length) buildGrid(projects);
+    if (!projects.length) return;
+    projectsRef = projects;
+    buildGrid(projects);
+
+    /* Deep link: opened with /design/<id> → open that project's lightbox
+       (and park the page on the graphic-design section beneath it, so closing
+       lands there). */
+    const m = matchDesignPath();
+    if (m) {
+      const proj = projects.find(p => String(p.id) === decodeURIComponent(m[1]));
+      if (proj) {
+        const sec = document.getElementById('graphic-design');
+        if (sec) sec.scrollIntoView();
+        openLightbox(proj, true);
+      }
+    }
   }
   document.addEventListener('DOMContentLoaded', init);
 })();

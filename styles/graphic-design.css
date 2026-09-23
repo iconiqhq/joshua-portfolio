@@ -243,7 +243,14 @@
 @media (max-width: 640px) { .gd-item { margin-bottom: 10px; } }
 .gd-item.in-view { opacity: 1; transform: none; }
 .gd-item:hover { box-shadow: 0 18px 44px -16px rgba(0, 0, 0, 0.7); }
-.gd-item:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+
+.gd-item__link {
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.gd-item__link:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
 
 .gd-item__img {
   width: 100%;
@@ -270,7 +277,58 @@
   pointer-events: none;
 }
 .gd-item:hover .gd-item__label,
-.gd-item:focus-visible .gd-item__label { opacity: 1; transform: none; }
+.gd-item:focus-within .gd-item__label { opacity: 1; transform: none; }
+
+/* Corner share button — revealed on hover (desktop), always shown on touch */
+.gd-item__share {
+  position: absolute;
+  top: 10px; right: 10px;
+  z-index: 3;
+  width: 36px; height: 36px;
+  min-width: 0; min-height: 0;
+  border: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  cursor: pointer;
+  background: rgba(10, 12, 18, 0.42);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+}
+.gd-item__share svg { width: 16px; height: 16px; }
+.gd-item__share:hover { background: rgba(10, 12, 18, 0.68); }
+.gd-item__share:active { transform: scale(0.9); }
+.gd-item__share:focus-visible { outline: 2px solid #fff; outline-offset: 2px; opacity: 1; transform: none; }
+.gd-item:hover .gd-item__share,
+.gd-item:focus-within .gd-item__share { opacity: 1; transform: none; }
+@media (hover: none) { .gd-item__share { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .gd-item__share { transition: none; } }
+
+/* Toast — link-copied / share feedback */
+.gd-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  transform: translateX(-50%) translateY(12px);
+  z-index: 3000;
+  background: #0e0f12;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.gd-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ── Image lightbox (picture carousel) ── */
 /* Lightbox — picture-only: the image fills the view, nav buttons sit

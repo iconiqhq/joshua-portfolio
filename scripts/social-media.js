@@ -421,7 +421,9 @@
   let lbState = { slides: [], videos: [], descs: [], idx: 0 };
   let allProjects = [];          // set in init(), used by deep-link handlers
   let currentProjectId = null;   // which project's lightbox is open
-  let preLbHash = '';            // URL hash before the lightbox opened (to restore on close)
+  let preLbPath = '';            // URL path before the lightbox opened (to restore on close)
+  const projectPath = id => '/project/' + encodeURIComponent(id);
+  const matchProjectPath = () => (location.pathname || '').match(/^\/project\/(.+?)\/?$/);
 
   function buildLightboxShell() {
     const el = document.createElement('div');
@@ -607,12 +609,11 @@
     goTo(0);
     lbEl.querySelector('.sm-lb__close').focus();
 
-    /* Give the open project its own shareable URL (#project=<id>), Artsons-style.
+    /* Give the open project its own shareable URL (/project/<id>), Artsons-style.
        pushState so Back closes it and restores the section you came from. */
     if (!fromHistory) {
-      preLbHash = location.hash;   // remember the section we came from
-      history.pushState({ smProject: currentProjectId }, '',
-        '#project=' + encodeURIComponent(currentProjectId));
+      preLbPath = location.pathname;   // remember the section we came from
+      history.pushState({ smProject: currentProjectId }, '', projectPath(currentProjectId));
     }
   }
 
@@ -624,14 +625,14 @@
     document.body.style.overflow = '';
     currentProjectId = null;
     // Restore the address bar to the section we came from (button/backdrop/Esc).
-    if (!fromHistory && location.hash.indexOf('#project=') === 0) {
-      history.replaceState(null, '', preLbHash || (location.pathname + location.search));
+    if (!fromHistory && matchProjectPath()) {
+      history.replaceState(null, '', preLbPath || '/social-media');
     }
   }
 
   /* Back/forward + shared links: sync the lightbox to the URL. */
   window.addEventListener('popstate', () => {
-    const m = location.hash.match(/^#project=(.+)$/);
+    const m = matchProjectPath();
     if (m) {
       const id = decodeURIComponent(m[1]);
       const proj = allProjects.find(p => String(p.id) === id);
@@ -666,11 +667,16 @@
         if (proj) openProjectLightbox(proj);
       });
 
-      /* Deep link: opened with #project=<id> → open that project's lightbox. */
-      const m = location.hash.match(/^#project=(.+)$/);
+      /* Deep link: opened with /project/<id> → open that project's lightbox
+         (park the page on the social section beneath it, so closing lands there). */
+      const m = matchProjectPath();
       if (m) {
         const proj = projects.find(p => String(p.id) === decodeURIComponent(m[1]));
-        if (proj) openProjectLightbox(proj, true);
+        if (proj) {
+          const sec = document.getElementById('social-media');
+          if (sec) sec.scrollIntoView();
+          openProjectLightbox(proj, true);
+        }
       }
     }
 
