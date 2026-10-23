@@ -143,7 +143,7 @@
   'use strict';
   const sections = Array.from(document.querySelectorAll('section[id]'));
   if (!sections.length) return;
-  let current = null, ticking = false;
+  let current = null, ticking = false, settling = false;
 
   const ids = new Set(sections.map(s => s.id));
 
@@ -154,6 +154,7 @@
   }
 
   function pick() {
+    if (settling) return;   // a deep-link scroll is in progress — don't fight it
     if (lbOpen()) return;
     // A project deep-link (/project/… or /design/…) owns the URL — never clobber it.
     if (/^\/(project|design)\//.test(location.pathname || '')) return;
@@ -176,7 +177,7 @@
      Project paths (/project/…, /design/…) are handled by their own scripts. */
   let userTookOver = false;
   ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(ev =>
-    window.addEventListener(ev, () => { userTookOver = true; }, { passive: true, once: true }));
+    window.addEventListener(ev, () => { userTookOver = true; settling = false; }, { passive: true, once: true }));
 
   function applyPath() {
     const seg = (location.pathname || '/').replace(/^\/+|\/+$/g, '');
@@ -184,13 +185,16 @@
     const target = document.getElementById(seg);
     if (!target) return false;
     current = seg;
+    settling = true;
     let tries = 0;
     (function settle() {
-      if (userTookOver) return;
+      if (userTookOver) { settling = false; return; }
       const top = target.getBoundingClientRect().top + window.scrollY - 20;
       window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
       if (++tries < 14 && Math.abs(target.getBoundingClientRect().top - 20) > 4) {
         setTimeout(settle, 110);
+      } else {
+        settling = false;   // settled — let the scroll-spy resume
       }
     })();
     return true;
