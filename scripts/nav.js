@@ -1,5 +1,23 @@
 /* nav.js — Apple liquid-glass bottom pill nav */
 
+/* ── Embed bridge ─────────────────────────────────────────────────────
+   When this portfolio is shown inside an iframe (e.g. iconiqcreatives.com/
+   joshualescano), tell the parent page about every URL change so it can
+   mirror the section in its own address bar (shareable deep links). No-ops
+   when the portfolio is viewed standalone. */
+(function () {
+  'use strict';
+  if (window.parent === window) return;              // not embedded
+  function post() { try { window.parent.postMessage({ jlPath: location.pathname || '/' }, '*'); } catch (e) {} }
+  ['pushState', 'replaceState'].forEach(function (m) {
+    var orig = history[m];
+    history[m] = function () { var r = orig.apply(this, arguments); post(); return r; };
+  });
+  window.addEventListener('popstate', post);
+  window.addEventListener('DOMContentLoaded', post);
+  post();
+})();
+
 (function () {
   'use strict';
 
